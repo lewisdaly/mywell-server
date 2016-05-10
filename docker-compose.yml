@@ -5,4 +5,4 @@ services:
     ports:
      - "3000:3000"
     volumes:
-     - .:/mywell-server
+     - ./mywell-server:/usr/src/app
