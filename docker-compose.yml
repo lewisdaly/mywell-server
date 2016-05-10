@@ -6,3 +6,17 @@ services:
      - "3000:3000"
     volumes:
      - ./mywell-server:/usr/src/app
+    links:
+    - db:db
+
+  db:
+    image: mariadb:10.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=mywell
+      - MYSQL_USER=mywell
+      - MYSQL_PASSWORD=password
+    expose:
+      - 3306
+    volumes:
+      - ./app/server/boot/db:/docker-entrypoint-initdb.d

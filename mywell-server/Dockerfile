@@ -5,7 +5,8 @@ RUN mkdir -p /usr/src/app
 
 RUN npm install nodemon -g
 
-WORKDIR /usr/src/app # this corresponds to the mounted dir in ../docker-compose.yml
+# this corresponds to the mounted dir in ../docker-compose.yml
+WORKDIR /usr/src/app 
 
 #install dependencies
 ADD package.json /usr/src/app/

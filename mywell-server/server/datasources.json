@@ -1,6 +1,11 @@
 {
-  "db": {
-    "name": "db",
-    "connector": "memory"
+  "mysql-corp": {
+    "host": "db",
+    "port": 3306,
+    "database": "mywell",
+    "password": "password",
+    "name": "mysql-corp",
+    "user": "mywell",
+    "connector": "mysql"
   }
 }

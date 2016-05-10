@@ -13,7 +13,12 @@
       "./mixins"
     ]
   },
-  "note": {
-    "dataSource": "db"
+  "well_reading": {
+    "dataSource": "mysql-corp",
+    "public": true
+  },
+  "well_location": {
+    "dataSource": "mysql-corp",
+    "public": true
   }
 }

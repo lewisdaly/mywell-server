@@ -20,4 +20,7 @@ docker build .
 
 
 #ssh into server: TODO: make into nice script for each process
-sudo docker exec -i -t mywellserver_mywell-server_1 /bin/bash
+docker exec -i -t mywellserver_mywell-server_1 /bin/bash
+
+#connect to mysql
+docker exec -it mywellserver_db_1 /bin/bash -c "TERM=dumb mysql mywell -u mywell -ppassword"
