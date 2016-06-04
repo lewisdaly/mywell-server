@@ -1,0 +1,51 @@
+{
+  "name": "resource",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "id": {
+      "type": "number",
+      "required": true
+    },
+    "geo": {
+      "type": "geopoint",
+      "required": true
+    },
+    "last_value": {
+      "type": "number",
+      "required": true,
+      "dataType": "decimal",
+      "precision": 10,
+      "scale": 2
+    },
+    "last_date": {
+      "type": "date",
+      "required": true
+    },
+    "owner": {
+      "type": "string",
+      "required": true
+    },
+    "elevation": {
+      "type": "number",
+      "required": true
+    },
+    "type": {
+      "type": "string",
+      "required": true,
+      "description": "one of: well, rain_gauge, dam"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "readings": {
+      "type": "hasMany",
+      "model": "reading"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

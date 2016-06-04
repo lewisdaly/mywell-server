@@ -1,0 +1,27 @@
+{
+  "name": "village",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "postcode": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "resources": {
+      "type": "hasMany",
+      "model": "resource"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

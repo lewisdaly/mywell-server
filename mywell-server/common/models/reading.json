@@ -1,0 +1,35 @@
+{
+  "name": "reading",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "value": {
+      "type": "number",
+      "required": true,
+      "dataType": "decimal",
+      "precision": 10,
+      "scale": 2
+    },
+    "village_id": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "village": {
+      "type": "belongsTo",
+      "model": "village",
+      "foreignKey": "village_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
