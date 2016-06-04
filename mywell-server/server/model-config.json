@@ -13,12 +13,24 @@
       "./mixins"
     ]
   },
-  "well_reading": {
+  "resource": {
     "dataSource": "mysql-corp",
     "public": true
   },
-  "well_location": {
+  "reading": {
     "dataSource": "mysql-corp",
+    "public": true
+  },
+  "village": {
+    "dataSource": "mysql-corp",
+    "public": true
+  },
+  "user": {
+    "dataSource": "mysql-corp",
+    "public": true
+  },
+  "message": {
+    "dataSource": null,
     "public": true
   }
 }

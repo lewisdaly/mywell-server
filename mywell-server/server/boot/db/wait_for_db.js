@@ -11,7 +11,7 @@ const _waitForDataBaseConnection = (db, ttl) => {
         return;
       }
 
-      if (err) return reject(cb(err));
+      if (err) return reject(err);
 
       resolve(null, true);
     });
