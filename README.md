@@ -1,8 +1,25 @@
-##getting started
+##MyWell
 
-#create the docker machine
-$ docker-machine create --driver virtualbox mywell
-$ eval $(docker-machine env mywell)
+MyWell is a system for tracking well levels. MyWell_Server is an express app, MyWell_Client is an AngularJS/Ionic web application.
+MyWell is managed with docker-compose.
+
+### Project Structure
+---
+
+```
+MyWell_Server
+ |
+ |-MyWell_Client
+
+```
+
+### Getting Started
+---
+####create the docker machine (os-x)
+```
+docker-machine create --driver virtualbox mywell
+eval $(docker-machine env mywell)
+```
 
 #perhaps need to do this everytime?
 docker-machine ssh mywell -f -N -L 3000:localhost:3000
