@@ -33,13 +33,16 @@ docker-machine ssh mywell -f -N -L 3000:localhost:3000
 ./run_server.sh build #this forces docker-compose to rebuild
 ```
 
-####to manually build the server (this is done automagically by docker-compose)
+###Development
+---
+
+#####to manually build the server: (this is done automagically by docker-compose)
 ```
 cd mywell-server
 docker build .
 ```
 
-#####SSH into running my_well_server
+#####SSH into running server inside of docker
 ```
 docker exec -i -t mywellserver_mywell-server_1 /bin/bash
 ```
