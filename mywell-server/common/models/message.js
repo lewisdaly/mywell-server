@@ -1,5 +1,5 @@
 var MessageType = require('../constants');
-var messageUtils = require('../MessageUtils')
+var MessageUtils = require('../MessageUtils')
 var moment = require('moment');
 var isNullOrUndefined = require('util').isNullOrUndefined;
 
@@ -17,7 +17,7 @@ module.exports = function(Message) {
         {arg: 'message', type: 'string'}
       ],
       'description': 'recieves the SMS from way 2 mint',
-      http: {path: '/sms', verb: 'post'},
+      http: {path: '/sms', verb: 'post', status:200},
       returns: {arg: 'response', type: 'string'}
     }
   );
@@ -27,6 +27,7 @@ module.exports = function(Message) {
     //Receive the message here.
     //Parse the message, and send to "reading" if it is a submission
     try {
+      cb.number = number; //this is a little hacky
       const parsedMessage = parseMessage(message, cb);
     } catch(err) {
       console.error("Error.", err);
@@ -34,12 +35,29 @@ module.exports = function(Message) {
     }
   }
 
+  //Grab the message
+  replyToSMS = function(response, cb) {
+    // console.log("SMS REPLY:", message);
+    console.log(cb);
+
+    //send SMS reply!
+    MessageUtils.sendSMSMessage(response.message, cb.number);
+
+    if (response.name == "Error") {
+      console.log("SMS ERROR", response.message)
+      cb(response);
+    }
+
+    //Reply to Client - may not be needed, good for testing
+    //TODO: set this based on ENV
+    cb(null, response);
+  }
+
   //Parse the message, and return an object to be updated, query to be made or an error
   parseMessage = function(message, cb) {
     let messageType;
 
     const split = message.split(' ');
-    console.log("messageType", MessageType);
 
     if (split[1] === '000') {
       messageType = MessageType.update;
@@ -50,14 +68,14 @@ module.exports = function(Message) {
       parseQuery(split, cb);
 
     } else {
-      cb (new Error("Could not understand message. Message must start with 000 or 999."));
+      replyToSMS(new Error("Could not understand message. Message must start with 000 or 999."), cb);
     }
   }
 
   //From an array of strings, parse the query message
   parseQuery = function(splitMessage, cb) {
     if (splitMessage.length != 4) {
-      return cb(new Error("Incorrect number of args. Query requires 4"));
+      return replyToSMS(new Error("Incorrect number of args. Query requires 4"), cb);
     }
 
     const postcode = parseInt(splitMessage[2]);
@@ -65,10 +83,10 @@ module.exports = function(Message) {
 
     //Check to make sure postcode exists:
     Message.app.models.village.find({"where":{"postcode":postcode}}, (err, villages) => {
-      if(err) cb(err);
+      if(err) return replyToSMS(err, cb);
 
       if (villages.length == 0) {
-        return cb(new Error("No villages exist for this postcode."));
+        return replyToSMS(new Error("No villages exist for this postcode."), cb);
       }
 
       //Check to see if the resourceId is a single digit, or entire resource id.
@@ -82,34 +100,40 @@ module.exports = function(Message) {
   }
 
   parseQueryVillage = (postcode, villageID, cb) => {
-
+    //TODO: add query for entire village etc.
+    const reply = MessageUtils.convertVillageToMessage({});
+    replyToSMS(reply, cb);
   }
 
   parseQueryResource = (postcode, resourceId, cb) => {
 
-    //TODO: do a promise.all here or something. Create a temp data structure
-    // for now, lastmonth, lastyear for messageUtils to handle
+    //TODO: add query for past values
+    // for now, lastmonth, lastyear for MessageUtils to handle
+    const app = Message.app;
 
     //Get the latest, last month, and last year readings
-    Message.app.models.resource.findById(resourceId, (err, resource) => {
-      if(err) cb(err);
+    //TODO: use an include filter!
+    app.models.resource.findById(resourceId, (err, resource) => {
+      if(err) return replyToSMS(err, cb);
 
+      app.models.village.findById(resource.villageId, (err, village) => {
+        if(err) return replyToSMS(err, cb);
 
+        const reply = MessageUtils.convertResourceToMessage({
+                        resource:resource, 
+                        village:village
+                      });
 
-
+        replyToSMS(reply, cb);
+      });
     });
-
-
-    messageUtils.convertJSONToSMSMessage("HEY");
-
   }
-
 
   //from an array of strings, parse the update message
   parseUpdate = function(splitMessage, cb) {
 
     if (splitMessage.length != 6) {
-      return cb(new Error("Incorrect number of arguments. Update requires 6."));
+      return replyToSMS(new Error("Incorrect number of arguments. Update requires 6."), cb);
     }
    
     //TODO: Handle the case where the user enters in Alphanumeric characters
@@ -120,10 +144,10 @@ module.exports = function(Message) {
 
     //check to see if postcode exists:
     Message.app.models.village.find({"where":{"postcode":postcode}}, (err, villages) => {
-      if(err) cb(err);
+      if(err) return replyToSMS(err, cb);
 
       if (villages.length == 0) {
-        return cb(new Error("No villages exist for this postcode."));
+        return replyToSMS(new Error("No villages exist for this postcode."),cb);
       }
 
       //Attempt to parse the date
@@ -137,7 +161,7 @@ module.exports = function(Message) {
 
       //Can't seem to throw from catch block
       if (isNullOrUndefined(date) || !date.isValid()) {
-        return cb(new Error("Error parsing date"));
+        return replyToSMS(new Error("Error parsing date"), cb);
       }
 
       //Ensure that the resource exists:
@@ -145,7 +169,7 @@ module.exports = function(Message) {
         if(err) throw err;
 
         if (isNullOrUndefined(resource)) {
-          return cb(new Error("Could not find resource with ID: " + resourceId));
+          return replyToSMS(new Error("Could not find resource with ID: " + resourceId), cb);
         }
 
         const villageID = resourceId.toString().charAt(0);
@@ -158,12 +182,11 @@ module.exports = function(Message) {
           depthFloat = depthFloat.toFixed(2);
 
         } catch (err) {
-          console.log("err", err);
-          return cb(new Error("Error parsing the reading value"));
+          return replyToSMS(new Error("Error parsing the reading value"), cb);
         }
 
         if (isNullOrUndefined(depthFloat)) {
-          return cb(new Error("Reading value is null or undefined."));
+          return replyToSMS(new Error("Reading value is null or undefined."), cb);
         }
 
 
@@ -181,11 +204,12 @@ module.exports = function(Message) {
         Message.app.models.Reading.create(reading, (err, savedReading) => {
           if (err) {
             console.error(err);
-            return cb(err);
+            return replyToSMS(err, cb);
           }
 
-          console.log("Created new reading:", savedReading);
-          cb();
+          // console.log("Created new reading:", savedReading);
+          const replyMessage = "Reading successfully recorded. ReadingId:" + savedReading.id;
+          replyToSMS({message: replyMessage}, cb);
         });
       });
     });

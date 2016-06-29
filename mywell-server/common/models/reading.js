@@ -28,7 +28,6 @@ module.exports = function(Reading) {
       //check to see if this a new reading, or a reading on the same day
       const newEntry = moment(reading.date).isSameOrAfter(resource.last_date);
       if (newEntry) {
-        console.log("New entry!");
         resource.updateAttributes(
           {last_date:reading.date, last_value:reading.value}, (err, updatedResource) => {
             if (err)  next(err);
@@ -36,7 +35,9 @@ module.exports = function(Reading) {
              next();
         });
       } else {
-        next();
+        let err = new Error("Reading recorded, but resource not updated. A newer reading exists.")
+        err.statusCode = 206;
+        return next(err);
       
       }
     });
