@@ -4,6 +4,16 @@ var loopback = require("loopback");
 const resources = require("../data/wells.js");
 const currentReadings = require("../data/currentReadings.js");
 const pastReadings = require("../data/pastReadings.js");
+var fs = require('fs');
+
+function alreadySeeded(filePath) {
+  try {
+    return fs.statSync(filePath).isFile();
+  }
+  catch (err){
+    return false;
+  }
+}
 
 module.exports = function(app, next) {
   console.log("Creating seed database");
@@ -13,12 +23,13 @@ module.exports = function(app, next) {
 
   //TODO: setup environment variables
   
-  //TODO: check to see if db already seeded.
-
-  //Temp skip function
-  // console.log("Skipping seed db")
-  // next();
-  // return;
+  //check to see if db already seeded.
+  console.log('alreadyseeded?', alreadySeeded('server/hasDBSeeded'));
+  if (alreadySeeded('server/hasDBSeeded')) {
+    console.log("Skipping seed db")
+    next();
+    return;
+  }
 
   const villages = [
     {id:5, name:"Varni", postcode:313603},
@@ -36,11 +47,19 @@ module.exports = function(app, next) {
       createModel(app.models.Reading, currentReadings, false)
     ])
     .then(() => {
-      console.log("finshed making readings I think.");
+      console.log("finshed seeding DB.");
+
+      //create seed file
+      fs.openSync('server/hasDBSeeded', 'w');
+
       next();
     })
     .catch((err) => {
       console.log("Error", err);
+      
+      //create seed file
+      fs.openSync('server/hasDBSeeded', 'w');
+
       next();
     })
 }

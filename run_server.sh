@@ -21,4 +21,12 @@ then
   docker-compose pull
 fi
 
+
+# start the 
+if [ "$1" == "prod" ]
+then
+  cd ./mywell-ui; npm run prod;
+fi
+
+
 docker-compose up
