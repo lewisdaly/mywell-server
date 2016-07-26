@@ -19,7 +19,11 @@
     },
     "village_id": {
       "type": "number",
-      "required": true
+      "required": false
+    },
+    "postcode": {
+      "type":"number",
+      "required":true
     }
   },
   "validations": [],

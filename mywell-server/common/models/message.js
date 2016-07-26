@@ -113,7 +113,7 @@ module.exports = function(Message) {
 
     //Get the latest, last month, and last year readings
     //TODO: use an include filter!
-    app.models.resource.findById(resourceId, (err, resource) => {
+    app.models.resource.findById(resourceId, {where:{postcode:postcode}}, (err, resource) => {
       if(err) return replyToSMS(err, cb);
 
       app.models.village.findById(resource.villageId, (err, village) => {

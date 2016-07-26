@@ -1,14 +1,15 @@
 {
   "name": "resource",
   "base": "PersistedModel",
-  "idInjection": true,
+  "idInjection": false,
   "options": {
     "validateUpsert": true
   },
   "properties": {
     "id": {
       "type": "number",
-      "required": true
+      "required": true,
+      "id":1
     },
     "geo": {
       "type": "geopoint",
@@ -16,14 +17,15 @@
     },
     "last_value": {
       "type": "number",
-      "required": true,
+      "required": false,
       "dataType": "decimal",
       "precision": 10,
       "scale": 2
     },
     "last_date": {
       "type": "date",
-      "required": true
+      "required": false,
+      "default":"2016-05-11 03:04:59"
     },
     "owner": {
       "type": "string",
@@ -37,6 +39,11 @@
       "type": "string",
       "required": true,
       "description": "one of: well, rain_gauge, dam"
+    },
+    "postcode": {
+      "type": "number",
+      "required": true,
+      "id":1
     }
   },
   "validations": [],

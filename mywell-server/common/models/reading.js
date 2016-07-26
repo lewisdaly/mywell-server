@@ -3,6 +3,8 @@ var isNullOrUndefined = require('util').isNullOrUndefined;
 
 module.exports = function(Reading) {
 
+  //TODO: before saving, we can add the village id, implied from the resource id.
+
 
   /*
    * Before saving, validate, and update the correct resource table
@@ -16,15 +18,20 @@ module.exports = function(Reading) {
     //check to see if new reading is more recent  - if so, update the resource table
     const reading = (typeof ctx.instance === "undefined") ? ctx.currentInstance : ctx.instance;
 
-    Reading.app.models.resource.findById(reading.resourceId, (err, resource) => {
+    console.log("reading", reading);
+
+    // Use a double filter, instead of find by id {"where":{"and": [{"postcode":"123123"}, {"id":123}]}}
+    Reading.app.models.resource.find({where:{and: [{id:reading.resourceId},{postcode:reading.postcode}]}}, (err, resources) => {
       if (err) next(err);
 
-      console.log("found resource", resource);
-      if (isNullOrUndefined(resource)) {
+      // console.log("found resource", resources);
+      if (isNullOrUndefined(resources) || isNullOrUndefined(resources[0])) {
         //TODO: throw error, return 400
         return next(new Error("resource doesnt exist!"));
       }
 
+      let resource = resources[0];
+      
       //check to see if this a new reading, or a reading on the same day
       const newEntry = moment(reading.date).isSameOrAfter(resource.last_date);
       if (newEntry) {

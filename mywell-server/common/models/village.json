@@ -1,18 +1,24 @@
 {
   "name": "village",
   "base": "PersistedModel",
-  "idInjection": true,
+  "idInjection": false,
   "options": {
     "validateUpsert": true
   },
   "properties": {
+    "id": {
+      "type":"number",
+      "required":true,
+      "id":2
+    },
     "name": {
       "type": "string",
       "required": true
     },
     "postcode": {
       "type": "number",
-      "required": true
+      "required": true,
+      "id":1
     }
   },
   "validations": [],
