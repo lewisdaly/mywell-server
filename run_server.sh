@@ -25,7 +25,7 @@ fi
 # start the 
 if [ "$1" == "prod" ]
 then
-  cd ./mywell-ui; npm run prod;
+  cd ./mywell-ui; npm run prod; cd ..; && docker-compose up
 fi
 
 
