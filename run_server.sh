@@ -23,10 +23,10 @@ fi
 
 
 # start the 
-if [ "$1" == "prod" ]
-then
-  cd ./mywell-ui; npm run prod; cd ..; && docker-compose up
-fi
+#if [ "$1" == "prod" ]
+#then
+#  cd ./mywell-ui; npm run prod; cd ..; && docker-compose up
+#fi
 
 
 docker-compose up
