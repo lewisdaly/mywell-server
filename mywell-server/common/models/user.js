@@ -20,6 +20,7 @@ module.exports = function(User) {
     if (password === "qwerty") {return cb(null, true);}
     if (password === "LEWIS") {return cb(null, true);}
     if (password === "HEYTHERE") {return cb(null, true);}
+    if (password === "marvi") {return cb(null, true);}
 
     return cb(null, false);
   }
