@@ -6,33 +6,39 @@ var isNullOrUndefined = require('util').isNullOrUndefined;
 module.exports = function(Message) {
 
   /*
-  * Method for receiving the SMS Request
+  * Actual method for processing request
   */
-
   Message.remoteMethod(
     'sms',
     {
       accepts: [
-        {arg: 'number', type: 'number'},
-        {arg: 'message', type: 'string'}
+        {arg: 'mobile', type: 'number'},
+        {arg: 'msg', type: 'string'}
       ],
       'description': 'recieves the SMS from way 2 mint',
-      http: {path: '/sms', verb: 'post', status:200},
+      http: {path: '/sms', verb: 'get', status:200},
       returns: {arg: 'response', type: 'string'}
     }
   );
 
-  Message.sms = function(number, message, cb) {
+  Message.sms = function(mobile, msg, cb) {
+
+    console.log("Number", mobile, "message", msg);
 
     //Receive the message here.
     //Parse the message, and send to "reading" if it is a submission
+    var reply = function(){}; //pass through dummy reply to hold special parameters
+    //TODO: restructure with a proper callback...
     try {
-      cb.number = number; //this is a little hacky
-      const parsedMessage = parseMessage(message, cb);
+      reply.number = mobile; //this is a little hacky
+      // const parsedMessage = parseMessage(msg, reply);
     } catch(err) {
       console.error("Error.", err);
-      cb(err);
+      // cb(err); //don't send a response as errors are handled in
+      cb(null, "message recieved");
     }
+
+    cb(null, "message recieved");
   }
 
   //Grab the message
@@ -95,7 +101,7 @@ module.exports = function(Message) {
       } else {
         parseQueryResource(postcode, resourceId, cb);
       }
-      
+
     });
   }
 
@@ -120,7 +126,7 @@ module.exports = function(Message) {
         if(err) return replyToSMS(err, cb);
 
         const reply = MessageUtils.convertResourceToMessage({
-                        resource:resource, 
+                        resource:resource,
                         village:village
                       });
 
@@ -135,12 +141,12 @@ module.exports = function(Message) {
     if (splitMessage.length != 6) {
       return replyToSMS(new Error("Incorrect number of arguments. Update requires 6."), cb);
     }
-   
+
     //TODO: Handle the case where the user enters in Alphanumeric characters
     const postcode = splitMessage[2];
     const dateString = splitMessage[3];
-    const resourceId = parseInt(splitMessage[4]) 
-    const depthString = splitMessage[5];    
+    const resourceId = parseInt(splitMessage[4])
+    const depthString = splitMessage[5];
 
     //check to see if postcode exists:
     Message.app.models.village.find({"where":{"postcode":postcode}}, (err, villages) => {
@@ -154,7 +160,7 @@ module.exports = function(Message) {
       let date;
       try {
         date = moment(dateString, "YYMMDD");
-      } 
+      }
       catch (err) {
        console.error("Error parsing date.");
       }
