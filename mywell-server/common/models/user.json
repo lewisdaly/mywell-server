@@ -27,6 +27,13 @@
   },
   "validations": [],
   "relations": {},
-  "acls": [],
+  "acls": [
+    {
+      "permission": "DENY",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "property": "*"
+    }
+  ],
   "methods": {}
 }

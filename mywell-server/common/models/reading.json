@@ -17,7 +17,7 @@
       "precision": 10,
       "scale": 2
     },
-    "village_id": {
+    "villageId": {
       "type": "number",
       "required": false
     },
@@ -31,9 +31,16 @@
     "village": {
       "type": "belongsTo",
       "model": "village",
-      "foreignKey": "village_id"
+      "foreignKey": "villageId"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "permission": "DENY",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "property": "*"
+    }
+  ],
   "methods": {}
 }

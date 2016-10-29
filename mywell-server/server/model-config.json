@@ -13,6 +13,26 @@
       "./mixins"
     ]
   },
+  "User": {
+    "dataSource": "mysql-corp",
+    "public": true
+  },
+  "AccessToken": {
+    "dataSource": "mysql-corp",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "mysql-corp",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "mysql-corp",
+    "public": false
+  },
+  "Role": {
+    "dataSource": "mysql-corp",
+    "public": false
+  },
   "resource": {
     "dataSource": "mysql-corp",
     "public": true
@@ -22,10 +42,6 @@
     "public": true
   },
   "village": {
-    "dataSource": "mysql-corp",
-    "public": true
-  },
-  "user": {
     "dataSource": "mysql-corp",
     "public": true
   },

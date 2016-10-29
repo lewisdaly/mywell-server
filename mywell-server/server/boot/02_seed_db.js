@@ -16,17 +16,16 @@ function alreadySeeded(filePath) {
 }
 
 module.exports = function(app, next) {
-  console.log("Creating seed database");
+  console.log("[02_seed_db] Creating seed database");
 
   const environment = process.env.NODE_ENV;
-  console.log("environment", environment);
 
   //TODO: setup environment variables
-  
+
   //check to see if db already seeded.
-  console.log('alreadyseeded?', alreadySeeded('server/hasDBSeeded'));
   if (alreadySeeded('server/hasDBSeeded')) {
-    console.log("Skipping seed db")
+    console.log("[02_seed_db] db already seeded")
+    console.log("[02_seed_db] kipping seed db")
     next();
     return;
   }
@@ -39,15 +38,21 @@ module.exports = function(app, next) {
     {id:1, name:"Badgaon", postcode:313603}
   ];
 
+  const users = [
+    {username:"lewis", email:"lewisdaly@me.com", password:"Password1!"},
+    {username:"marvi", email:"marvi@marvi.co.in", password:"MARVI1!"}
+  ];
+
     Promise.all([
       //Create models here
       createModel(app.models.Reading, pastReadings, true),
       createModel(app.models.Resource, resources, true),
       createModel(app.models.Village, villages, true),
-      createModel(app.models.Reading, currentReadings, false)
+      createModel(app.models.Reading, currentReadings, false),
+      createModel(app.models.User, users, false),
     ])
     .then(() => {
-      console.log("finshed seeding DB.");
+      console.log("[02_seed_db] finshed seeding DB.");
 
       //create seed file
       fs.openSync('server/hasDBSeeded', 'w');
@@ -56,7 +61,7 @@ module.exports = function(app, next) {
     })
     .catch((err) => {
       console.log("Error", err);
-      
+
       //create seed file
       fs.openSync('server/hasDBSeeded', 'w');
 
@@ -68,11 +73,9 @@ const createModel = (model, list, skipUpdate) => {
   var count = list.length;
   return new Promise((resolve, reject) => {
     list.forEach((item) => {
-      // console.log("creating:", item);
       model.create(item, { skipUpdateModels:skipUpdate }, (err, model) => {
         if (err) reject(err);
 
-        // console.log("created", model);
         count--;
         if (count === 0) {
           resolve();
@@ -81,4 +84,3 @@ const createModel = (model, list, skipUpdate) => {
     })
   });
 };
-

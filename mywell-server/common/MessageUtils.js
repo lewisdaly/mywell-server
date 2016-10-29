@@ -1,4 +1,4 @@
-/* 
+/*
  * just some handy utils
  *
  */
@@ -14,7 +14,7 @@
   owner: 'Lewis',
   elevation: 10,
   type: 'well',
-  villageId: 1 
+  villageId: 1
 }
 {
  name: 'Varni', postcode: 510934, village_id: 5, id: 1 }
@@ -23,7 +23,7 @@
 example text:
 
 Village: Varni
-Well Ownder: 
+Well Ownder:
 ResourceId:
 Resource Type:
 Last Updated:
@@ -61,7 +61,7 @@ module.exports.convertResourceToMessage = (json) => {
     lastYearLine = `1 Year ago: ${lastYearReading.value}\n`;
   }
 
-  const message = `Village: ${village.name}\n` 
+  const message = `Village: ${village.name}\n`
                   + `Well Owner: ${resource.owner}\n`
                   + `ResourceId: ${resource.id}\n`
                   + `ResourceType: ${resource.type}\n`

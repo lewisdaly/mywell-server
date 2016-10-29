@@ -51,8 +51,28 @@
     "readings": {
       "type": "hasMany",
       "model": "reading"
+    },
+    "village": {
+      "type": "belongsTo",
+      "model":"village",
+      "foreignKey": "villageId"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "permission": "DENY",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "property": "*"
+    },
+    {
+      "permission": "ALLOW",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "property": [
+        "find"
+      ]
+    }
+  ],
   "methods": {}
 }
