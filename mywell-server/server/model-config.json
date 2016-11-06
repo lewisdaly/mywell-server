@@ -48,5 +48,9 @@
   "message": {
     "dataSource": null,
     "public": true
+  },
+  "resource_stats": {
+    "dataSource": "mysql-corp",
+    "public": true
   }
 }

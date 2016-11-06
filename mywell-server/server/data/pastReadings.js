@@ -27040,17 +27040,7 @@ const readings =
 {resourceId:550,villageId:550,value:25.75,date:"2014-11-23T00:00:00.000Z",postcode:510934},
 {resourceId:550,villageId:550,value:35.849998474121,date:"2015-08-28T00:00:00.000Z",postcode:510934},
 {resourceId:999,villageId:999,value:12.3400001525878,date:"2014-05-09T00:00:00.000Z",postcode:510934},
-{resourceId:999,villageId:999,value:12.3400001525878,date:"2014-05-15T00:00:00.000Z",postcode:510934},
-{resourceId:999,villageId:999,value:12.3400001525878,date:"2015-05-09T00:00:00.000Z",postcode:510934},
-{resourceId:999,villageId:999,value:12.3400001525878,date:"2015-05-19T00:00:00.000Z",postcode:510934},
-{resourceId:999,villageId:999,value:123,date:"2015-11-05T05:25:27.487Z",postcode:510934},
-{resourceId:999,villageId:999,value:123,date:"2015-11-05T06:34:45.127Z",postcode:510934},
-{resourceId:999,villageId:999,value:11,date:"2015-11-05T06:36:01.547Z",postcode:510934},
-{resourceId:999,villageId:999,value:23,date:"2015-11-08T04:57:15.643Z",postcode:510934},
-{resourceId:999,villageId:999,value:123,date:"2015-11-11T05:20:18.913Z",postcode:510934},
-{resourceId:999,villageId:999,value:34.5,date:"2015-11-14T04:48:39.493Z",postcode:510934},
-{resourceId:999,villageId:999,value:34.5,date:"2015-11-14T04:49:18.147Z",postcode:510934},
-{resourceId:999,villageId:999,value:34.5,date:"2015-11-14T04:50:19.530Z",postcode:510934}
+{resourceId:999,villageId:999,value:12.3400001525878,date:"2014-05-15T00:00:00.000Z",postcode:510934}
 ]
 
 module.exports = readings;

@@ -8,8 +8,8 @@
   "properties": {
     "id": {
       "type": "number",
-      "required": true,
-      "id":1
+      "id": 1,
+      "required": true
     },
     "geo": {
       "type": "geopoint",
@@ -25,7 +25,7 @@
     "last_date": {
       "type": "date",
       "required": false,
-      "default":"2016-05-11 03:04:59"
+      "default": "2016-05-11 03:04:59"
     },
     "owner": {
       "type": "string",
@@ -42,8 +42,8 @@
     },
     "postcode": {
       "type": "number",
-      "required": true,
-      "id":1
+      "id": 1,
+      "required": true
     }
   },
   "validations": [],
@@ -54,21 +54,21 @@
     },
     "village": {
       "type": "belongsTo",
-      "model":"village",
+      "model": "village",
       "foreignKey": "villageId"
     }
   },
   "acls": [
     {
-      "permission": "DENY",
       "principalType": "ROLE",
       "principalId": "$unauthenticated",
+      "permission": "DENY",
       "property": "*"
     },
     {
-      "permission": "ALLOW",
       "principalType": "ROLE",
       "principalId": "$unauthenticated",
+      "permission": "ALLOW",
       "property": [
         "find"
       ]

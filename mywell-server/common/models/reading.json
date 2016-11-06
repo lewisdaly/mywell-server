@@ -22,8 +22,8 @@
       "required": false
     },
     "postcode": {
-      "type":"number",
-      "required":true
+      "type": "number",
+      "required": true
     }
   },
   "validations": [],
@@ -36,9 +36,9 @@
   },
   "acls": [
     {
-      "permission": "DENY",
       "principalType": "ROLE",
       "principalId": "$unauthenticated",
+      "permission": "DENY",
       "property": "*"
     }
   ],

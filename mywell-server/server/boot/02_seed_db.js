@@ -25,7 +25,7 @@ module.exports = function(app, next) {
   //check to see if db already seeded.
   if (alreadySeeded('server/hasDBSeeded')) {
     console.log("[02_seed_db] db already seeded")
-    console.log("[02_seed_db] kipping seed db")
+    console.log("[02_seed_db] skipping seed db")
     next();
     return;
   }

@@ -79,4 +79,5 @@ module.exports.convertResourceToMessage = (json) => {
 
 module.exports.sendSMSMessage = (message, number) => {
   console.log("Sending message: \"" + message + "\" to number:" +number);
+  //TODO: actually reply using W2M
 }
