@@ -119,20 +119,34 @@ module.exports = function(Resourcestats) {
         postcode = 510934;
       }
 
+      //TODO: fix, this cast is ridiculous - its a workaround for the loopback-mysql converting decimals to integers
+      const query = `
+      SELECT MonthRange.month as month, CAST(CAST(ave_reading AS DECIMAL(12,4)) AS CHAR(255)) as aveReading
+      FROM
+        (SELECT * FROM resource_stats WHERE resourceid = ${resourceId} AND postcode = ${postcode}) AS SelectedStats
+      RIGHT OUTER JOIN
+        (SELECT * FROM Month where month >= "${startMonth}" AND Month <= "${endMonth}") as MonthRange
+        ON SelectedStats.month = MonthRange.month;
+      `
+      const datasource = Resourcestats.dataSource;
+      Resourcestats.queryDatasource(query, datasource)
+      .then(results => {
 
-      // {"where": {"and": [{"resourceId":550}, {"month": {"gte":"2011-11"}}, {"month": {"lte":"2016-11"}}]}}
-      const filter = {
-        where: {
-          and: [
-            {resourceId:resourceId},
-            {postcode:postcode},
-            {month: {gte: startMonth}},
-            {month: {lte: endMonth}}
-          ]
-        }
-      };
+        //Convert string back to number
+        results = results.map(result => {
+          if(isNullOrUndefined(result.aveReading)) {
+            return result;
+          }
 
-      return Resourcestats.find(filter, cb);
+          result.aveReading = parseFloat(result.aveReading);
+          return result;
+        })
+
+        cb(null, results);
+      })
+      .catch(err => {
+        cb(err);
+      });
     }
 
     /**
@@ -169,20 +183,31 @@ module.exports = function(Resourcestats) {
          postcode = 510934;
        }
 
-       //easier to do this in SQL:
-      //  select AVG(ave_reading), villageId, month FROM resource_stats WHERE villageId=2 AND month >= "2015-08" AND month <= "2015-08" GROUP BY villageId, month;
-
+      //easier to do this in SQL:
+      //TODO: fix, this cast is ridiculous - its a workaround for the loopback-mysql converting decimals to integers
       const query = `
-        SELECT ROUND(AVG(ave_reading),10) as ave_reading, villageId, month, postcode
-        FROM resource_stats
-        WHERE villageId=${villageId} AND month >= "${startMonth}" AND month <= "${endMonth}" AND postcode = "${postcode}"
-        GROUP BY villageId, month, postcode;
+      SELECT MonthRange.month, CAST(avgReadingVillage AS CHAR(255)) as aveReading
+      FROM
+        (SELECT AVG(ave_reading) as avgReadingVillage, villageId, month FROM resource_stats WHERE villageId=${villageId} AND postcode = "${postcode}" GROUP BY villageId, postcode, month) AS SelectedStats
+      RIGHT OUTER JOIN
+        (SELECT * FROM Month where month >= "${startMonth}" AND Month <= "${endMonth}") as MonthRange
+      ON SelectedStats.month = MonthRange.month;
       `;
 
       const datasource = Resourcestats.dataSource;
       Resourcestats.queryDatasource(query, datasource)
       .then(results => {
-        console.log(results);
+        //Convert string back to number
+        results = results.map(result => {
+          if(isNullOrUndefined(result.aveReading)) {
+            return result;
+          }
+
+          result.aveReading = parseFloat(result.aveReading);
+          return result;
+        })
+
+
         cb(null, results);
       })
       .catch(err => {

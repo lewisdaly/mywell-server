@@ -52,5 +52,9 @@
   "resource_stats": {
     "dataSource": "mysql-corp",
     "public": true
+  },
+  "Month": {
+    "dataSource": "mysql-corp",
+    "public": true
   }
 }

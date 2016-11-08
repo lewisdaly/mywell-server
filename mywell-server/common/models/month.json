@@ -1,0 +1,20 @@
+{
+  "name": "Month",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "month": {
+      "type": "string",
+      "required": true,
+      "default": "2000-01",
+      "id":1
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
