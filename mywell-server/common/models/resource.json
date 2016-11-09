@@ -70,7 +70,8 @@
       "principalId": "$unauthenticated",
       "permission": "ALLOW",
       "property": [
-        "find"
+        "find",
+        "findById"
       ]
     }
   ],

@@ -2,6 +2,7 @@
 
 var loopback = require("loopback");
 var fs = require('fs');
+var isNullOrUndefined = require('util').isNullOrUndefined;
 
 function alreadySeeded(filePath) {
   try {
@@ -27,7 +28,7 @@ module.exports = function(app) {
     console.log("running migration 0001");
 
     //Do all calculations in SQL:
-    const query = "SELECT resourceId, postcode, DATE_FORMAT(date, '%Y-%m') as month, AVG(value) as ave_reading, villageId FROM reading GROUP BY DATE_FORMAT(date, '%Y-%m'), resourceId;";
+    const query = "SELECT resourceId, postcode, DATE_FORMAT(date, '%Y-%m') as month, CAST(AVG(value) AS CHAR(255)) as ave_reading, villageId FROM reading GROUP BY DATE_FORMAT(date, '%Y-%m'), resourceId;";
     const datasource = app.models.reading.dataSource;
 
     datasource.connector.query(query, (err, results) => {
@@ -41,6 +42,10 @@ module.exports = function(app) {
       //Now save to new model
       return Promise.all(
         results.map(result => {
+          if (!isNullOrUndefined(result.ave_reading)) {
+            result.ave_reading = parseFloat(result.ave_reading);
+          }
+
           result.villageId = findVillageIdFromResourceId(result.resourceId);
           return app.models.resource_stats.upsert(result);
         })

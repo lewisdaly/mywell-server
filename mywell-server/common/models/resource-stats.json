@@ -22,7 +22,11 @@
       "required": true
     },
     "ave_reading": {
-      "type": "number"
+      "type": "number",
+      "required": false,
+      "dataType": "decimal",
+      "precision": 10,
+      "scale": 2
     },
     "villageId": {
       "type": "number"

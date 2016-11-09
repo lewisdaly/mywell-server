@@ -50,7 +50,7 @@ module.exports = function(Resourcestats) {
     }
 
     //We could probably be a bit stricter about the dates here, but lets just pass it onto MySQL
-    const query = `SELECT resourceId, postcode, DATE_FORMAT(date, '%Y-%m') as month, AVG(value) as ave_reading, villageId
+    const query = `SELECT resourceId, postcode, DATE_FORMAT(date, '%Y-%m') as month, CAST(AVG(value) AS CHAR(255)) as ave_reading, villageId
                   FROM reading
                   WHERE DATE_FORMAT(date, '%Y-%m') = "${month}"
                   GROUP BY DATE_FORMAT(date, '%Y-%m'), resourceId;`;
@@ -59,6 +59,10 @@ module.exports = function(Resourcestats) {
     .then(results => {
       return Promise.all(
         results.map(result => {
+
+          if (!isNullOrUndefined(result.ave_reading)) {
+            result.ave_reading = parseFloat(result.ave_reading);
+          }
           result.villageId = findVillageIdFromResourceId(result.resourceId);
           return Resourcestats.upsert(result)
         })
@@ -92,7 +96,7 @@ module.exports = function(Resourcestats) {
     *
     */
     Resourcestats.remoteMethod(
-      'getResourceAverages',
+      'getHistoricalResourceAverages',
       {
          accepts: [
            {arg: 'resourceId', type:'number', description:'resourceId', required:true},
@@ -101,18 +105,18 @@ module.exports = function(Resourcestats) {
            {arg: 'endMonth', type:'string', description:'month string in the format of YYYY-mm'}
          ],
          description: 'Get an array of average readings for a date range. Defaults to last year',
-         http: {path: '/getResourceAverages', verb: 'get', status: 200},
+         http: {path: '/getHistoricalResourceAverages', verb: 'get', status: 200},
          returns: {arg: 'readings', type:'JSON'}
       }
     );
 
-    Resourcestats.getResourceAverages = function(resourceId, postcode, startMonth, endMonth, cb) {
+    Resourcestats.getHistoricalResourceAverages = function(resourceId, postcode, startMonth, endMonth, cb) {
       if (isNullOrUndefined(startMonth)) {
-        startMonth = moment().subtract(12, 'months').format('Y-M');
+        startMonth = moment().subtract(13, 'months').format('Y-M');
       }
 
       if (isNullOrUndefined(endMonth)) {
-        endMonth = moment().format('Y-M');
+        endMonth = moment().subtract(1, 'months').format('Y-M');
       }
 
       if (isNullOrUndefined(postcode)) {
@@ -149,13 +153,63 @@ module.exports = function(Resourcestats) {
       });
     }
 
+    Resourcestats.remoteMethod(
+      'getCurrentVillageAverage',
+      {
+       accepts: [
+         {arg: 'villageId', type:'number', description:'resourceId', required:true},
+         {arg: 'postcode', type:'number', description:'postcode. defaults to 510934', required:false},
+         {arg: 'resourceType', type:'string', description:'Resourcetype - not yet used', required:false},
+         {arg: 'month', type:'string', description:'month string in the format of YYYY-mm, debugging use only - use historic as it is more optimized'}
+       ],
+       description: 'Gets the running average for the village for this month',
+       http: {path: '/getCurrentVillageAverage', verb: 'get', status: 200},
+       returns: {arg: 'avgReading', type:'JSON'}
+      }
+    );
+
+    Resourcestats.getCurrentVillageAverage = function(villageId, postcode, resourceType, month, cb) {
+      if (isNullOrUndefined(month)) {
+        const month = moment().format('Y-M');
+      }
+
+      //TODO: add resource type
+      if (isNullOrUndefined(postcode)) {
+        postcode = 510934;
+      }
+
+      const query = `
+      SELECT CAST(AVG(value) AS CHAR(255)) as avgReading
+      FROM reading
+      WHERE villageId = ${villageId} AND postcode=${postcode} AND DATE_FORMAT(date, '%Y-%m') = "${month}" GROUP BY villageId, postcode;
+      `;
+
+      const datasource = Resourcestats.dataSource;
+      Resourcestats.queryDatasource(query, datasource)
+      .then(results => {
+        console.log(results);
+
+        if (isNullOrUndefined(results[0])) {
+          return cb(null, null);
+        }
+
+        const avgReading = parseFloat(results[0].avgReading);
+        cb(null, avgReading);
+      })
+      .catch(err => {
+        cb(err);
+      });
+
+
+    }
+
     /**
      * Get an array of average village readings for a date range
      * defaults to last year
      *
      */
      Resourcestats.remoteMethod(
-       'getVillageAverages',
+       'getHistoricalVillageAverages',
        {
           accepts: [
             {arg: 'villageId', type:'number', description:'resourceId', required:true},
@@ -165,18 +219,18 @@ module.exports = function(Resourcestats) {
             {arg: 'endMonth', type:'string', description:'month string in the format of YYYY-mm'}
           ],
           description: 'Get an array of average village values for a date range. Defaults to last year',
-          http: {path: '/getVillageAverages', verb: 'get', status: 200},
+          http: {path: '/getHistoricalVillageAverages', verb: 'get', status: 200},
           returns: {arg: 'readings', type:'JSON'}
        }
      );
 
-     Resourcestats.getVillageAverages = function(villageId, postcode, resourceType, startMonth, endMonth, cb) {
+     Resourcestats.getHistoricalVillageAverages = function(villageId, postcode, resourceType, startMonth, endMonth, cb) {
        if (isNullOrUndefined(startMonth)) {
-         startMonth = moment().subtract(12, 'months').format('Y-M');
+         startMonth = moment().subtract(13, 'months').format('Y-M');
        }
 
        if (isNullOrUndefined(endMonth)) {
-         endMonth = moment().format('Y-M');
+         endMonth = moment().subtract(1, 'months').format('Y-M');
        }
 
        if (isNullOrUndefined(postcode)) {
