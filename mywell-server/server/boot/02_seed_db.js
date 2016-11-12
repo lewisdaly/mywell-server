@@ -73,7 +73,7 @@ module.exports = function(app, next) {
     console.log("[02_seed_db] finshed seeding DB.");
 
     //create seed file
-    // fs.openSync('server/hasDBSeeded', 'w');
+    fs.openSync('server/hasDBSeeded', 'w');
 
     next();
   })
@@ -81,7 +81,7 @@ module.exports = function(app, next) {
     console.log("Error", err);
 
     //create seed file - even though we errored out ...
-    // fs.openSync('server/hasDBSeeded', 'w');
+    fs.openSync('server/hasDBSeeded', 'w');
 
     next();
   })

@@ -24,7 +24,7 @@
     },
     "well_depth": {
       "type": "number",
-      "required": false,
+      "required": true,
       "dataType": "decimal",
       "precision": 10,
       "scale": 2
