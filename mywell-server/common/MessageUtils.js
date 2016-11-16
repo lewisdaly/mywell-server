@@ -2,74 +2,63 @@
  * just some handy utils
  *
  */
+const isNullOrUndefined = require('util').isNullOrUndefined;
+const request = require('request-promise-native');
 
 
-/*
+module.exports.convertVillageToMessage = (reading) => {
+  let thisMonthLine = `No reading for this month\n`;
+  let lastMonthLine = `No reading for last month\n`;
+  let lastYearLine = `No reading for last year\n`;
 
-{
-  id: 100,
-  geo: { lat: 10.32424, lng: 5.84978 },
-  last_value: 15,
-  last_date: 2016-11-25T00:00:00.000Z,
-  owner: 'Lewis',
-  elevation: 10,
-  type: 'well',
-  villageId: 1
-}
-{
- name: 'Varni', postcode: 510934, village_id: 5, id: 1 }
-}
+  //Assume we have at least village
+  if (!isNullOrUndefined(reading.thisMonth)) {
+    thisMonthLine = `This month average: ${reading.thisMonth}m\n`;
+  }
 
-example text:
+  if (!isNullOrUndefined(reading.lastMonth)) {
+    lastMonthLine = `Last month average: ${reading.lastMonth}m\n`;
+  }
 
-Village: Varni
-Well Ownder:
-ResourceId:
-Resource Type:
-Last Updated:
+  if (!isNullOrUndefined(reading.lastYear)) {
+    lastYearLine = `This month average: ${reading.lastYear}m\n`;
+  }
 
-Current WT Depth:
-WT Depth 1 Month ago:
-WT Depth 1 Year ago:
-
-
-*/
-module.exports.convertVillageToMessage = (json) => {
-
-
-  return "Sorry, haven't done this one yet";
+  return `Village: ${reading.village.name}\n`
+                  + thisMonthLine
+                  + lastMonthLine
+                  + lastYearLine;
 }
 
 
-
-/*
+/**
  * Take a Resource object, convert to a nice message format
  */
-module.exports.convertResourceToMessage = (json) => {
-  const resource = json.resource;
-  const village = json.village;
-  const lastMonthReading = json.lastMonthReading;
-  const lastYearReading = json.lastYearReading;
+module.exports.convertResourceToMessage = (reading) => {
+  const resource = reading.resource;
+  const village = reading.village;
+  const lastMonth = reading.lastMonth;
+  const lastYear = reading.lastYear;
 
-  let lastMonthLine = "";
-  let lastYearLine = "";
+  let lastMonthLine = `No reading for 1 month ago\n`;
+  let lastYearLine =  `No reading for 1 year ago\n`;
 
-  if (lastMonthReading) {
-    lastMonthLine = `1 Month ago: ${lastMonthReading.value}\n`;
-  }
-  if (lastYearReading) {
-    lastYearLine = `1 Year ago: ${lastYearReading.value}\n`;
+  if (!isNullOrUndefined(lastMonth)) {
+    lastMonthLine = `1 Month ago: ${lastMonth}m\n`;
   }
 
-  const message = `Village: ${village.name}\n`
+  if (!isNullOrUndefined(lastYear)) {
+    lastYearLine = `1 Year ago: ${lastYear}m\n`;
+  }
+
+  return `Village: ${village.name}\n`
                   + `Well Owner: ${resource.owner}\n`
                   + `ResourceId: ${resource.id}\n`
                   + `ResourceType: ${resource.type}\n`
                   + `Last Updated: ${resource.last_date}\n\n`
-                  + `Current WT Reading ${resource.last_value}\n`
+                  + `Current WT Depth ${resource.last_value}m\n`
                   + lastMonthLine
                   + lastYearLine;
-  return message;
 }
 
 
@@ -79,5 +68,14 @@ module.exports.convertResourceToMessage = (json) => {
 
 module.exports.sendSMSMessage = (message, number) => {
   console.log("Sending message: \"" + message + "\" to number:" +number);
-  //TODO: actually reply using W2M
+
+  const url = `http://fastsms.way2mint.com/SendSMS/sendmsg.php?uname=basantm&pass=12345678&send=Way2mint&dest=${number}&msg=${message}&prty=1&vp=30&dlr-url=1`;
+
+  request({uri: url})
+  .then(response => {
+    console.log('w2m reply', response);
+  })
+  .catch(err => {
+    console.log(err);
+  })
 }

@@ -153,12 +153,23 @@ module.exports = function(Resourcestats) {
       });
     }
 
+    Resourcestats._getCurrentVillageAverage = function(villageId, postcode, resourceType, month) {
+      return new Promise((resolve, reject) => {
+        Resourcestats.getCurrentVillageAverage(villageId, postcode, resourceType, month, (err, results) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(results);
+        });
+      });
+    }
+
     Resourcestats.remoteMethod(
       'getCurrentVillageAverage',
       {
        accepts: [
          {arg: 'villageId', type:'number', description:'resourceId', required:true},
-         {arg: 'postcode', type:'number', description:'postcode. defaults to 510934', required:false},
+         {arg: 'postcode', type:'number', description:'postcode. defaults to 313603', required:false},
          {arg: 'resourceType', type:'string', description:'Resourcetype - not yet used', required:false},
          {arg: 'month', type:'string', description:'month string in the format of YYYY-mm, debugging use only - use historic as it is more optimized'}
        ],
@@ -175,7 +186,7 @@ module.exports = function(Resourcestats) {
 
       //TODO: add resource type
       if (isNullOrUndefined(postcode)) {
-        postcode = 510934;
+        postcode = 313603;
       }
 
       const query = `
@@ -187,7 +198,6 @@ module.exports = function(Resourcestats) {
       const datasource = Resourcestats.dataSource;
       Resourcestats.queryDatasource(query, datasource)
       .then(results => {
-        console.log(results);
 
         if (isNullOrUndefined(results[0])) {
           return cb(null, null);
@@ -203,6 +213,17 @@ module.exports = function(Resourcestats) {
 
     }
 
+    Resourcestats._getHistoricalVillageAverages = function(villageId, postcode, resourceType, startMonth, endMonth) {
+      return new Promise((resolve, reject) => {
+        Resourcestats.getHistoricalVillageAverages(villageId, postcode, resourceType, startMonth, endMonth, (err, results) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(results);
+        });
+      });
+    }
+
     /**
      * Get an array of average village readings for a date range
      * defaults to last year
@@ -213,7 +234,7 @@ module.exports = function(Resourcestats) {
        {
           accepts: [
             {arg: 'villageId', type:'number', description:'resourceId', required:true},
-            {arg: 'postcode', type:'number', description:'postcode. defaults to 510934', required:false},
+            {arg: 'postcode', type:'number', description:'postcode. defaults to 313603', required:false},
             {arg: 'resourceType', type:'string', description:'Resourcetype - not yet used', required:false},
             {arg: 'startMonth', type:'string', description:'month string in the format of YYYY-mm'},
             {arg: 'endMonth', type:'string', description:'month string in the format of YYYY-mm'}
@@ -234,7 +255,7 @@ module.exports = function(Resourcestats) {
        }
 
        if (isNullOrUndefined(postcode)) {
-         postcode = 510934;
+         postcode = 313603;
        }
 
       //easier to do this in SQL:

@@ -40,7 +40,7 @@ module.exports = function(app, next) {
 
   const users = [
     {username:"lewis", email:"lewisdaly@me.com", password:"Password1!"},
-    {username:"marvi", email:"marvi@marvi.co.in", password:"MARVI1!"}
+    {username:"marvi", email:"marvi@marvi.co.in", password:"marvi"}
   ];
 
   //TODO: progamaticlly generate months

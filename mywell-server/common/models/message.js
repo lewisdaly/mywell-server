@@ -23,6 +23,16 @@ module.exports = function(Message) {
 
   Message.sms = function(mobile, msg, cb) {
 
+    /*
+      Some examples:
+      SMA 000 POSTCODE DATE WELL_ID DEPTH
+
+
+      SMA 999 POSTCODE                        - get the readings for this postcode
+      SMA 999 POSTCODE VILLAGE_ID (1 digit)   - get the readings for this village
+      SMA 999 POSTCODE RESOURCE_ID (3 digits) - get the readings for this village
+    */
+
     console.log("Number", mobile, "message", msg);
 
     //Receive the message here.
@@ -31,7 +41,7 @@ module.exports = function(Message) {
     //TODO: restructure with a proper callback...
     try {
       reply.number = mobile; //this is a little hacky
-      // const parsedMessage = parseMessage(msg, reply);
+      const parsedMessage = parseMessage(msg, reply);
     } catch(err) {
       console.error("Error.", err);
       // cb(err); //don't send a response as errors are handled in
@@ -43,11 +53,15 @@ module.exports = function(Message) {
 
   //Grab the message
   replyToSMS = function(response, cb) {
-    // console.log("SMS REPLY:", message);
-    console.log(cb);
+    console.log(response);
+    let message = response; //this is if message is just a string, as we want to be able to pass errors to this function
+
+    if (!isNullOrUndefined(response.message)) {
+      message = response.message
+    }
 
     //send SMS reply!
-    MessageUtils.sendSMSMessage(response.message, cb.number);
+    MessageUtils.sendSMSMessage(message, cb.number);
 
     if (response.name == "Error") {
       console.log("SMS ERROR", response.message)
@@ -80,58 +94,137 @@ module.exports = function(Message) {
 
   //From an array of strings, parse the query message
   parseQuery = function(splitMessage, cb) {
-    if (splitMessage.length != 4) {
-      return replyToSMS(new Error("Incorrect number of args. Query requires 4"), cb);
+    if (splitMessage.length < 3) {
+      return replyToSMS(new Error("Incorrect number of args. Query requires at least 3"), cb);
     }
 
     const postcode = parseInt(splitMessage[2]);
-    const resourceId = parseInt(splitMessage[3]);
+    var resourceId = null;
+
+    if (splitMessage.length == 4) {
+      resourceId = parseInt(splitMessage[3]);
+    }
 
     //Check to make sure postcode exists:
     Message.app.models.village.find({"where":{"postcode":postcode}}, (err, villages) => {
-      if(err) return replyToSMS(err, cb);
+      if(err) {
+        console.log(err);
+        return replyToSMS(err, cb);
+      }
 
       if (villages.length == 0) {
         return replyToSMS(new Error("No villages exist for this postcode."), cb);
       }
 
-      //Check to see if the resourceId is a single digit, or entire resource id.
-      if (resourceId < 100) {
-        parseQueryVillage(postcode, resourceId, cb);
-      } else {
-        parseQueryResource(postcode, resourceId, cb);
+      if (isNullOrUndefined(resourceId)){
+        return parseQueryPostcode(postcode, cb);
       }
 
+      //Check to see if the resourceId is a single digit, or entire resource id.
+      if (resourceId < 100) {
+        //resouceId is one digit - therefore villageId
+        //TODO: update to multiple digit villageId's
+        return parseQueryVillage(postcode, resourceId, cb);
+      }
+
+      return parseQueryResource(postcode, resourceId, cb);
     });
   }
 
-  parseQueryVillage = (postcode, villageID, cb) => {
-    //TODO: add query for entire village etc.
-    const reply = MessageUtils.convertVillageToMessage({});
-    replyToSMS(reply, cb);
+  parseQueryPostcode = (postcode, cb) => {
+    console.log('parse postcode');
+
+
+  }
+
+  parseQueryVillage = (postcode, villageId, cb) => {
+    const app = Message.app;
+    const lastMonth =  moment().subtract(1, 'months').format('Y-M');
+    const lastYear = moment().subtract(12, 'months').format('Y-M');
+
+    Promise.all([
+      app.models.village.findById(villageId, {where:{postcode:postcode}}),
+      app.models.resource_stats._getCurrentVillageAverage(villageId, postcode),
+      app.models.resource_stats._getHistoricalVillageAverages(villageId, postcode, '', lastMonth, lastMonth),
+      app.models.resource_stats._getHistoricalVillageAverages(villageId, postcode, '', lastYear, lastYear),
+    ])
+    .then(results => {
+      console.log(results);
+
+      //TODO: fix inconsistencies here - each method returns something slightly different
+      const village = results[0];
+      let thisMonth = null;
+      let lastMonth = null;
+      let lastYear = null;
+
+      if (!isNullOrUndefined(results[1])) {
+        thisMonth = results[1]; //not sure what this looks like
+      }
+
+      if (!isNullOrUndefined(results[2]) && !isNullOrUndefined(results[2].aveReading)) {
+        lastMonth = results[2].aveReading;
+      }
+
+      if (!isNullOrUndefined(results[3]) && !isNullOrUndefined(results[3].aveReading)) {
+        lastYear = results[3].aveReading;
+      }
+
+      const reading = {
+        village: village,
+        thisMonth: thisMonth,
+        lastMonth: lastMonth,
+        lastYear: lastYear
+      };
+
+      console.log('reading is:', reading);
+
+      replyToSMS(MessageUtils.convertVillageToMessage(reading), cb);
+    })
+    .catch(err => {
+      console.log(err);
+      replyToSMS(err, cb);
+    });
   }
 
   parseQueryResource = (postcode, resourceId, cb) => {
-
-    //TODO: add query for past values
-    // for now, lastmonth, lastyear for MessageUtils to handle
     const app = Message.app;
+    const lastMonth =  moment().subtract(1, 'months').format('Y-M');
+    const lastYear = moment().subtract(12, 'months').format('Y-M');
 
-    //Get the latest, last month, and last year readings
-    //TODO: use an include filter!
-    app.models.resource.findById(resourceId, {where:{postcode:postcode}}, (err, resource) => {
-      if(err) return replyToSMS(err, cb);
+    //Resolves [current, last_month, last_year]
+    Promise.all([
+      app.models.resource.findById(resourceId, {where:{postcode:postcode}, include: 'village'}),
+      app.models.resource_stats.find({where: {and: [{resourceId: resourceId}, {postcode: postcode}, {month:lastMonth}]}}),
+      app.models.resource_stats.find({where: {and: [{resourceId: resourceId}, {postcode: postcode}, {month:lastYear}]}})
+    ])
+    .then((results) => {
+      console.log(results);
 
-      app.models.village.findById(resource.villageId, (err, village) => {
-        if(err) return replyToSMS(err, cb);
+      const resource = results[0];
+      const village = resource.village;
+      let lastMonth = null;
+      let lastYear = null;
+      if (!isNullOrUndefined(results[1]) && !isNullOrUndefined(results[1][0])) {
+        lastMonth = results[1][0].ave_reading;
+      }
 
-        const reply = MessageUtils.convertResourceToMessage({
-                        resource:resource,
-                        village:village
-                      });
+      if (!isNullOrUndefined(results[2]) && !isNullOrUndefined(results[2][0])) {
+        lastYear = results[2][0].ave_reading;
+      }
 
-        replyToSMS(reply, cb);
-      });
+      const reading = {
+        resource: resource,
+        village: village,
+        lastMonth: lastMonth,
+        lastYear: lastYear
+      };
+
+      const message = MessageUtils.convertResourceToMessage(reading);
+      replyToSMS(message, cb);
+    })
+    .catch(err => {
+      console.log(err);
+      replyToSMS(err, cb);
     });
   }
 
