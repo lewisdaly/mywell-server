@@ -12,7 +12,7 @@ module.exports = function(Message) {
     'sms',
     {
       accepts: [
-        {arg: 'mobile', type: 'number'},
+        {arg: 'no', type: 'number'},
         {arg: 'msg', type: 'string'}
       ],
       'description': 'recieves the SMS from way 2 mint',
@@ -21,7 +21,7 @@ module.exports = function(Message) {
     }
   );
 
-  Message.sms = function(mobile, msg, cb) {
+  Message.sms = function(no, msg, cb) {
 
     /*
       Some examples:
@@ -33,6 +33,8 @@ module.exports = function(Message) {
       SMA 999 POSTCODE RESOURCE_ID (3 digits) - get the readings for this village
     */
 
+    const mobile = no; //The name from w2m is no for some reason.
+    //eg: http://mywell.marvi.org.in:3000/api/messages/sms?no=61410237238&msg=SMA+999+313603+5
     console.log("Number", mobile, "message", msg);
 
     //Receive the message here.
