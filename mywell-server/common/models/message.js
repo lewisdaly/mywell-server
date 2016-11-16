@@ -99,6 +99,7 @@ module.exports = function(Message) {
     }
 
     const postcode = parseInt(splitMessage[2]);
+
     var resourceId = null;
 
     if (splitMessage.length == 4) {
@@ -297,7 +298,8 @@ module.exports = function(Message) {
           resourceId: resourceId,
           date: date,
           value: depthFloat,
-          village_id: villageID
+          village_id: villageID,
+          postcode: postcode
         };
 
         Message.app.models.Reading.create(reading, (err, savedReading) => {

@@ -15,6 +15,7 @@ module.exports = function(Reading) {
       return next();
     }
 
+
     //check to see if new reading is more recent  - if so, update the resource table
     const reading = (typeof ctx.instance === "undefined") ? ctx.currentInstance : ctx.instance;
 
