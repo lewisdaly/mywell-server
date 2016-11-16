@@ -9,6 +9,14 @@ services:
     links:
     - db:db
 
+  mywell-ui:
+    build: ./mywell-ui/
+    ports:
+     - "80:80"
+    volumes:
+     - ./mywell-ui:/usr/src/app
+    command: npm run prod
+
   db:
     image: mariadb:10.0
     environment:
