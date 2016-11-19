@@ -31,11 +31,11 @@ module.exports = function(app, next) {
   }
 
   const villages = [
-    {id:5, name:"Varni", postcode:313603},
-    {id:4, name:"Sunderpura", postcode:313603},
-    {id:3, name:"Hinta", postcode:313603},
-    {id:2, name:"Dharta", postcode:313603},
-    {id:1, name:"Badgaon", postcode:313603}
+    {id:15, name:"Varni", postcode:313603},
+    {id:14, name:"Sunderpura", postcode:313603},
+    {id:13, name:"Hinta", postcode:313603},
+    {id:12, name:"Dharta", postcode:313603},
+    {id:11, name:"Badgaon", postcode:313603}
   ];
 
   const users = [

@@ -29,8 +29,8 @@ module.exports = function(Message) {
 
 
       SMA 999 POSTCODE                        - get the readings for this postcode
-      SMA 999 POSTCODE VILLAGE_ID (1 digit)   - get the readings for this village
-      SMA 999 POSTCODE RESOURCE_ID (3 digits) - get the readings for this village
+      SMA 999 POSTCODE VILLAGE_ID (2 digit)   - get the readings for this village
+      SMA 999 POSTCODE RESOURCE_ID (4 digits) - get the readings for this village
     */
 
     const mobile = no; //The name from w2m is no for some reason.
@@ -123,8 +123,8 @@ module.exports = function(Message) {
         return parseQueryPostcode(postcode, cb);
       }
 
-      //Check to see if the resourceId is a single digit, or entire resource id.
-      if (resourceId < 100) {
+      //Check to see if the resourceId is a a villageId (2 digits) or entire resource id.
+      if (`${resourceId}`.length <= 2) {
         //resouceId is one digit - therefore villageId
         //TODO: update to multiple digit villageId's
         return parseQueryVillage(postcode, resourceId, cb);
@@ -156,6 +156,10 @@ module.exports = function(Message) {
 
       //TODO: fix inconsistencies here - each method returns something slightly different
       const village = results[0];
+      if (isNullOrUndefined(village)) {
+        return replyToSMS(new Error("Invalid villageId."), cb);
+      }
+
       let thisMonth = null;
       let lastMonth = null;
       let lastYear = null;
@@ -274,7 +278,7 @@ module.exports = function(Message) {
           return replyToSMS(new Error("Could not find resource with ID: " + resourceId), cb);
         }
 
-        const villageID = resourceId.toString().charAt(0);
+        const villageID = `${resourceId}`.substring(0,2);
 
         //Parse the depth:
         let depthFloat;
