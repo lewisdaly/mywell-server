@@ -1,11 +1,11 @@
 machine:
   services:
     - docker
-  environment:
+  # environment:
     # PRODUCTION_S3_URL_FOR_LATEST_TAG: "s3://conversations-deployment/latest-bamboo-tags/production-$SERVICE_NAME_LOWER-circle"
 
 dependencies:
-  pre:
+  # pre:
     #Dependencies for the deployment scripts
   override:
     - docker-compose build
@@ -31,7 +31,7 @@ test:
     # - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     # - cp ./app/test/test-results.xml $CIRCLE_TEST_REPORTS/junit/
 
-deployment:
+# deployment:
 
 
   # staging:
