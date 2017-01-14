@@ -33,7 +33,7 @@ test:
                  mywell-server
     - docker ps
     - >
-      sudo lxc-attach -n "$(docker instpect --format "{{.Id}}" mywell-server)" \
+      sudo lxc-attach -n "$(docker inspect --format "{{.Id}}" mywell-server)" \
         -- bash -c 'pwd; ls; /usr/src/app/test.sh'
 
 # deployment:
