@@ -19,7 +19,7 @@ services:
     command: npm run prod
 
   db:
-    image: mariadb:10.0
+    image: mariadb:10.1
     environment:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=mywell

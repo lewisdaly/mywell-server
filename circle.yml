@@ -13,9 +13,11 @@ dependencies:
     - docker-compose -v
   override:
     - cd mywell-server/ && git submodule update --init
-    - cd mywell-server/mywell-server && npm install
-    - docker-compose build
-    - docker-compose up
+    - ls
+    - ./run_server build
+    # - cd mywell-server/mywell-server && npm install
+    # - docker-compose build
+    # - docker-compose up
 
 test:
   override:
