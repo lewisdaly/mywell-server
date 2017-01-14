@@ -36,6 +36,14 @@ test:
       sudo lxc-attach -n "$(docker inspect --format "{{.Id}}" mywell-server)" \
         -- bash -c 'pwd; ls /usr/src/app/; /usr/src/app/test.sh'
 
+deployment:
+
+  droplet:
+    branch: droplet
+    commands:
+      - echo 'deploying'
+      - ssh -v root@128.199.66.76 "cd ~/mywell-server; git pull origin droplet"
+
 # deployment:
 #   master:
 #     brach: master
