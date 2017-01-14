@@ -20,7 +20,10 @@ dependencies:
     - docker-compose up -d
     - sleep 30
     - docker-compose stop
-    - docker-compose up #this is hacky. It seems that mysql doesn't want to work first time around
+    - docker-compose up -d #this is hacky. It seems that our mysql connector doesn't want to work first time around
+  post:
+    #make sure our containers are up
+    - if [ `docker ps | wc -l` -lt 4 ]; then echo 'oh no - containers didn't stay up'; exit 1; fi
 
 test:
   override:
