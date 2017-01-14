@@ -15,7 +15,7 @@ dependencies:
     - git submodule update --init
     - ls
     - pwd
-    - ./run_server build
+    - ./run_server.sh build
     # - cd mywell-server/mywell-server && npm install
     # - docker-compose build
     # - docker-compose up
