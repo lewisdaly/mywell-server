@@ -42,7 +42,7 @@ deployment:
     branch: droplet
     commands:
       - echo 'deploying'
-      - ssh -v root@128.199.66.76 "cd ~/mywell-server; git pull origin droplet"
+      - ssh -v root@128.199.66.76 "cd ~/mywell-server; ./circle_deployer.sh"
 
 # deployment:
 #   master:
