@@ -12,6 +12,7 @@ dependencies:
     - docker info
     - docker-compose -v
   override:
+    - cd mywell-server/ && git submodule update --init
     - docker-compose build
     - docker-compose up
 

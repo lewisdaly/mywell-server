@@ -4,9 +4,10 @@ FROM node:latest
 RUN mkdir -p /usr/src/app
 
 RUN npm install nodemon -g
+RUN npm install loopback -g
 
 # this corresponds to the mounted dir in ../docker-compose.yml
-WORKDIR /usr/src/app 
+WORKDIR /usr/src/app
 
 #install dependencies
 ADD package.json /usr/src/app/
