@@ -28,8 +28,8 @@ test:
                  --name mywell-server \
                  --link db \
                  -p 3000:3000 \
-                 -v $(pwd)/mywell-server/mywell-server/:/usr/src/app/ \
-                 -v $(pwd)/mywell-server/mywell-server/node_modules:/usr/src/app/node_modules \
+                 -v $(pwd)/mywell-server/:/usr/src/app/ \
+                 -v $(pwd)/mywell-server/node_modules:/usr/src/app/node_modules \
                  mywell-server
     - docker ps
     - >
