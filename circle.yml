@@ -23,20 +23,15 @@ dependencies:
     - docker-compose up -d #this is hacky. It seems that our mysql connector doesn't want to work first time around
   post:
     #make sure our containers are up
-    - if [ `docker ps | wc -l` -lt 4 ]; then echo 'oh no - containers didn't stay up'; exit 1; fi
+    - if [ `docker ps | wc -l` -lt 4 ]; then echo 'oh no, containers died'; exit 1; fi
 
 test:
   override:
-    # - docker run -d --name db -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=bambootestdb -e MYSQL_USER=bambootestuser -e  MYSQL_PASSWORD=password mariadb:10.0
-    # - docker run -d --name redis redis
-    # - >
-    #   docker run -d \
-    #     --name testingcontainer \
-    #     --link db --link redis \
-    #     -p 3000:3000 \
-    #     -v $(pwd)/:/data -v $(pwd)/app/test/:/app/test \
-    #     -e NODE_ENV=build -e AVOID_NODEMON=true -e DATABASE_USER=bambootestuser \
-    #     -e DATABASE_PASS=password -e DATABASE_NAME=bambootestdb -e DATABASE_HOST=db $IMAGE_NAME:$TAG_NAME
+    - docker ps
+    - >
+      sudo lxc-attach -n "$(docker instpect --format "{{.Id}}" mywellserver_mywell-server_1)" \
+        -- bash -c 'pwd; ls; ./test.sh'
+
     # - >
     #   sudo lxc-attach -n "$(docker inspect --format "{{.Id}}" testingcontainer)" \
     #     -- bash -c 'export NODE_ENV=build;export AVOID_NODEMON=true;export DATABASE_USER=bambootestuser;export DATABASE_PASS=password;export DATABASE_NAME=bambootestdb;export DATABASE_HOST=db;export MOCHA_FILE=/app/test/test-results.xml;\
@@ -44,7 +39,11 @@ test:
     # - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     # - cp ./app/test/test-results.xml $CIRCLE_TEST_REPORTS/junit/
 
-# deployment:
+deployment:
+  master:
+    brach: master
+    commands:
+      -
 
 
   # staging:
