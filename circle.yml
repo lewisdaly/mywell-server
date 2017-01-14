@@ -34,7 +34,7 @@ test:
     - docker ps
     - >
       sudo lxc-attach -n "$(docker inspect --format "{{.Id}}" mywell-server)" \
-        -- bash -c 'pwd; ls; /usr/src/app/test.sh'
+        -- bash -c 'pwd; ls; /usr/src/app/mywell-server/test.sh'
 
 # deployment:
 #   master:
