@@ -1,3 +1,6 @@
+general:
+  build_dir: mywell-server
+
 machine:
   pre:
     - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
@@ -12,8 +15,9 @@ dependencies:
     - docker info
     - docker-compose -v
   override:
-    - cd mywell-server/ && git submodule update --init
+    - git submodule update --init
     - ls
+    - pwd
     - ./run_server build
     # - cd mywell-server/mywell-server && npm install
     # - docker-compose build
