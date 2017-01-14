@@ -6,6 +6,7 @@ services:
      - "3000:3000"
     volumes:
      - ./mywell-server:/usr/src/app
+     - ./mywell-server/node_modules:/usr/src/app/node_modules
     links:
     - db:db
 
