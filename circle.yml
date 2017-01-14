@@ -39,11 +39,11 @@ test:
     # - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     # - cp ./app/test/test-results.xml $CIRCLE_TEST_REPORTS/junit/
 
-deployment:
-  master:
-    brach: master
-    commands:
-      -
+# deployment:
+#   master:
+#     brach: master
+#     commands:
+#       -
 
 
   # staging:
