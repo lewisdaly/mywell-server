@@ -1,0 +1,52 @@
+machine:
+  services:
+    - docker
+  environment:
+    # PRODUCTION_S3_URL_FOR_LATEST_TAG: "s3://conversations-deployment/latest-bamboo-tags/production-$SERVICE_NAME_LOWER-circle"
+
+dependencies:
+  pre:
+    #Dependencies for the deployment scripts
+  override:
+    - docker-compose build
+    - docker-compose up
+
+test:
+  override:
+    - docker info
+    # - docker run -d --name db -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=bambootestdb -e MYSQL_USER=bambootestuser -e  MYSQL_PASSWORD=password mariadb:10.0
+    # - docker run -d --name redis redis
+    # - >
+    #   docker run -d \
+    #     --name testingcontainer \
+    #     --link db --link redis \
+    #     -p 3000:3000 \
+    #     -v $(pwd)/:/data -v $(pwd)/app/test/:/app/test \
+    #     -e NODE_ENV=build -e AVOID_NODEMON=true -e DATABASE_USER=bambootestuser \
+    #     -e DATABASE_PASS=password -e DATABASE_NAME=bambootestdb -e DATABASE_HOST=db $IMAGE_NAME:$TAG_NAME
+    # - >
+    #   sudo lxc-attach -n "$(docker inspect --format "{{.Id}}" testingcontainer)" \
+    #     -- bash -c 'export NODE_ENV=build;export AVOID_NODEMON=true;export DATABASE_USER=bambootestuser;export DATABASE_PASS=password;export DATABASE_NAME=bambootestdb;export DATABASE_HOST=db;export MOCHA_FILE=/app/test/test-results.xml;\
+    #     cd /app/test/ && ./run-tests.sh --reporter mocha-junit-reporter;'
+    # - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    # - cp ./app/test/test-results.xml $CIRCLE_TEST_REPORTS/junit/
+
+deployment:
+
+
+  # staging:
+  #   branch: staging
+  #   commands:
+  #     - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  #     - docker push $IMAGE_NAME:$TAG_NAME
+  #     - echo "$IMAGE_NAME:$TAG_NAME" > /tmp/last_image
+  #     - echo $'[profile deployer]\nrole_arn = arn:aws:iam::997038222845:role/bamboo-Conversations-deployer\nsource_profile = default' >> ~/.aws/config
+  #     - aws s3 cp /tmp/last_image $STAGING_S3_URL_FOR_LATEST_TAG --profile deployer
+  #     - >
+  #       cd ./conversations-deployment/tools;
+  #       ./circle_deployer.py\
+  #           --branch_name staging\
+  #           --service_name $SERVICE_NAME\
+  #           --docker_image_name $IMAGE_NAME:$TAG_NAME\
+  #           --config_file_path ../vpc-configurations/vpc-definitions.yaml\
+  #           --slack_api_token $SLACK_API_TOKEN
