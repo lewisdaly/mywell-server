@@ -15,29 +15,27 @@ dependencies:
     - git submodule update --init
     - ls
     - pwd
-    - cd ./mywell-server && npm install
-    - docker-compose build
-    - docker-compose up -d
-    - sleep 30
-    - docker-compose stop
-    - docker-compose up -d #this is hacky. It seems that our mysql connector doesn't want to work first time around
-  post:
+    - cd ./mywell-server && npm install && docker build -t mywell-server .
+
+  # post:
     #make sure our containers are up
-    - if [ `docker ps | wc -l` -lt 4 ]; then echo 'oh no, containers died'; exit 1; fi
+    # - if [ `docker ps | wc -l` -lt 4 ]; then echo 'oh no, containers died'; exit 1; fi
 
 test:
   override:
+    #unfortunately, no docker-compose without docker 1.10, and no lxc-attach or exec with docker 1.10, so we have to run everything ourselves
+    - docker run -d --name db -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=mywell -e MYSQL_USER=mywell -e  MYSQL_PASSWORD=password mariadb:10.0
+    - docker run -d \
+                 --name mywell-server \
+                 --link db \
+                 -p 3000:3000 \
+                 -v $(pwd)/mywell-server:/usr/src/app \
+                 -v $(pwd)/mywell-server/node_modules:/usr/src/app/node_modules \
+                 mywell-server
     - docker ps
     - >
-      sudo lxc-attach -n "$(docker instpect --format "{{.Id}}" mywellserver_mywell-server_1)" \
+      sudo lxc-attach -n "$(docker instpect --format "{{.Id}}" mywell-server)" \
         -- bash -c 'pwd; ls; ./test.sh'
-
-    # - >
-    #   sudo lxc-attach -n "$(docker inspect --format "{{.Id}}" testingcontainer)" \
-    #     -- bash -c 'export NODE_ENV=build;export AVOID_NODEMON=true;export DATABASE_USER=bambootestuser;export DATABASE_PASS=password;export DATABASE_NAME=bambootestdb;export DATABASE_HOST=db;export MOCHA_FILE=/app/test/test-results.xml;\
-    #     cd /app/test/ && ./run-tests.sh --reporter mocha-junit-reporter;'
-    # - mkdir -p $CIRCLE_TEST_REPORTS/junit/
-    # - cp ./app/test/test-results.xml $CIRCLE_TEST_REPORTS/junit/
 
 # deployment:
 #   master:
