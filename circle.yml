@@ -16,10 +16,8 @@ dependencies:
     - ls
     - pwd
     - cd ./mywell-server && npm install && docker build -t mywell-server .
-
-  # post:
-    #make sure our containers are up
-    # - if [ `docker ps | wc -l` -lt 4 ]; then echo 'oh no, containers died'; exit 1; fi
+  cache_directories:
+    - "mywell-server/node_modules"
 
 test:
   override:
