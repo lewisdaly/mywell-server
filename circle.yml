@@ -1,19 +1,21 @@
 machine:
+  pre:
+    - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
   services:
     - docker
   # environment:
     # PRODUCTION_S3_URL_FOR_LATEST_TAG: "s3://conversations-deployment/latest-bamboo-tags/production-$SERVICE_NAME_LOWER-circle"
 
 dependencies:
-  # pre:
-    #Dependencies for the deployment scripts
+  pre:
+    - docker info
+    - docker-compose -v
   override:
     - docker-compose build
     - docker-compose up
 
 test:
   override:
-    - docker info
     # - docker run -d --name db -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=bambootestdb -e MYSQL_USER=bambootestuser -e  MYSQL_PASSWORD=password mariadb:10.0
     # - docker run -d --name redis redis
     # - >
