@@ -15,10 +15,12 @@ dependencies:
     - git submodule update --init
     - ls
     - pwd
-    - ./run_server.sh build
-    # - cd mywell-server/mywell-server && npm install
-    # - docker-compose build
-    # - docker-compose up
+    - cd ./mywell-server && npm install
+    - docker-compose build
+    - docker-compose up -d
+    - sleep 30
+    - docker-compose stop
+    - docker-compose up #this is hacky. It seems that mysql doesn't want to work first time around
 
 test:
   override:
