@@ -3,8 +3,6 @@ const moment = require('moment');
 const isNullOrUndefined = require('util').isNullOrUndefined;
 const fs = require('fs')
 
-
-
 /**
  * Parse the date in a forgiving manner
  * return a string for date, eg: 2015-06-11
@@ -171,7 +169,8 @@ const processWorksheet = (worksheet) => {
     const reading = {resourceId:null, villageId:null, value:null, postcode:null, date:null};
     reading.resourceId = row.values[rowValidator['resourceId']];
     reading.villageId = !isNullOrUndefined(reading.resourceId) && `${reading.resourceId}`.substring(0, 2);
-    reading.value = row.values[rowValidator['wt_depth']];
+    valueCm = row.values[rowValidator['wt_depth']];
+    reading.value = valueCm/100;
     reading.postcode = row.values[rowValidator['postcode']];
     raw_date = row.values[rowValidator['date']];
     reading.date = !isNullOrUndefined(raw_date) && parseDateForgivingly(raw_date);

@@ -1,12 +1,87 @@
 var moment = require('moment');
 var isNullOrUndefined = require('util').isNullOrUndefined;
+const ExcelReader = require('../ExcelReader');
+const fs = require('fs');
+
+const fileExists = (filePath) => {
+  try {
+    return fs.statSync(filePath).isFile();
+  }
+  catch (err){
+    return false;
+  }
+}
+
+const getError = function(code, errorMessage) {
+  const newError = new Error(errorMessage);
+  newError.statusCode = code;
+  return newError;
+};
 
 module.exports = function(Reading) {
+
+  /**
+   * Endpoint for excel uploading
+   * I'm pretty sure we can refactor this to use promises, but this works for now
+   */
+  Reading.remoteMethod('processExcelFile', {
+    accepts: [
+     {arg: 'container', type: 'string', description: 'name of the container the file was uploaded to'},
+     {arg: 'name', type: 'string', description: 'name of the file uploaded'}
+    ],
+    description: 'Processes a file that has been uploaded to the given container',
+    returns: {arg: 'response', type: 'json', root:true},
+    http: {path: '/processExcelFile', verb: 'get', status:200}
+  });
+
+  Reading.processExcelFile = (container, name) => {
+    const filePath = `/tmp/storage/${container}/${name}`;
+    let parsedRows = null;
+
+    return Promise.resolve(true)
+    .then(() => {
+      console.log(container, name);
+      if (!fileExists(filePath)) {
+        console.log('file does not exist', filePath);
+        throw getError(404, `File does not exist:${filePath}`);
+      }
+    })
+    .then(() => ExcelReader.readExcelFile(filePath))
+    .then(worksheets => {
+      //let's just assume we have 1 worksheet, and it's the first
+      const worksheet = worksheets[0];
+      if (!ExcelReader.validateWorksheet(worksheet)) {
+        throw getError(500, `Invalid worksheet. Please make sure to use the template provided`);
+      }
+
+      parsedRows = ExcelReader.processWorksheet(worksheet);
+
+      //Looks like there is no more efficent way to do this other than 1 at a time in loopback:
+      return Promise.all(parsedRows.readings.map(reading => {
+        return Reading.create(reading, { skipUpdateModels:true});
+      }));
+    })
+    .then(createdReadings => {
+      return {
+        created: createdReadings.length,
+        parsedRows: parsedRows.readings.length,
+        warnings: parsedRows.warnings
+      };
+    })
+    .catch(err => {
+      console.log(err)
+      throw err;
+    });
+  }
+
+
+
+
 
   //TODO: before saving, we can add the village id, implied from the resource id.
 
 
-  /*
+  /**
    * Before saving, validate, and update the correct resource table
    */
    Reading.observe('before save', function updateModels(ctx, next) {

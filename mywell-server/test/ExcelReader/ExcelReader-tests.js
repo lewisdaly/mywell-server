@@ -67,8 +67,11 @@ describe('it parses excel files correctly', () => {
   }).timeout(10000);
 });
 
+describe.skip('it handles csv files correctly')
 
-/* stubs */
+
+
+/* helper functions */
 const createEmptyWorksheets = () => {
   var workbook = new Excel.Workbook();
   var emptySheet = workbook.addWorksheet('Empty Sheet');
@@ -125,11 +128,6 @@ const createWorkSheetValidHeadings = (order) => {
   var validSheet = workbook.addWorksheet('Valid Sheet');
   validSheet.columns = [];
 
-  // order.forEach(columnName => {
-  //   validSheet.columns.push({
-  //     header: columnName, key: columnName, width:10
-  //   });
-  // });
   if (order == 0) {
     validSheet.columns = [ { header: 'postcode', key: 'postcode', width: 10 }, { header: 'wellId', key: 'wellId', width: 10 }, { header: 'date', key: 'date', width: 10 }, { header: 'wt_depth', key: 'wt_depth', width: 10}];
   } else {
@@ -148,5 +146,3 @@ const createWorkSheetValidHeadings = (order) => {
 const loadActualTestFile = () => {
   return ExcelReader.readExcelFile('/usr/src/app/test/ExcelReader/dharta_data.xlsx');
 }
-
-describe.skip('it handles csv files correctly')

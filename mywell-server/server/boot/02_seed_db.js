@@ -67,7 +67,7 @@ module.exports = function(app, next) {
     createModel(app.models.Village, villages, true),
     createModel(app.models.Reading, displacedCurrentReadings, false),
     createModel(app.models.User, users, false),
-    createModel(app.models.Month, months, true)
+    createModel(app.models.Month, months, true),
   ])
   .then(() => {
     console.log("[02_seed_db] finshed seeding DB.");

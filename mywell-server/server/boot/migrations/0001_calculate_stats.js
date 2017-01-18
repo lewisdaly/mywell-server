@@ -21,7 +21,7 @@ module.exports = function(app) {
   return new Promise((resolve, reject) => {
 
     if (alreadySeeded('server/0001_run')) {
-      console.log('[0001_calculate_stats] already run');
+      console.log('     - [0001_calculate_stats] already run');
       return resolve(true);
     }
 
@@ -37,7 +37,7 @@ module.exports = function(app) {
         reject(err);
       }
 
-      console.log("[0001_calculate_stats] got", results.length, "results");
+      console.log("     - [0001_calculate_stats] got", results.length, "results");
 
       //Now save to new model
       return Promise.all(
@@ -51,7 +51,7 @@ module.exports = function(app) {
         })
       )
       .then(savedValues => {
-        console.log('[0001_calculate_stats] saved', savedValues.length, 'values');
+        console.log('     - [0001_calculate_stats] saved', savedValues.length, 'values');
         fs.openSync('server/0001_run', 'w');
 
         return resolve(true);
