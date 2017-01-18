@@ -1,16 +1,10 @@
 machine:
-  pre:
-    # - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
-    # - sudo pip install docker-compose
   services:
     - docker
-  # environment:
-    # PRODUCTION_S3_URL_FOR_LATEST_TAG: "s3://conversations-deployment/latest-bamboo-tags/production-$SERVICE_NAME_LOWER-circle"
 
 dependencies:
   pre:
     - docker info
-    - docker-compose -v
   override:
     - git submodule update --init
     - ls
@@ -37,33 +31,8 @@ test:
         -- bash -c 'pwd; ls /usr/src/app/; /usr/src/app/test.sh'
 
 deployment:
-
-  droplet:
-    branch: droplet
+  master:
+    branch: master
     commands:
       - echo 'deploying'
-      - ssh -v root@128.199.66.76 "cd ~/mywell-server; ./circle_deployer.sh"
-
-# deployment:
-#   master:
-#     brach: master
-#     commands:
-#       -
-
-
-  # staging:
-  #   branch: staging
-  #   commands:
-  #     - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-  #     - docker push $IMAGE_NAME:$TAG_NAME
-  #     - echo "$IMAGE_NAME:$TAG_NAME" > /tmp/last_image
-  #     - echo $'[profile deployer]\nrole_arn = arn:aws:iam::997038222845:role/bamboo-Conversations-deployer\nsource_profile = default' >> ~/.aws/config
-  #     - aws s3 cp /tmp/last_image $STAGING_S3_URL_FOR_LATEST_TAG --profile deployer
-  #     - >
-  #       cd ./conversations-deployment/tools;
-  #       ./circle_deployer.py\
-  #           --branch_name staging\
-  #           --service_name $SERVICE_NAME\
-  #           --docker_image_name $IMAGE_NAME:$TAG_NAME\
-  #           --config_file_path ../vpc-configurations/vpc-definitions.yaml\
-  #           --slack_api_token $SLACK_API_TOKEN
+      - ssh -v $DROPLET_USER@$DROPLET_IP "cd ~/mywell-server; ./circle_deployer.sh"
