@@ -60,8 +60,8 @@ describe('it parses excel files correctly', () => {
     return loadActualTestFile()
       .then(worksheets => {
         processed = ExcelReader.processWorksheet(worksheets[0]);
-        assert.deepEqual(processed.readings[10], { resourceId: 1211,villageId: '12',value: 1902,postcode: 313603,date: '2012-10-14' });
-        assert.deepEqual(processed.readings[30], { resourceId: 1211,villageId: '12',value: 3170,postcode: 313603,date: '2012-02-26' });
+        assert.deepEqual(processed.readings[10], { resourceId: 1211,villageId: '12',value: 19.02,postcode: 313603,date: '2012-10-14' });
+        assert.deepEqual(processed.readings[30], { resourceId: 1211,villageId: '12',value: 31.70,postcode: 313603,date: '2012-02-26' });
         assert.deepEqual(processed.warnings, []);
       });
   }).timeout(10000);

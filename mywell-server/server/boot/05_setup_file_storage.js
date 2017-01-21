@@ -4,8 +4,20 @@ const fs = require('fs');
 module.exports = function(app, next) {
   console.log("[05_setup_file_storage] setting up file storage");
 
-  // fs.openSync('/tmp/storage/container1', 'w');
-  if (alreadyCreated('/tmp/storage/container1')) {
+  // app.dataSources.storage.connector.getFilename = function(fileInfo, req, res) {
+  //   var origFilename = fileInfo.name;
+  //
+  //   // optimisticly get the extension
+  //   var parts = origFilename.split('.'),
+  //       extension = parts[parts.length-1];
+  //
+  //   // Using a local timestamp + user id in the filename (you might want to change this)
+  //   var newFilename = (new Date()).getTime()+'.'+extension;
+  //   return next();
+  //   return newFilename;
+  // }
+
+  if (alreadyCreated('/usr/src/app/storage/container1')) {
     console.log("[05_setup_file_storage] already created. Skipping this step.");
     return next();
   }

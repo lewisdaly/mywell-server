@@ -19,6 +19,7 @@ services:
     volumes:
      - ./mywell-ui:/usr/src/app
     command: npm run prod
+    # command: ./dev_server.sh
 
   db:
     image: mariadb:10.0

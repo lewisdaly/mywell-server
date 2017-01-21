@@ -13,7 +13,7 @@ const fileExists = (filePath) => {
   }
 }
 
-describe.only('it parses excel files correctly', () => {
+describe('it parses excel files correctly', () => {
 
   it('fails if file cannot be found', () => {
     return app.models.Reading.processExcelFile('container1', 'not_file')
@@ -27,7 +27,7 @@ describe.only('it parses excel files correctly', () => {
       });
   });
 
-  it.only('Processes an uploaded excel file', () => {
+  it('Processes an uploaded excel file', () => {
     //Copy excel file to correct place
     if (!fileExists('/tmp/storage/container1/test_data.xlsx')) {
       fs.createReadStream('/usr/src/app/test/ExcelReader/test_data.xlsx')

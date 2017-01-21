@@ -3,6 +3,8 @@
 echo 'deploying mywell'
 cd ~/mywell-server
 git pull origin master
+cd ~/mywell-server/mywell-ui
+git pull origin master
 
 echo 'deployment finished. Tailing docker logs to be sure'
 docker logs mywellserver_mywell-server_1 | tail -10
