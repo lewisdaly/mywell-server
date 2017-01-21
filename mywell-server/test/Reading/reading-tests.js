@@ -29,12 +29,12 @@ describe('it parses excel files correctly', () => {
 
   it('Processes an uploaded excel file', () => {
     //Copy excel file to correct place
-    if (!fileExists('/tmp/storage/container1/test_data.xlsx')) {
-      fs.createReadStream('/usr/src/app/test/ExcelReader/test_data.xlsx')
-        .pipe(fs.createWriteStream('/tmp/storage/container1/test_data.xlsx'));
-    }
+    // if (!fileExists('/tmp/storage/container1/test_data.xlsx')) {
+    //   fs.createReadStream('/usr/src/app/test/ExcelReader/test_data.xlsx')
+    //     .pipe(fs.createWriteStream('/tmp/storage/container1/test_data.xlsx'));
+    // }
 
-    return app.models.Reading.processExcelFile('container1', 'test_data.xlsx')
+    return app.models.Reading.processExcelFile('container1', 'template.xlsx')
     .then((res) => {
       console.log("hey", res);
       return Promise.resolve(true);

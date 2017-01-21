@@ -35,7 +35,7 @@ module.exports = function(Reading) {
   });
 
   Reading.processExcelFile = (container, name) => {
-    const filePath = `/tmp/storage/${container}/${name}`;
+    const filePath = `/usr/src/app/storage/${container}/${name}`;
     let parsedRows = null;
 
     return Promise.resolve(true)
