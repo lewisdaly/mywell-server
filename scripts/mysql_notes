@@ -1,0 +1,61 @@
+MariaDB [mywell]> describe resource;
++------------+---------------+------+-----+---------+-------+
+| Field      | Type          | Null | Key | Default | Extra |
++------------+---------------+------+-----+---------+-------+
+| id         | int(11)       | NO   | PRI | NULL    |       |
+| geo        | point         | NO   |     | NULL    |       |
+| last_value | decimal(10,2) | YES  |     | NULL    |       |
+| last_date  | datetime      | YES  |     | NULL    |       |
+| owner      | varchar(512)  | NO   |     | NULL    |       |
+| elevation  | int(11)       | NO   |     | NULL    |       |
+| type       | varchar(512)  | NO   |     | NULL    |       |
+| postcode   | int(11)       | NO   | PRI | NULL    |       |
+| villageId  | int(11)       | YES  |     | NULL    |       |
++------------+---------------+------+-----+---------+-------+
+
+
+monthly resource aggregation:
+resource_stats
+(resourceId, postcode, month) avg_reading, villageId
+
+let month be a string such as: "2016-11"
+
+
+#get the village average for a given month and villageId
+SELECT ave(ave_reading) FROM resource_stats WHERE month="$1" AND villageId="$2"
+
+#get the postcode average for a given month and villageId
+SELECT ave(ave_reading) FROM resource_stats WHERE month="$1" AND postcode="$2"
+
+
+
+#average monthly for all wells
+select AVG(value), DATE_FORMAT(date, '%Y-%m') as MONTH from reading GROUP BY DATE_FORMAT(date, '%Y-%m') ;
+
+#average monthly by resourceId
+select resourceId, AVG(value), DATE_FORMAT(date, '%Y-%m') as MONTH from reading GROUP BY DATE_FORMAT(date, '%Y-%m'), resourceId
+
+
+
+select ave_reading, resourceId, month from resource_stats where resourceid = 550 AND month > "2015-07";
+
+select AVG(ave_reading), villageId, month FROM resource_stats WHERE villageId=2 AND month >= "2015-07" AND month <= "2015-07" GROUP BY villageId, month;
+
+
+
+#get the stats for resource id in range
+SELECT MonthRange.month, resourceId, postcode, CAST(CAST(ave_reading AS DECIMAL(12,4)) AS VARCHAR(255)), villageId
+FROM
+  (SELECT * FROM resource_stats WHERE resourceid = 550) AS SelectedStats
+RIGHT OUTER JOIN
+  (SELECT * FROM Month where month > "2015-07" AND Month < "2016-11") as MonthRange
+  ON SelectedStats.month = MonthRange.month;
+
+
+# get the stats from resource village id in range
+SELECT MonthRange.month, CAST(avgReadingVillage AS CHAR(255)) as aveReading
+FROM
+  (SELECT AVG(ave_reading) as avgReadingVillage, villageId, month FROM resource_stats WHERE villageId=2 GROUP BY villageId, month) AS SelectedStats
+RIGHT OUTER JOIN
+  (SELECT * FROM Month where month > "2015-07" AND Month < "2016-11") as MonthRange
+ON SelectedStats.month = MonthRange.month;

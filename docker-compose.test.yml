@@ -1,0 +1,7 @@
+version: '2'
+services:
+  mywell-server:
+    entrypoint:
+      - tail
+      - -f
+      - /dev/null
