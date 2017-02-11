@@ -3,6 +3,9 @@ const assert = require('assert');
 const isNullOrUndefined = require('util').isNullOrUndefined;
 const moment = require('moment');
 const fs = require('fs');
+const Reading = app.models.Reading;
+const mockDate = require('mockdate');
+
 
 const fileExists = (filePath) => {
   try {
@@ -12,6 +15,30 @@ const fileExists = (filePath) => {
     return false;
   }
 }
+
+describe('GET Reading', () => {
+  it('gets no reading if none exist within 1 week for a resource within a week', () => {
+    return Reading.getCurrentReading(1211)
+      .then(reading => {
+        assert.equal(reading, null);
+      });
+  });
+
+  it('gets a reading if one exists within 1 week for a resource within a week', () => {
+    mockDate.set(moment('2012-09-22'));
+
+    return Reading.getCurrentReading(1211)
+      .then(reading => {
+        assert.equal(moment(reading.date).format(), moment('2012-09-16T00:00:00.000Z').format());
+        assert.equal(reading.resourceId, 1211);
+        assert.equal(reading.value, 32.1);
+      })
+      .then(() => {
+        mockDate.reset();
+      });
+  });
+
+});
 
 describe('it parses excel files correctly', () => {
 

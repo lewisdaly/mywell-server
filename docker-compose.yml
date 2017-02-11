@@ -18,8 +18,8 @@ services:
      - "80:80"
     volumes:
      - ./mywell-ui:/usr/src/app
-    command: npm run prod
-    # command: ./dev_server.sh
+    # command: npm run prod
+    command: ./dev_server.sh
 
   db:
     image: mariadb:10.0
@@ -31,4 +31,4 @@ services:
     expose:
       - 3306
     volumes:
-      - ./app/server/boot/db:/docker-entrypoint-initdb.d
+      - ./mywell-db/server/boot/db:/docker-entrypoint-initdb.d

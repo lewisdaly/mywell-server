@@ -1,3 +1,3 @@
-module.exports = function(Well) {
+module.exports = function(Resource) {
 
 };

@@ -2,10 +2,13 @@
 
 var moment = require('moment');
 var isNullOrUndefined = require('util').isNullOrUndefined;
+const Enums = require('../Enums');
+const Utils = require('../Utils');
+const app = require('../../server/server');
 
-module.exports = function(Resourcestats) {
+module.exports = function(ResourceStats) {
 
-  Resourcestats.updateLastMonthStats = function() {
+  ResourceStats.updateLastMonthStats = function() {
     return new Promise((resolve, reject) => {
       const cb = (err, result) => {
         if (err) {
@@ -13,16 +16,161 @@ module.exports = function(Resourcestats) {
         }
         resolve(result);
       }
-      Resourcestats.calculateStats(null, cb);
+      ResourceStats.calculateStats(null, cb);
     });
   }
+
+  ResourceStats.remoteMethod(
+    'getDifferenceFromJune',
+    {
+      description: 'Gets the difference in the current value from the value last June',
+      accepts: [
+        {arg: 'resourceType', type:'string', description:'one of [well, raingauge, checkdam], required for village or postcode', required:false},
+        {arg: 'readingType', type:'string', description:'one of [individual, village, postcode]', required:true},
+        {arg: 'resourceId', type:'number', description:'resourceId, villageId, or postode', required:true}
+      ],
+      returns: {arg: 'body', type: 'object', root: true},
+      http: {path: '/getDifferenceFromJune', verb: 'get', status:200},
+    }
+  );
+
+  ResourceStats.getDifferenceFromJune = (resourceType, readingType, resourceId) => {
+
+    //call getClosestReadingFromDate for this object
+    //Get the current reading Reading.getCurrentReading if INDIVIDUAL
+    //  else, get it from somewhere else...
+    //Do maths
+
+
+
+  }
+
+  /**
+   * Note- this may return a completely off date (eg 3 years ago
+     in winter), but return it anyway, and let the user decide
+     what that want to do with it
+
+   * @param date (momentjs) - defaults to june 1st (summer)
+   * @param resourceType - [well, raingauge, checkdam]  see Enums.resourceType
+   * @param readingType - [individual, village, postcode] see Enums.readingType
+   * @param resourceId - 2 digits for well, 4 for village, 6 for postcode
+   * @returns {
+      value - float: the reading for the requested resource
+      foundDate - date: the closest date for the reading
+    }
+  */
+  ResourceStats.getClosestReadingFromDate = (date, resourceType, readingType, resourceId) => {
+    if (isNullOrUndefined(date)) {
+      date = ResourceStats.getLastJune();
+    }
+
+    switch (readingType) {
+      case Enums.ReadingType.INDIVIDUAL:
+        return ResourceStats.getIndividualReadingFromDate(date, resourceId);
+      case Enums.ReadingType.VILLAGE:
+        return ResourceStats.getVillageReadingFromDate(date, resourceType, resourceId);
+      case Enums.ReadingType.POSTCODE:
+        return ResourceStats.getPostcodeReadingFromDate(date, resourceType, resourceId);
+      default:
+        return Utils.getError(`404 ReadingType not found ${readingType}`)
+    }
+  }
+
+  /* gets the last june as momentjs */
+  ResourceStats.getLastJune = () => {
+    const now = moment();
+    let juneFirstYear = now.year();
+
+    if (now.month() < 5) juneFirstYear--;
+
+    return moment(`${juneFirstYear}-06-01`);
+  }
+
+  ResourceStats.getIndividualReadingFromDate = (date, resourceId) => {
+    //select value, date from reading where resourceId = 1352 order by ABS(DATEDIFF(date, STR_TO_DATE("2016-06-01", "%Y-%m-%d"))) limit 1;
+    const query = `SELECT CAST(AVG(value) AS CHAR(255)) as valueStr, date FROM reading
+                   WHERE resourceId = ${resourceId}
+                   ORDER BY ABS(DATEDIFF(date, STR_TO_DATE(${date.format("YYYY-MM-DD")}, "%Y-%m-%d"))) limit 1;`;
+
+    return Utils.sqlQuery(app, query)
+      .then(results => {
+        if (results.length === 0) {
+          return Promise.reject(Utils.getError(404, `No closest reading found for date ${date}, ${resouceId}`));
+        }
+        //Parse string back to decimal, return only one
+        return {
+          value: parseFloat(results[0].valueStr),
+          date: results[0].date,
+        };
+      });
+  }
+
+  /**
+   * gets the average of the village for the months of the given date
+   */
+  ResourceStats.getVillageReadingFromDate = (date, resourceType, villageId) => {
+    const minResourceId = villageId.toString() + '00';
+    const maxResourceId = villageId.toString() + '99';
+    const monthStr = moment(date).format("YYYY-MM");
+
+    //select AVG(ave_reading) as value from resource_stats where resourceId > 1499 AND resourceId < 1600 AND month = "2014-06";
+    const query = `SELECT CAST(AVG(ave_reading) as CHAR(255)) as valueStr, month
+                   FROM resource_stats
+                   WHERE resourceId >= ${minResourceId} AND
+                        resourceId <= 1${maxResourceId} AND
+                        month = "${monthStr}" AND
+                        resourceType = "${resourceType}"`
+
+    return Utils.sqlQuery(app, query)
+      .then(results => {
+        if (results.length === 0) {
+          return Promise.reject(Utils.getError(404, `No closest reading found for date ${date}, ${resouceId}`));
+        }
+        //Parse string back to decimal, return only one
+        return {
+          value: parseFloat(results[0].valueStr),
+          date: moment(results[0].month),
+        };
+      });
+  }
+
+  /**
+   * gets the average of the village for the months of the given date
+   */
+  ResourceStats.getPostcodeReadingFromDate = (date, resourceType, postcode) => {
+    const monthStr = moment(date).format("YYYY-MM");
+
+    //select AVG(ave_reading) as value from resource_stats where resourceId > 1499 AND resourceId < 1600 AND month = "2014-06";
+    const query = `SELECT CAST(AVG(ave_reading) as CHAR(255)) as valueStr, month
+                   FROM resource_stats
+                   WHERE postcode  = ${postcode} AND
+                        month = "${monthStr}" AND
+                        resourceType = "${resourceType}"`
+
+    return Utils.sqlQuery(app, query)
+      .then(results => {
+        if (results.length === 0) {
+          return Promise.reject(Utils.getError(404, `No closest reading found for date ${date}, ${resouceId}`));
+        }
+        //Parse string back to decimal, return only one
+        return {
+          value: parseFloat(results[0].valueStr),
+          date: moment(results[0].month),
+        };
+      });
+
+  }
+
+
+
+
 
 
   /**
    * Calculate latest stats
    * month defaults to last month
    */
-   Resourcestats.remoteMethod(
+   ResourceStats.remoteMethod(
      'calculateStats',
      {
         accepts: [
@@ -30,11 +178,11 @@ module.exports = function(Resourcestats) {
         ],
         'description': 'calculates and saves the stats for a given month. Defaults to last month',
         http: {path: '/calculateStats', verb: 'get', status: 200},
-        returns: {arg: 'updated', type:'JSON'}
+        returns: {arg: 'updated', type:'object'}
      }
    );
 
-   Resourcestats.calculateStats = function(month, cb) {
+   ResourceStats.calculateStats = function(month, cb) {
     if (isNullOrUndefined(month)) {
       month = moment().subtract(1, 'months').format('Y-M');
     }
@@ -54,8 +202,8 @@ module.exports = function(Resourcestats) {
                   FROM reading
                   WHERE DATE_FORMAT(date, '%Y-%m') = "${month}"
                   GROUP BY DATE_FORMAT(date, '%Y-%m'), resourceId;`;
-    const datasource = Resourcestats.dataSource;
-    Resourcestats.queryDatasource(query, datasource)
+    const datasource = ResourceStats.dataSource;
+    ResourceStats.queryDatasource(query, datasource)
     .then(results => {
       return Promise.all(
         results.map(result => {
@@ -64,7 +212,7 @@ module.exports = function(Resourcestats) {
             result.ave_reading = parseFloat(result.ave_reading);
           }
           result.villageId = findVillageIdFromResourceId(result.resourceId);
-          return Resourcestats.upsert(result)
+          return ResourceStats.upsert(result)
         })
       )
     })
@@ -77,7 +225,7 @@ module.exports = function(Resourcestats) {
 
    }
 
-   Resourcestats.queryDatasource = function(query, datasource) {
+   ResourceStats.queryDatasource = function(query, datasource) {
     return new Promise((resolve, reject) => {
       datasource.connector.query(query, (err, results) => {
         if (err) {
@@ -95,7 +243,7 @@ module.exports = function(Resourcestats) {
     * defaults to last year
     *
     */
-    Resourcestats.remoteMethod(
+    ResourceStats.remoteMethod(
       'getHistoricalResourceAverages',
       {
          accepts: [
@@ -110,7 +258,7 @@ module.exports = function(Resourcestats) {
       }
     );
 
-    Resourcestats.getHistoricalResourceAverages = function(resourceId, postcode, startMonth, endMonth, cb) {
+    ResourceStats.getHistoricalResourceAverages = function(resourceId, postcode, startMonth, endMonth, cb) {
       if (isNullOrUndefined(startMonth)) {
         startMonth = moment().subtract(13, 'months').format('Y-M');
       }
@@ -132,8 +280,8 @@ module.exports = function(Resourcestats) {
         (SELECT * FROM Month where month >= "${startMonth}" AND Month <= "${endMonth}") as MonthRange
         ON SelectedStats.month = MonthRange.month;
       `
-      const datasource = Resourcestats.dataSource;
-      Resourcestats.queryDatasource(query, datasource)
+      const datasource = ResourceStats.dataSource;
+      ResourceStats.queryDatasource(query, datasource)
       .then(results => {
 
         //Convert string back to number
@@ -153,9 +301,9 @@ module.exports = function(Resourcestats) {
       });
     }
 
-    Resourcestats._getCurrentVillageAverage = function(villageId, postcode, resourceType, month) {
+    ResourceStats._getCurrentVillageAverage = function(villageId, postcode, resourceType, month) {
       return new Promise((resolve, reject) => {
-        Resourcestats.getCurrentVillageAverage(villageId, postcode, resourceType, month, (err, results) => {
+        ResourceStats.getCurrentVillageAverage(villageId, postcode, resourceType, month, (err, results) => {
           if (err) {
             return reject(err);
           }
@@ -164,7 +312,7 @@ module.exports = function(Resourcestats) {
       });
     }
 
-    Resourcestats.remoteMethod(
+    ResourceStats.remoteMethod(
       'getCurrentVillageAverage',
       {
        accepts: [
@@ -179,7 +327,7 @@ module.exports = function(Resourcestats) {
       }
     );
 
-    Resourcestats.getCurrentVillageAverage = function(villageId, postcode, resourceType, month, cb) {
+    ResourceStats.getCurrentVillageAverage = function(villageId, postcode, resourceType, month, cb) {
       if (isNullOrUndefined(month)) {
         const month = moment().format('Y-M');
       }
@@ -195,8 +343,8 @@ module.exports = function(Resourcestats) {
       WHERE villageId = ${villageId} AND postcode=${postcode} AND DATE_FORMAT(date, '%Y-%m') = "${month}" GROUP BY villageId, postcode;
       `;
 
-      const datasource = Resourcestats.dataSource;
-      Resourcestats.queryDatasource(query, datasource)
+      const datasource = ResourceStats.dataSource;
+      ResourceStats.queryDatasource(query, datasource)
       .then(results => {
 
         if (isNullOrUndefined(results[0])) {
@@ -209,13 +357,15 @@ module.exports = function(Resourcestats) {
       .catch(err => {
         cb(err);
       });
-
-
     }
 
-    Resourcestats._getHistoricalVillageAverages = function(villageId, postcode, resourceType, startMonth, endMonth) {
+    //TODO: abstract out below to get:
+    // getVillageAverageForMonth
+    // getPostcodeAverageForMonth
+
+    ResourceStats._getHistoricalVillageAverages = function(villageId, postcode, resourceType, startMonth, endMonth) {
       return new Promise((resolve, reject) => {
-        Resourcestats.getHistoricalVillageAverages(villageId, postcode, resourceType, startMonth, endMonth, (err, results) => {
+        ResourceStats.getHistoricalVillageAverages(villageId, postcode, resourceType, startMonth, endMonth, (err, results) => {
           if (err) {
             return reject(err);
           }
@@ -229,7 +379,7 @@ module.exports = function(Resourcestats) {
      * defaults to last year
      *
      */
-     Resourcestats.remoteMethod(
+     ResourceStats.remoteMethod(
        'getHistoricalVillageAverages',
        {
           accepts: [
@@ -245,7 +395,7 @@ module.exports = function(Resourcestats) {
        }
      );
 
-     Resourcestats.getHistoricalVillageAverages = function(villageId, postcode, resourceType, startMonth, endMonth, cb) {
+     ResourceStats.getHistoricalVillageAverages = function(villageId, postcode, resourceType, startMonth, endMonth, cb) {
        if (isNullOrUndefined(startMonth)) {
          startMonth = moment().subtract(13, 'months').format('Y-M');
        }
@@ -269,8 +419,8 @@ module.exports = function(Resourcestats) {
       ON SelectedStats.month = MonthRange.month;
       `;
 
-      const datasource = Resourcestats.dataSource;
-      Resourcestats.queryDatasource(query, datasource)
+      const datasource = ResourceStats.dataSource;
+      ResourceStats.queryDatasource(query, datasource)
       .then(results => {
         //Convert string back to number
         results = results.map(result => {

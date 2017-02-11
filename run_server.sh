@@ -21,6 +21,12 @@ then
   docker-compose pull
 fi
 
+if [ "$1" == "test" ]
+then
+  echo "starting server in test mode!"
+  docker-compose -f docker-compose.yml  -f docker-compose.test.yml up
+fi
+
 
 # start the production server
 # if [ "$1" == "prod" ]

@@ -47,6 +47,7 @@ module.exports = function(app) {
           }
 
           result.villageId = findVillageIdFromResourceId(result.resourceId);
+          result.resourceType = "well";
           return app.models.resource_stats.upsert(result);
         })
       )

@@ -1,5 +1,7 @@
 var moment = require('moment');
 var isNullOrUndefined = require('util').isNullOrUndefined;
+const Enums = require('../Enums');
+const Utils = require('../Utils');
 const ExcelReader = require('../ExcelReader');
 const fs = require('fs');
 
@@ -13,13 +15,12 @@ const fileExists = (filePath) => {
 }
 
 const getError = function(code, errorMessage) {
-  const newError = new Error(errorMessage);
-  newError.statusCode = code;
-  return newError;
+  const getError = new Error(errorMessage);
+  getError.statusCode = code;
+  return getError;
 };
 
 module.exports = function(Reading) {
-
   /**
    * Endpoint for excel uploading
    * I'm pretty sure we can refactor this to use promises, but this works for now
@@ -72,6 +73,31 @@ module.exports = function(Reading) {
       console.log(err)
       throw err;
     });
+  }
+
+  /**
+   * Get's the most current reading for a resource within a week
+   * returns null if it can't be found
+   */
+  Reading.getCurrentReading = (resourceId) => {
+
+    const now = moment();
+    const upperDate = now.clone();
+    const lowerDate = now.clone().subtract(7, 'days');
+    const filter = {
+      where: {
+        and: [
+          {date: {gte: lowerDate.format()}},
+          // {date: {lte: upperDate.format()}}, -- doesn't work. screw you loopback
+          {resourceId: resourceId}
+        ]
+      }
+    };
+
+    return Reading.find(filter)
+      .then(readings => {
+        return readings.filter(reading => moment(reading.date).isSameOrBefore(upperDate)).pop();
+      });
   }
 
 

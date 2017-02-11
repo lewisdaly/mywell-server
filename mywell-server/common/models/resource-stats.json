@@ -30,6 +30,10 @@
     },
     "villageId": {
       "type": "number"
+    },
+    "resourceType": {
+      "type": "string",
+      "default": "well"
     }
   },
   "validations": [],
