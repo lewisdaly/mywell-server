@@ -147,7 +147,7 @@ module.exports = function(Message) {
 
     Promise.all([
       app.models.village.findById(villageId, {where:{postcode:postcode}}),
-      app.models.resource_stats._getCurrentVillageAverage(villageId, postcode),
+      app.models.resource_stats.getCurrentVillageAverage(villageId, postcode),
       app.models.resource_stats._getHistoricalVillageAverages(villageId, postcode, '', lastMonth, lastMonth),
       app.models.resource_stats._getHistoricalVillageAverages(villageId, postcode, '', lastYear, lastYear),
     ])

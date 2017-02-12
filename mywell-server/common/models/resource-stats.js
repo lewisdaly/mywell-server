@@ -27,19 +27,47 @@ module.exports = function(ResourceStats) {
       accepts: [
         {arg: 'resourceType', type:'string', description:'one of [well, raingauge, checkdam], required for village or postcode', required:false},
         {arg: 'readingType', type:'string', description:'one of [individual, village, postcode]', required:true},
-        {arg: 'resourceId', type:'number', description:'resourceId, villageId, or postode', required:true}
+        {arg: 'resourceId', type:'number', description:'resourceId or villageId', required:true}
+        {arg: 'resourceId', type:'number', description:'resourceId or villageId', required:true}
       ],
       returns: {arg: 'body', type: 'object', root: true},
       http: {path: '/getDifferenceFromJune', verb: 'get', status:200},
     }
   );
 
-  ResourceStats.getDifferenceFromJune = (resourceType, readingType, resourceId) => {
+  ResourceStats.getDifferenceFromJune = (resourceType, readingType, resourceId, postcode) => {
 
     //call getClosestReadingFromDate for this object
     //Get the current reading Reading.getCurrentReading if INDIVIDUAL
+    //Get the current village average from ResourceStats.getCurrentVillageAverage if village
     //  else, get it from somewhere else...
     //Do maths
+    const date = ResourceStats.getLastJune();
+
+    return Promise.resolve(true)
+    .then(() => {
+      switch (readingType) {
+        case Enums.ReadingType.INDIVIDUAL:
+          return Promise.all([
+            ResourceStats.getIndividualReadingFromDate(date, resourceId, postcode),
+            Reading.getCurrentReading(resouceId, postcode)
+          ]);
+        case Enums.ReadingType.VILLAGE:
+          return Promise.all([
+            ResourceStats.getVillageReadingFromDate(date, resourceType, resourceId),
+            ResourceStats.getCurrentVillageAverage(resourceId)
+          ]);
+        case Enums.ReadingType.POSTCODE:
+          return ResourceStats.getPostcodeReadingFromDate(date, resourceType, postcode);
+        default:
+          return Utils.getError(`404 ReadingType not found ${readingType}`)
+      }
+    })
+    .then(results => {
+      const pastReading = results[0];
+      const currentReading = results[1];
+
+    })
 
 
 
@@ -86,10 +114,10 @@ module.exports = function(ResourceStats) {
     return moment(`${juneFirstYear}-06-01`);
   }
 
-  ResourceStats.getIndividualReadingFromDate = (date, resourceId) => {
+  ResourceStats.getIndividualReadingFromDate = (date, resourceId, postcode) => {
     //select value, date from reading where resourceId = 1352 order by ABS(DATEDIFF(date, STR_TO_DATE("2016-06-01", "%Y-%m-%d"))) limit 1;
     const query = `SELECT CAST(AVG(value) AS CHAR(255)) as valueStr, date FROM reading
-                   WHERE resourceId = ${resourceId}
+                   WHERE resourceId = ${resourceId} AND postcode = ${postcode}
                    ORDER BY ABS(DATEDIFF(date, STR_TO_DATE(${date.format("YYYY-MM-DD")}, "%Y-%m-%d"))) limit 1;`;
 
     return Utils.sqlQuery(app, query)
@@ -108,7 +136,7 @@ module.exports = function(ResourceStats) {
   /**
    * gets the average of the village for the months of the given date
    */
-  ResourceStats.getVillageReadingFromDate = (date, resourceType, villageId) => {
+  ResourceStats.getVillageReadingFromDate = (date, resourceType, villageId, postcode) => {
     const minResourceId = villageId.toString() + '00';
     const maxResourceId = villageId.toString() + '99';
     const monthStr = moment(date).format("YYYY-MM");
@@ -118,6 +146,7 @@ module.exports = function(ResourceStats) {
                    FROM resource_stats
                    WHERE resourceId >= ${minResourceId} AND
                         resourceId <= 1${maxResourceId} AND
+                        postcode = ${postcode} AND
                         month = "${monthStr}" AND
                         resourceType = "${resourceType}"`
 
@@ -160,11 +189,6 @@ module.exports = function(ResourceStats) {
       });
 
   }
-
-
-
-
-
 
   /**
    * Calculate latest stats
@@ -301,15 +325,58 @@ module.exports = function(ResourceStats) {
       });
     }
 
-    ResourceStats._getCurrentVillageAverage = function(villageId, postcode, resourceType, month) {
-      return new Promise((resolve, reject) => {
-        ResourceStats.getCurrentVillageAverage(villageId, postcode, resourceType, month, (err, results) => {
-          if (err) {
-            return reject(err);
+    ResourceStats.remoteMethod(
+      'getCurrentPostcodeAverage',
+      {
+       accepts: [
+         {arg: 'postcode', type:'number', description:'postcode. defaults to 313603', required:false},
+         {arg: 'resourceType', type:'string', description:'Resourcetype [well, checkdam, raingauge]. Defaults to well', required:false},
+         {arg: 'month', type:'string', description:'month string in the format of YYYY-mm, debugging use only - use historic as it is more optimized'}
+       ],
+       description: 'Gets the running average for the postcode for this month',
+       http: {path: '/getCurrentPostcodeAverage', verb: 'get', status: 200},
+       returns: {arg: 'body', type: 'object', root: true},
+      }
+    );
+
+    ResourceStats.getCurrentPostcodeAverage = function(postcode, resourceType, month) {
+      if (isNullOrUndefined(month)) {
+        month = moment().format('Y-MM');
+      }
+
+      console.log(month);
+
+      if (isNullOrUndefined(resourceType)) {
+        resourceType = Enums.ResourceType.WELL;
+      }
+
+      if (isNullOrUndefined(postcode)) {
+        postcode = 313603;
+      }
+
+      const query = `
+      SELECT CAST(AVG(value) AS CHAR(255)) as avgReadingStr
+      FROM reading JOIN
+           resource ON reading.resourceId = resource.id
+      WHERE reading.postcode = ${postcode} AND
+            DATE_FORMAT(reading.date, '%Y-%m') = "${month}" AND
+            resource.type = "${resourceType}"
+      GROUP BY reading.postcode, reading.postcode;
+      `;
+
+      console.log(query);
+
+      const datasource = ResourceStats.dataSource;
+      return ResourceStats.queryDatasource(query, datasource)
+        .then(results => {
+
+          if (isNullOrUndefined(results[0])) {
+            return Promise.reject(Utils.getError('404', `No average reading for postcode: ${postcode} ,resourceType: ${resourceType} month: ${month}`));
           }
-          return resolve(results);
+
+          const avgReading = parseFloat(results[0].avgReadingStr);
+          return avgReading;
         });
-      });
     }
 
     ResourceStats.remoteMethod(
@@ -318,7 +385,7 @@ module.exports = function(ResourceStats) {
        accepts: [
          {arg: 'villageId', type:'number', description:'resourceId', required:true},
          {arg: 'postcode', type:'number', description:'postcode. defaults to 313603', required:false},
-         {arg: 'resourceType', type:'string', description:'Resourcetype - not yet used', required:false},
+         {arg: 'resourceType', type:'string', description:'Resourcetype [well, checkdam, raingauge]. Defaults to well', required:false},
          {arg: 'month', type:'string', description:'month string in the format of YYYY-mm, debugging use only - use historic as it is more optimized'}
        ],
        description: 'Gets the running average for the village for this month',
@@ -327,36 +394,42 @@ module.exports = function(ResourceStats) {
       }
     );
 
-    ResourceStats.getCurrentVillageAverage = function(villageId, postcode, resourceType, month, cb) {
+    ResourceStats.getCurrentVillageAverage = function(villageId, postcode, resourceType, month) {
       if (isNullOrUndefined(month)) {
-        const month = moment().format('Y-M');
+        month = moment().format('Y-MM');
       }
 
-      //TODO: add resource type
+      if (isNullOrUndefined(resourceType)) {
+        resourceType = Enums.ResourceType.WELL;
+      }
+
       if (isNullOrUndefined(postcode)) {
         postcode = 313603;
       }
 
       const query = `
-      SELECT CAST(AVG(value) AS CHAR(255)) as avgReading
-      FROM reading
-      WHERE villageId = ${villageId} AND postcode=${postcode} AND DATE_FORMAT(date, '%Y-%m') = "${month}" GROUP BY villageId, postcode;
+      SELECT CAST(AVG(value) AS CHAR(255)) as avgReadingStr
+      FROM reading JOIN
+           resource ON reading.resourceId = resource.id
+      WHERE reading.villageId = ${villageId} AND
+            reading.postcode = ${postcode} AND
+            DATE_FORMAT(reading.date, '%Y-%m') = "${month}" AND
+            resource.type = "${resourceType}"
+      GROUP BY reading.villageId, reading.postcode;
+
       `;
 
       const datasource = ResourceStats.dataSource;
-      ResourceStats.queryDatasource(query, datasource)
-      .then(results => {
+      return ResourceStats.queryDatasource(query, datasource)
+        .then(results => {
 
-        if (isNullOrUndefined(results[0])) {
-          return cb(null, null);
-        }
+          if (isNullOrUndefined(results[0])) {
+            return Promise.reject(Utils.getError('404', `No average reading for villageId: ${villageId}, postcode: ${postcode} ,resourceType: ${resourceType} month: ${month}`));
+          }
 
-        const avgReading = parseFloat(results[0].avgReading);
-        cb(null, avgReading);
-      })
-      .catch(err => {
-        cb(err);
-      });
+          const avgReading = parseFloat(results[0].avgReadingStr);
+          return avgReading;
+        });
     }
 
     //TODO: abstract out below to get:
@@ -391,7 +464,7 @@ module.exports = function(ResourceStats) {
           ],
           description: 'Get an array of average village values for a date range. Defaults to last year',
           http: {path: '/getHistoricalVillageAverages', verb: 'get', status: 200},
-          returns: {arg: 'readings', type:'JSON'}
+          returns: {arg: 'readings', type:'object'}
        }
      );
 

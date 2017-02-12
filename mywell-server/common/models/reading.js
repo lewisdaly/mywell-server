@@ -79,7 +79,7 @@ module.exports = function(Reading) {
    * Get's the most current reading for a resource within a week
    * returns null if it can't be found
    */
-  Reading.getCurrentReading = (resourceId) => {
+  Reading.getCurrentReading = (resourceId, postcode) => {
 
     const now = moment();
     const upperDate = now.clone();
@@ -87,6 +87,7 @@ module.exports = function(Reading) {
     const filter = {
       where: {
         and: [
+          {postcode: postcode},
           {date: {gte: lowerDate.format()}},
           // {date: {lte: upperDate.format()}}, -- doesn't work. screw you loopback
           {resourceId: resourceId}
@@ -99,8 +100,6 @@ module.exports = function(Reading) {
         return readings.filter(reading => moment(reading.date).isSameOrBefore(upperDate)).pop();
       });
   }
-
-
 
 
 

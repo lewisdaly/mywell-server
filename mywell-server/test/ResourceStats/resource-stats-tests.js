@@ -7,9 +7,34 @@ const Enums = require('../../common/Enums')
 
 //TODO: we should probably make our own test data... but I can't be bothered atm
 
-
-
 describe('GET /resource_stats', () => {
+
+  afterEach(() => {
+    return Promise.resolve(true)
+      .then(() => cleanup());
+  });
+
+  describe('average calculations', () => {
+    it('gets the current monthly average for a postcode', () => {
+      mockDate.set(moment('2012-08-01'));
+
+      return app.models.ResourceStats.getCurrentPostcodeAverage(313603)
+        .then(reading => {
+          assert.equal(reading, 19.679685);
+        })
+    });
+
+    it('gets the current monthly average for a village', () => {
+      mockDate.set(moment('2012-08-01'));
+
+      return app.models.ResourceStats.getCurrentVillageAverage(12, 313603)
+        .then(reading => {
+          assert.equal(reading, 20.008995);
+        })
+    })
+
+
+  })
 
   describe('gets the difference from june 1st', () => {
     it('gets the closest reading to june 1st for a resource', () => {

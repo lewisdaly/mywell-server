@@ -51,11 +51,21 @@ module.exports = function(app, next) {
   //This is a fix as the wellIds have (for some reason) been displaced by 10.
   //Iterate through both currentReadings and pastReadings, and add 10 to each resourceId
   const displacedCurrentReadings = currentReadings.map(currentReading => {
+    let villageIdStr = currentReading.villageId.toString();
+    if (villageIdStr.length > 2) {
+      currentReading.villageId = parseInt(villageIdStr.substring(0,2));
+    }
+
     currentReading.resourceId = currentReading.resourceId + 10;
     return currentReading;
   });
 
   const displacedPastReadings = pastReadings.map(pastReading => {
+    let villageIdStr = pastReading.villageId.toString();
+    if (villageIdStr.length > 2) {
+      pastReading.villageId = parseInt(villageIdStr.substring(0,2));
+    }
+
     pastReading.resourceId = pastReading.resourceId + 10;
     return pastReading
   })
