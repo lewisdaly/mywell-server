@@ -2,7 +2,6 @@
 var promisify = require("../../../common/promisify");
 
 var _waitForDatabaseConnection = (db, ttl, cb) => {
-  console.log("ADASLJADS");
   db.ping(
     (err) => {
       if (err && err.code === "ECONNREFUSED") {

@@ -60,5 +60,9 @@
   "container": {
     "dataSource": "storage",
     "public": true
+  },
+  "Migration": {
+    "dataSource": "mysql-corp",
+    "public": true
   }
 }

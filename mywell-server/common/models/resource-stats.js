@@ -27,8 +27,8 @@ module.exports = function(ResourceStats) {
       accepts: [
         {arg: 'resourceType', type:'string', description:'one of [well, raingauge, checkdam], required for village or postcode', required:false},
         {arg: 'readingType', type:'string', description:'one of [individual, village, postcode]', required:true},
-        {arg: 'resourceId', type:'number', description:'resourceId or villageId', required:true}
-        {arg: 'resourceId', type:'number', description:'resourceId or villageId', required:true}
+        {arg: 'resourceId', type:'number', description:'resourceId or villageId', required:true},
+        {arg: 'postcode', type:'number', description:'postcode', required:true}
       ],
       returns: {arg: 'body', type: 'object', root: true},
       http: {path: '/getDifferenceFromJune', verb: 'get', status:200},
