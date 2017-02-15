@@ -1,6 +1,8 @@
 version: '2'
 services:
   mywell-server:
+    environment:
+        - "TERM=xterm-256color"
     entrypoint:
       - tail
       - -f

@@ -1,26 +1,15 @@
 #TODO:
 
-- Fix env variables
-
+Backlog:
+- use codepush
 - save backups to s3
-...Then:
+
 
 1. Change in height from 1st of June (end of summer)
-  - for individual well
-  - for village
-  - for postcode
-  Add new endpoint to backend...
+  - almost done!
 
 1.1
- - Update resource_stats to include resourceType!
-    - including all calculated methods etc.
-
-- proper database backups!
-
-2. Overhaul running envs (front end)
-3. Codepush
-
-- Change wt depth to watertable height (depth of the well - wt height), and % full (popup)
+- update resource stats scripts to get and calculate resourceType
 
 - extending graph features
     - highcharts - http://www.highcharts.com/download
