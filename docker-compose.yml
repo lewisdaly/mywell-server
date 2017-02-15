@@ -18,8 +18,9 @@ services:
      - "80:80"
     volumes:
      - ./mywell-ui:/usr/src/app
-    # command: npm run prod
-    command: ./dev_server.sh
+    command: /usr/src/app/entrypoint.sh
+    environment:
+      ENVIRONMENT:
 
   db:
     image: mariadb:10.0

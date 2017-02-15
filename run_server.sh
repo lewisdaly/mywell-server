@@ -27,15 +27,13 @@ then
   docker-compose -f docker-compose.yml  -f docker-compose.test.yml up
 fi
 
+export ENVIRONMENT=development
 
-# start the production server
-# if [ "$1" == "prod" ]
-# then
-#   cd ./mywell-ui;
-#   npm run prod;
-#   cd ..;
-#   && docker-compose up
-# fi
+if [ "$1" == "production" ]
+then
+  echo "running server in production mode"
+  export ENVIRONMENT=production
+fi
 
 
 docker-compose up

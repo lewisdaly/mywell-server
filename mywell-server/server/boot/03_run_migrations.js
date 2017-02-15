@@ -1,7 +1,6 @@
 "use strict";
 
-// const calculateStats = require('./migrations/0001_calculate_stats.js');
-
+/* add your migrations here */
 const migrations = [
   require('./migrations/0001_calculate_stats.js'),
 ];

@@ -1,10 +1,9 @@
 #TODO:
 
-- Fix migrations
-- Make auto backups
 - Fix env variables
 
-..Then:
+- save backups to s3
+...Then:
 
 1. Change in height from 1st of June (end of summer)
   - for individual well
