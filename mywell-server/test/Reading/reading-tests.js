@@ -20,7 +20,12 @@ describe('GET Reading', () => {
   it('gets no reading if none exist within 1 week for a resource within a week', () => {
     return Reading.getCurrentReading(1211)
       .then(reading => {
-        assert.equal(reading, null);
+        return Promise.reject("This should've failed!");
+      })
+      .catch(err => {
+        if (err.statusCode !== 404) {
+          return Promise.reject(err);
+        }
       });
   });
 

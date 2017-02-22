@@ -37,7 +37,7 @@ def getMapboxUrlForCoords(coords):
           + str(coords[1]) + '?access_token=pk.eyJ1IjoibGV3aXNkYWx5IiwiYSI6ImNpdXE3ajltaDAwMGYyb2tkdjk2emx3NGsifQ.wnqFweA7kdijEtsgjTJIPw'
 
 def getFilenameForCoords(coords):
-  return 'mywell-ui/ionic_rainapp/www/img/maptiles/'\
+  return 'mywell-ui/src/www/img/maptiles/'\
           + str(coords[2]) + '-'\
           + str(coords[0]) + '-' \
           + str(coords[1]) + '.jpeg';

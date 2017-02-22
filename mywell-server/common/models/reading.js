@@ -92,12 +92,19 @@ module.exports = function(Reading) {
           // {date: {lte: upperDate.format()}}, -- doesn't work. screw you loopback
           {resourceId: resourceId}
         ]
-      }
+      },
+      order: 'date DESC'
     };
 
     return Reading.find(filter)
       .then(readings => {
-        return readings.filter(reading => moment(reading.date).isSameOrBefore(upperDate)).pop();
+        const filteredReadings = readings.filter(reading => moment(reading.date).isSameOrBefore(upperDate) &&
+                                                            moment(reading.date).isSameOrAfter(lowerDate));
+
+        if (filteredReadings.length === 0) {
+          return Promise.reject(Utils.getError(404, `currentReading not found for ${resourceId}`));
+        }
+        return filteredReadings[0];
       });
   }
 

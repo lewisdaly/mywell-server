@@ -36,6 +36,7 @@ module.exports = function(ResourceStats) {
   );
 
   ResourceStats.getDifferenceFromJune = (resourceType, readingType, resourceId, postcode) => {
+    const Reading = ResourceStats.app.models.Reading;
 
     //call getClosestReadingFromDate for this object
     //Get the current reading Reading.getCurrentReading if INDIVIDUAL
@@ -49,29 +50,40 @@ module.exports = function(ResourceStats) {
       switch (readingType) {
         case Enums.ReadingType.INDIVIDUAL:
           return Promise.all([
-            ResourceStats.getIndividualReadingFromDate(date, resourceId, postcode),
-            Reading.getCurrentReading(resouceId, postcode)
+            ResourceStats.getClosestReadingFromDate(date, resourceType, readingType, resourceId, postcode),
+            Reading.getCurrentReading(resourceId, postcode)
           ]);
         case Enums.ReadingType.VILLAGE:
           return Promise.all([
-            ResourceStats.getVillageReadingFromDate(date, resourceType, resourceId),
-            ResourceStats.getCurrentVillageAverage(resourceId)
+            ResourceStats.getClosestReadingFromDate(date, resourceType, readingType, resourceId, postcode),
+            ResourceStats.getCurrentVillageAverage(resourceId, resourceType, postcode)
           ]);
         case Enums.ReadingType.POSTCODE:
-          return ResourceStats.getPostcodeReadingFromDate(date, resourceType, postcode);
+          return Promise.all([
+            ResourceStats.getClosestReadingFromDate(date, resourceType, readingType, resourceId, postcode),
+            ResourceStats.getCurrentPostcodeAverage(resourceType, postcode)
+          ]);
         default:
-          return Utils.getError(`404 ReadingType not found ${readingType}`)
+          return Utils.getError(404, `ReadingType not found ${readingType}`)
       }
     })
     .then(results => {
       const pastReading = results[0];
       const currentReading = results[1];
 
-    })
+      console.log(pastReading);
+      console.log(currentReading);
+
+      const difference = currentReading.value - pastReading.value;
 
 
-
+      return {
+        difference: difference,
+        pastReadingDate: pastReading.date
+      };
+    });
   }
+
 
   /**
    * Note- this may return a completely off date (eg 3 years ago
@@ -79,26 +91,28 @@ module.exports = function(ResourceStats) {
      what that want to do with it
 
    * @param date (momentjs) - defaults to june 1st (summer)
-   * @param resourceType - [well, raingauge, checkdam]  see Enums.resourceType
-   * @param readingType - [individual, village, postcode] see Enums.readingType
-   * @param resourceId - 2 digits for well, 4 for village, 6 for postcode
+   * @param resourceType    - [well, raingauge, checkdam]  see Enums.resourceType
+   * @param readingType     - [individual, village, postcode] see Enums.readingType
+   * @param resourceId      - 2 digits for well, 4 for village,
+   * @param postcode        - 6 digit postcode
    * @returns {
       value - float: the reading for the requested resource
       foundDate - date: the closest date for the reading
     }
   */
-  ResourceStats.getClosestReadingFromDate = (date, resourceType, readingType, resourceId) => {
+  ResourceStats.getClosestReadingFromDate = (date, resourceType, readingType, resourceId, postcode) => {
     if (isNullOrUndefined(date)) {
       date = ResourceStats.getLastJune();
     }
 
     switch (readingType) {
       case Enums.ReadingType.INDIVIDUAL:
-        return ResourceStats.getIndividualReadingFromDate(date, resourceId);
+        //Don't need resource type, each resource is unique
+        return ResourceStats.getIndividualReadingFromDate(date, resourceId, postcode);
       case Enums.ReadingType.VILLAGE:
-        return ResourceStats.getVillageReadingFromDate(date, resourceType, resourceId);
+        return ResourceStats.getVillageReadingFromDate(date, resourceType, resourceId, postcode);
       case Enums.ReadingType.POSTCODE:
-        return ResourceStats.getPostcodeReadingFromDate(date, resourceType, resourceId);
+        return ResourceStats.getPostcodeReadingFromDate(date, resourceType, postcode);
       default:
         return Utils.getError(`404 ReadingType not found ${readingType}`)
     }
@@ -272,7 +286,7 @@ module.exports = function(ResourceStats) {
       {
          accepts: [
            {arg: 'resourceId', type:'number', description:'resourceId', required:true},
-           {arg: 'postcode', type:'number', description:'postcode. defaults to 510934', required:false},
+           {arg: 'postcode', type:'number', description:'postcode. defaults to 510934', required:true},
            {arg: 'startMonth', type:'string', description:'month string in the format of YYYY-mm'},
            {arg: 'endMonth', type:'string', description:'month string in the format of YYYY-mm'}
          ],
@@ -329,8 +343,8 @@ module.exports = function(ResourceStats) {
       'getCurrentPostcodeAverage',
       {
        accepts: [
-         {arg: 'postcode', type:'number', description:'postcode. defaults to 313603', required:false},
          {arg: 'resourceType', type:'string', description:'Resourcetype [well, checkdam, raingauge]. Defaults to well', required:false},
+         {arg: 'postcode', type:'number', description:'postcode. defaults to 313603', required:true},
          {arg: 'month', type:'string', description:'month string in the format of YYYY-mm, debugging use only - use historic as it is more optimized'}
        ],
        description: 'Gets the running average for the postcode for this month',
@@ -339,12 +353,10 @@ module.exports = function(ResourceStats) {
       }
     );
 
-    ResourceStats.getCurrentPostcodeAverage = function(postcode, resourceType, month) {
+    ResourceStats.getCurrentPostcodeAverage = function(resourceType, postcode, month) {
       if (isNullOrUndefined(month)) {
         month = moment().format('Y-MM');
       }
-
-      console.log(month);
 
       if (isNullOrUndefined(resourceType)) {
         resourceType = Enums.ResourceType.WELL;
@@ -364,8 +376,6 @@ module.exports = function(ResourceStats) {
       GROUP BY reading.postcode, reading.postcode;
       `;
 
-      console.log(query);
-
       const datasource = ResourceStats.dataSource;
       return ResourceStats.queryDatasource(query, datasource)
         .then(results => {
@@ -375,7 +385,9 @@ module.exports = function(ResourceStats) {
           }
 
           const avgReading = parseFloat(results[0].avgReadingStr);
-          return avgReading;
+          return {
+            value: avgReading
+          };
         });
     }
 
@@ -384,7 +396,7 @@ module.exports = function(ResourceStats) {
       {
        accepts: [
          {arg: 'villageId', type:'number', description:'resourceId', required:true},
-         {arg: 'postcode', type:'number', description:'postcode. defaults to 313603', required:false},
+         {arg: 'postcode', type:'number', description:'postcode. defaults to 313603', required:true},
          {arg: 'resourceType', type:'string', description:'Resourcetype [well, checkdam, raingauge]. Defaults to well', required:false},
          {arg: 'month', type:'string', description:'month string in the format of YYYY-mm, debugging use only - use historic as it is more optimized'}
        ],
@@ -394,7 +406,7 @@ module.exports = function(ResourceStats) {
       }
     );
 
-    ResourceStats.getCurrentVillageAverage = function(villageId, postcode, resourceType, month) {
+    ResourceStats.getCurrentVillageAverage = function(villageId, resourceType, postcode, month) {
       if (isNullOrUndefined(month)) {
         month = moment().format('Y-MM');
       }
@@ -416,7 +428,6 @@ module.exports = function(ResourceStats) {
             DATE_FORMAT(reading.date, '%Y-%m') = "${month}" AND
             resource.type = "${resourceType}"
       GROUP BY reading.villageId, reading.postcode;
-
       `;
 
       const datasource = ResourceStats.dataSource;
@@ -428,7 +439,9 @@ module.exports = function(ResourceStats) {
           }
 
           const avgReading = parseFloat(results[0].avgReadingStr);
-          return avgReading;
+          return {
+            value: avgReading
+          };
         });
     }
 
@@ -457,7 +470,7 @@ module.exports = function(ResourceStats) {
        {
           accepts: [
             {arg: 'villageId', type:'number', description:'resourceId', required:true},
-            {arg: 'postcode', type:'number', description:'postcode. defaults to 313603', required:false},
+            {arg: 'postcode', type:'number', description:'postcode. defaults to 313603', required:true},
             {arg: 'resourceType', type:'string', description:'Resourcetype - not yet used', required:false},
             {arg: 'startMonth', type:'string', description:'month string in the format of YYYY-mm'},
             {arg: 'endMonth', type:'string', description:'month string in the format of YYYY-mm'}

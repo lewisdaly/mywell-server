@@ -1,28 +1,45 @@
 #TODO:
 
-Backlog:
-- use codepush
-- save backups to s3
+Today's Sprint
+- Finish june first
+- Popup feature
+- seed test database
+- start looking at translations
 
 
-1. Change in height from 1st of June (end of summer)
-  - almost done!
-
-1.1
-- update resource stats scripts to get and calculate resourceType
-
-- extending graph features
-    - highcharts - http://www.highcharts.com/download
-    - use actual readings, not monthly averages - but I thought readings were once a month?!
-- Separate Apps:
-    - use selector at top instead
-    - My Water quality
-- Paper
-    - update new architecture
-    - add ideas about mycheckdam etc
-    - send to basant
+Front End
+- overhaul popups for rain gauges and checkdams
+- overhaul add well feature
+  - make max height not required for dam, rain gauge
+  - fix location finding- insecure origins
+  - validate id better (4 digits)
+- fix well detail view:
+  - change title from well to resourceType
+  - change charts
 - Translations
-    - library
+  - Add language button to top bar
+  - replace all strings with Translations
+  - actually get translations
+- finish getting codepush working
+
+Back End:
+- Change in height from 1st of June (end of summer)
+- test stubs/separate seed data (maybe just export the current database for the test data!)
+- Get readings in format for charts
+  - use actual daily readings?
+- save backups to s3
+- update resource stats scripts to get and calculate resourceType
+- Use HTTPS? to fix location bug
+- Separate CircleCI for front end and backend
+  - CircleCI deployments to codepush!
+
+Other?
+- My Water quality
+
+Paper
+  - update new architecture
+  - add ideas about mycheckdam etc
+  - send to basant
 
 Priorities
 - 1-4
@@ -32,14 +49,8 @@ Priorities
   - we should be able to configure for dev or staging based on ENVIRONMENT variables, not replacing files
 
 
-Excel/CSV uploading feature:
-
-- Proper Database backups - we should save these somewhere else probably...
-  - can do a cron job, that pushes to Digital Ocean storage?
-- Fix deployment,
 - Test should really use their own DB
 - F: confirm template with Basant
-- F: remove js folder, change to .build, and ignore
 - B: add method to recalculate old stats after upload
 
 
@@ -49,7 +60,6 @@ Today:
 Stretch goals:
  - add better server side validation to adding resource (right now duplicate entries cause a 500 error)
  - CI, automated builds and deployments
- - Make a database backup script, run as a cron job
 
 
 All tasks:
@@ -57,32 +67,14 @@ All tasks:
   - TODO: add resource type into stats, so we can differentiate between rain, wells and dams
 
 - SMS
-  - reply using W2M (need credits)
   - village based query
   - historical query
 
 
 - Maps
   - improve map, add place names and even watersheds?
-  - offline maps - wont do
-
 
 - improve add well functions
   - allow dragging map to update location
-  - add depth to fields
 
 - add SMS query guide to settings
-
-
-Goals by 19/11:
-
-SMS:
-  - ensure reply works
-  - Submit
-  - Receive
-App:
-- offline features
-  - offline maps - won't do
-
-Future:
-- excel upload
