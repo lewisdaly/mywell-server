@@ -9,7 +9,7 @@ last_value
 village_id@
 owner
 type [well, rain_gauge, etc.]
-elevation 
+elevation
 
 READING
 @res_id
@@ -45,3 +45,9 @@ number
 
 to get wells:
 select * from resource where type="well"
+
+
+#TO run tests:
+./test run - starts the docker container
+and in another shell,
+./test     - runs the tests

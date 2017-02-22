@@ -1,9 +1,7 @@
 #TODO:
 
 Today's Sprint
-- Finish june first
 - Popup feature
-- seed test database
 - start looking at translations
 
 
@@ -23,8 +21,6 @@ Front End
 - finish getting codepush working
 
 Back End:
-- Change in height from 1st of June (end of summer)
-- test stubs/separate seed data (maybe just export the current database for the test data!)
 - Get readings in format for charts
   - use actual daily readings?
 - save backups to s3

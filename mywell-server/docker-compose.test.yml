@@ -1,14 +1,21 @@
 version: '2'
 services:
   mywell-server:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+     - .:/usr/src/app
+     - ./node_modules:/usr/src/app/node_modules
     environment:
-        - "TERM=xterm-256color"
+      - "TERM=xterm-256color"
+    links:
+    - test_db:db
     entrypoint:
       - tail
       - -f
       - /dev/null
-    links:
-      - db:test_db
+
   test_db:
     image: mariadb:10.0
     environment:
@@ -20,3 +27,6 @@ services:
       - 3306
     volumes:
       - ./mywell-db/server/boot/db:/docker-entrypoint-initdb.d
+      - ./test:/usr/ubuntu/
+    entrypoint:
+      - /usr/ubuntu/seed_test_db.sh
