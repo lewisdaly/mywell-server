@@ -1,26 +1,27 @@
 #TODO:
 
 Today's Sprint
-- overhaul add well feature
-  - make max height not required for dam, rain gauge
-  - fix location finding - insecure origins
-  - validate id better (4 digits)
-  - move map/select map to get lat/lng
-  - enter postcode to move map
+- Add village name popups/headings
+  - migration to get village center lat lng
+
+- map detail view for village
+  - village and postcode average
+- popup for village?
+- vertical battery for well
 
 
-popups:
-- battery vertical for well
+
+Stretch:
+- fix location finding - insecure origins
+  https:
+  https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-14-04
 
 - first time open - put in postcode
   - every other open, navigate to that postcode
 
-- Add village name to map
-  - click on village to get village average and postcode
 
 
 TODO: get in touch with Peter
-
 **New Version - 12th of March**
 
 Trip 6th of 7th of March

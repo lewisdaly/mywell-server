@@ -3,6 +3,7 @@
 /* add your migrations here */
 const migrations = [
   require('./migrations/0001_calculate_stats.js'),
+  require('./migrations/0002_village_coordinates')
 ];
 
 module.exports = function(app, next) {
