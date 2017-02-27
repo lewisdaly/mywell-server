@@ -6,24 +6,24 @@ const isNullOrUndefined = require("util").isNullOrUndefined;
 /* I got these values from the actual wells in the village */
 const approxVillageCenters = {
   11: {
-    lat: 24.5925886,
-    lng: 74.1921055
+    "lat": 24.5935886,
+    "lng": 74.1921055
   },
   12: {
-    lat: 24.5236538,
-    lng: 74.2257458
+    "lat": 24.5256538,
+    "lng": 74.2257458
   },
   13: {
-    lat: 24.5691236,
-    lng: 74.1969905
+    "lat": 24.5691236,
+    "lng": 74.1969905
   },
   14: {
-    lat: 24.5694388,
-    lng: 74.1705252
+    "lat": 24.5635388,
+    "lng": 74.1706352
   },
   15: {
-    lat: 24.5714177,
-    lng: 74.2294288
+    "lat": 24.5714177,
+    "lng": 74.2294288
   },
 }
 

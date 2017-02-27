@@ -1,13 +1,11 @@
 #TODO:
 
 Today's Sprint
-- Add village name popups/headings
-  - migration to get village center lat lng
+- overhaul map detail view for resource
+   - new graphs
 
 - map detail view for village
   - village and postcode average
-- popup for village?
-- vertical battery for well
 
 
 
