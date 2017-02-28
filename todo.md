@@ -8,6 +8,9 @@ Today's Sprint
   - village and postcode average
 
 
+fun idea:?
+http://bl.ocks.org/brattonc/5e5ce9beee483220e2f6
+
 
 Stretch:
 - fix location finding - insecure origins
