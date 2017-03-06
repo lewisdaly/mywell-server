@@ -26,7 +26,7 @@ test:
                  mariadb:10.0
     - sleep 15s
     #hacky workardound for the entrypoint script not working
-    - sudo lxc-attach -n "$(docker inspect --format "{{.Id}}" db)" -- bash -c 'mysql -u mywell -ppassword mywell'
+    - sudo lxc-attach -n "$(docker inspect --format "{{.Id}}" db)" -- bash -c '  mysql mywell -u mywell -ppassword < /usr/ubuntu/mywell_test_seed.sql'
     - >
       docker run -d \
                  --name mywell-server \
