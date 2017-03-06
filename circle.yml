@@ -16,7 +16,14 @@ dependencies:
 test:
   override:
     #unfortunately, no docker-compose without docker 1.10, and no lxc-attach or exec with docker 1.10, so we have to run everything ourselves
-    - docker run -d --name db -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=mywell -e MYSQL_USER=mywell -e  MYSQL_PASSWORD=password mariadb:10.0
+    - >
+      docker run -d \
+                 --name db \
+                 -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=mywell -e MYSQL_USER=mywell -e  MYSQL_PASSWORD=password \
+                 -p 3306:3306 \
+                 -v $(pwd)/mywell-db/server/boot/db:/docker-entrypoint-initdb.d \
+                 -v $(pwd)/mywell-server/test:/usr/ubuntu/ \
+                 mariadb:10.0
     - >
       docker run -d \
                  --name mywell-server \
