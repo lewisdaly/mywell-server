@@ -20,7 +20,6 @@ test:
       docker run -d \
                  --name db \
                  -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=mywell -e MYSQL_USER=mywell -e  MYSQL_PASSWORD=password \
-                 -p 3306:3306 \
                  -v $(pwd)/mywell-db/server/boot/db:/docker-entrypoint-initdb.d \
                  -v $(pwd)/mywell-server/test:/usr/ubuntu/ \
                  mariadb:10.0
