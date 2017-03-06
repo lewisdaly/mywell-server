@@ -144,3 +144,15 @@ All tasks:
   - allow dragging map to update location
 
 - add SMS query guide to settings
+
+
+
+
+
+- stack years in graphs
+  - don't connect with lines over 2 months
+- back to depth to water level
+- comments on readings, add to list of notes on well detail page
+
+talk to Murli about research?
+Think about role going forward?
