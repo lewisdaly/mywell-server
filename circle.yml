@@ -23,6 +23,7 @@ test:
                  -v $(pwd)/mywell-db/server/boot/db:/docker-entrypoint-initdb.d \
                  -v $(pwd)/mywell-server/test:/usr/ubuntu/ \
                  mariadb:10.0
+    - sleep 15s
     - >
       docker run -d \
                  --name mywell-server \
