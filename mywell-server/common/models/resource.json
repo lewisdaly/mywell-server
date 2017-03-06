@@ -51,6 +51,10 @@
       "type": "number",
       "id": 1,
       "required": true
+    },
+    "image": {
+      "type": "text",
+      "required": false
     }
   },
   "validations": [],

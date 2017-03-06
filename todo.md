@@ -1,11 +1,61 @@
+S12
+
+
 #TODO:
+1. run on Android
+2. Work on picture upload
+
+
+Bugs (android)
+- Access token on more page
+- cannot scroll on report view
+- new well cannot scroll (doesn't fit in page)
+- lat lng getting cut off
+- Only display "download a template" on desktop
+- loading more view is too slow (network I think)
+- maps not loading (especially when clicking on well)
+
+
+Run locally on android
+```
+gulp replace --env prod #just once really
+gulp babel && ionic run android
+```
 
 Today's Sprint
 - overhaul map detail view for resource
-   - new graphs
+  - redo layout
+  - add picture endpoint
+  - new graphs
 
 - map detail view for village
-  - village and postcode average
+  - village and postcode average graphs
+
+  - features
+    - Update with recent data
+    - ensure backups are working, upload to s3
+    - export feature - download all data as excel
+    - well picture banner
+    - well upload picture
+    - correcting data error - overwrite?
+    - pin code on startup
+    - set language and pin code in settings
+    - settings icon
+    - Android build and submission (signing key is on old mac!!!)
+
+  - slides
+  - paper (end of day)
+  - brochure
+  - postcard
+
+
+
+
+  Tomorrow morning:
+  -  code
+
+  Tomorrow Arvo:
+  - Work on paper
 
 
 fun idea:?

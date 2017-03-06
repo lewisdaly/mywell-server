@@ -22,7 +22,7 @@ module.exports = function(app, next) {
   /* Daily database backups at 1am */
   cron.schedule('0 1 * * *', () => {
     console.log(`${prefix} Performing DB backup`);
-    exec('/root/src/scripts/mysql_backup.sh', (error, stdout, stderr) => {
+    exec('/usr/src/app/mysql_backup.sh', (error, stdout, stderr) => {
       console.log(`${prefix} stdout: ` + stdout);
       console.log(`${prefix} stderr: ` + stderr);
       if (error !== null) {
