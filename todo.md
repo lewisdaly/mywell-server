@@ -1,10 +1,14 @@
-S12
+
+
 
 
 #TODO:
-1. run on Android
-2. Work on picture upload
-
+1. Overhaul MapDetail statistics
+2. optimize reading processing (linear time?)
+3. Upload new data and pictures
+3. Fix android bugs below
+4. android build and release
+- Refresh button
 
 Bugs (android)
 - Access token on more page
@@ -16,17 +20,11 @@ Bugs (android)
 - maps not loading (especially when clicking on well)
 
 
-Run locally on android
-```
-gulp replace --env prod #just once really
-gulp babel && ionic run android
-```
+*BY THE 12th*
 
 Today's Sprint
 - overhaul map detail view for resource
-  - redo layout
-  - add picture endpoint
-  - new graphs
+
 
 - map detail view for village
   - village and postcode average graphs
@@ -149,10 +147,10 @@ All tasks:
 
 
 
-- stack years in graphs
-  - don't connect with lines over 2 months
+Talk with Peter:
 - back to depth to water level
 - comments on readings, add to list of notes on well detail page
+
 
 talk to Murli about research?
 Think about role going forward?

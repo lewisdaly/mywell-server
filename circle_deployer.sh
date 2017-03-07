@@ -9,12 +9,21 @@ git pull origin master
 cd ~/mywell-server/mywell-ui
 git pull origin master
 
+echo 'setting up ui'
+cd ~/mywell-server/mywell-ui/src
+npm install
+npm run setup-prod
+npm run babel
+
 
 cd ~/mywell-server/
 ./run_server.sh production
 #make sure that we have switched the right env variables
 # cd ~/mywell-server/mywell-ui/src
 # npm run setup-prod
+
+# in /mywell-ui/src/:
+
 
 echo 'deployment finished. Tailing docker logs to be sure'
 docker logs mywellserver_mywell-server_1 | tail -10
