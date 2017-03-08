@@ -16,6 +16,16 @@ const fileExists = (filePath) => {
   }
 }
 
+describe('GET readingsByWeek', () => {
+  it.only('gets the readings by week', () => {
+    return Reading.getReadingsByWeek(313603, 1211)
+      .then(response => {
+        response.readings.forEach(value => console.log(value));
+      });
+  });
+
+});
+
 describe('GET Reading', () => {
   it('gets no reading if none exist within 1 week for a resource within a week', () => {
     return Reading.getCurrentReading(1211)

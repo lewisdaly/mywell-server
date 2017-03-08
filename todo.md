@@ -3,12 +3,13 @@
 
 
 #TODO:
-1. Overhaul MapDetail statistics
-2. optimize reading processing (linear time?)
-3. Upload new data and pictures
-3. Fix android bugs below
-4. android build and release
+- Optimize reading processing (linear time?)
+- Overhaul MapDetail statistics
+- Upload new data and pictures (wait for everything)
+- Fix android bugs below
+- android build and release
 - Refresh button
+- Slides (need data first)
 
 Bugs (android)
 - Access token on more page
@@ -20,7 +21,7 @@ Bugs (android)
 - maps not loading (especially when clicking on well)
 
 
-*BY THE 12th*
+*Deadline Saturday at 3pm*
 
 Today's Sprint
 - overhaul map detail view for resource

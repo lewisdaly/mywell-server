@@ -40,6 +40,12 @@
       "principalId": "$unauthenticated",
       "permission": "DENY",
       "property": "*"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "ALLOW",
+      "property": "getReadingsByWeek"
     }
   ],
   "methods": {}
