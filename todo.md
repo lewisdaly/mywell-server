@@ -1,45 +1,32 @@
-
-
-
-
 #TODO:
-- Optimize reading processing (linear time?)
-- Overhaul MapDetail statistics
-- Upload new data and pictures (wait for everything)
-- Fix android bugs below
-- android build and release
-- Refresh button
-- Slides (need data first)
 
-Bugs (android)
-- Access token on more page
-- cannot scroll on report view
-- new well cannot scroll (doesn't fit in page)
-- lat lng getting cut off
-- Only display "download a template" on desktop
-- loading more view is too slow (network I think)
-- maps not loading (especially when clicking on well)
+Waiting for data:
+  - Upload new data and pictures (wait for everything)
+  - Slides (need data first)
+
+- Fix mysql backup
+- Fix android bugs below
+  - Fix scrolling on new resource
+  - Access token on more page
+- android build and release
+- fix difference from june: is x -1!
+
+
+
+
 
 
 *Deadline Saturday at 3pm*
 
-Today's Sprint
-- overhaul map detail view for resource
-
-
+- maps not loading (especially when clicking on well)
+- Refresh button
 - map detail view for village
   - village and postcode average graphs
 
   - features
     - Update with recent data
-    - ensure backups are working, upload to s3
-    - export feature - download all data as excel
-    - well picture banner
-    - well upload picture
-    - correcting data error - overwrite?
     - pin code on startup
     - set language and pin code in settings
-    - settings icon
     - Android build and submission (signing key is on old mac!!!)
 
   - slides
