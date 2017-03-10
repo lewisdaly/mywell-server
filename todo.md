@@ -4,16 +4,12 @@ Waiting for data:
   - Upload new data and pictures (wait for everything)
   - Slides (need data first)
 
-- Fix mysql backup
 - Fix android bugs below
-  - Fix scrolling on new resource
-  - Access token on more page
+  - locate button alignment
 - android build and release
+- slides
+- Fix mysql backup
 - fix difference from june: is x -1!
-
-
-
-
 
 
 *Deadline Saturday at 3pm*
@@ -27,7 +23,6 @@ Waiting for data:
     - Update with recent data
     - pin code on startup
     - set language and pin code in settings
-    - Android build and submission (signing key is on old mac!!!)
 
   - slides
   - paper (end of day)
