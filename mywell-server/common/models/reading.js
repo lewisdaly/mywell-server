@@ -146,17 +146,18 @@ module.exports = function(Reading) {
     })
     .then(() => ExcelReader.readExcelFile(filePath))
     .then(worksheets => {
-      //let's just assume we have 1 worksheet, and it's the first
-      const worksheet = worksheets[0];
-      if (!ExcelReader.validateWorksheet(worksheet)) {
-        throw getError(500, `Invalid worksheet. Please make sure to use the template provided`);
-      }
+      return Promise.all(worksheets.map(worksheet => {
+        if (!ExcelReader.validateWorksheet(worksheet)) {
+          throw getError(500, `Invalid worksheet. Please make sure to use the template provided`);
+        }
 
-      parsedRows = ExcelReader.processWorksheet(worksheet);
-
-      //Looks like there is no more efficent way to do this other than 1 at a time in loopback:
-      return Promise.all(parsedRows.readings.map(reading => {
-        return Reading.create(reading, { skipUpdateModels:true});
+        parsedRows = ExcelReader.processWorksheet(worksheet);
+        return Promise.all(parsedRows.readings.map(reading => {
+          return Reading.create(reading, { skipUpdateModels:true})
+            .catch(err => {
+              console.log("row error", err);
+            });
+        }));
       }));
     })
     .then(createdReadings => {

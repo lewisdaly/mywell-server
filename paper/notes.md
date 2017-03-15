@@ -25,6 +25,7 @@ Outline:
       - These people don't want more mone
 
     - Don't use CDN's!
+    
 - Phase 3
   - Move to Nodejs & MySQL on docker $5 a month
 

@@ -1,15 +1,10 @@
 #TODO:
 
-Waiting for data:
-  - Upload new data and pictures (wait for everything)
-  - Slides (need data first)
 
-- Fix android bugs below
-  - locate button alignment
-- android build and release
-- slides
+- Upload new data and pictures (wait for everything)
 - Fix mysql backup
 - fix difference from june: is x -1!
+- excel upload support multiple sheets!
 
 
 *Deadline Saturday at 3pm*
@@ -29,14 +24,6 @@ Waiting for data:
   - brochure
   - postcard
 
-
-
-
-  Tomorrow morning:
-  -  code
-
-  Tomorrow Arvo:
-  - Work on paper
 
 
 fun idea:?
