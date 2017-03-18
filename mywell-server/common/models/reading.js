@@ -136,6 +136,12 @@ module.exports = function(Reading) {
     const filePath = `/usr/src/app/storage/${container}/${name}`;
     let parsedRows = null;
 
+    const sleep = (seconds) => {
+      return new Promise((resolve, reject) => {
+        setTimeout(resolve, seconds * 1000)
+      });
+    }
+
     return Promise.resolve(true)
     .then(() => {
       console.log(container, name);
@@ -145,6 +151,7 @@ module.exports = function(Reading) {
       }
     })
     .then(() => ExcelReader.readExcelFile(filePath))
+    // .then(() => sleep(60 * 5))
     .then(worksheets => {
       return Promise.all(worksheets.map(worksheet => {
         if (!ExcelReader.validateWorksheet(worksheet)) {
@@ -155,7 +162,7 @@ module.exports = function(Reading) {
         return Promise.all(parsedRows.readings.map(reading => {
           return Reading.create(reading, { skipUpdateModels:true})
             .catch(err => {
-              console.log("row error", err);
+              console.log("excel import - row error");
             });
         }));
       }));
