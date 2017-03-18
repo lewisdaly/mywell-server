@@ -5,6 +5,7 @@ const migrations = [
   require('./migrations/0001_calculate_stats'),
   require('./migrations/0002_village_coordinates'),
   require('./migrations/0003_resource_images'),
+  require('./migrations/0004_save_images'),
 ];
 
 module.exports = function(app, next) {
