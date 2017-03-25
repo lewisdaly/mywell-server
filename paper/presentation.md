@@ -5,13 +5,14 @@
 
 ##Overview:
 - Introduce theme:
+  - How can IT be used for Economic Development  in low income countries?
+
+   Topics:
   - IT for Development
   - IT innovation in the less noticed areas
-
-- Need for innovation in the rest of the world
-- How can we use IT to affect change in these poverty issues?
-
-- How can we apply digital innovation (from Silicon valley) to the rest of the world in order to make a difference?
+  - Need for innovation in the rest of the world
+  - How can we use IT to affect change in these poverty issues?
+  - How can we apply digital innovation (from Silicon valley) to the rest of the world in order to make a difference?
 
 - Challenges:
   - Groundwater conservation in west India
@@ -29,6 +30,7 @@
       - people are sceptical of scientists (often will consult local 'expert' (water diviner) first)
       - Govt. data is scarce, and not fine grained enough
       - low education and understanding of irrigation, well recharge, rainfall
+        - no quantitative analysis going
       - groundwater is an invisible resource!
 
 - What is MARVI?
@@ -40,6 +42,8 @@
 
 - What is MyWell
   - Technology component of MARVI
+  - Crowdsources well information from many people
+    - Give people ownership (no longer just scientists coming in - the villagers are the scientists)
   - Smartphone and SMS app for tracking well readings, among other things
     - Currrently, readings are being taken by hand for 10 villages. This obviously doesn't scale!
       - more robust system
@@ -55,9 +59,23 @@
     - BJ's can also add new 'resources', by inputting a few details, such as LatLng,
     - Attach pictures for a well
     - View graphs and statistics
+    - Also support excel uploading for desktop...
+    - Information Flows:
+      -
 
-  - Describe technology stack
+  - Small demo
+
+  - The technology
+    - Microservices approach on docker
     - MySQL, Nodejs, Docker, DigitalOcean, CircleCI, Ionic, AngularJS
+    - Microservices:
+      - Database
+      - Backend
+      - Frontend
+      - SMS
+    - Deployment Process:
+      -
+    - Issues and Further Development
 
   - Development Journey
     - MyWell-0.1: Initial work (at CMU) - SMS based prototype
@@ -68,12 +86,37 @@
 
 - Digital Innovation in the rest of the world
   - I really want to talk about this part! This is where I want to make my career
+  - Other innovations
+    - khushibaby: wearables for health in India
+    - m-pesa: defacto mobile money through data in Kenya, became actual money platform
 
   - Trip to India:
   - What did I learn?
     - IT doesn't solve everything
       - These people don't want more money
+      - Not a technology problem, just a partial solution
+      - It's not a technology problem, just a water problem,
+      This is just one simple case of using IT innovation in LIC's
 
     - Don't use CDN's!
 
-  - Mistakes (what could we have done better?)
+  - How do we apply digital innovation in LICs?
+    - Not sure, but I have some ideas:
+      1. Don't over engineer the solution.
+        - Previously built a robust user login and management component, but threw it all away - it was too complicated. All we needed was a Password
+        - It's easy to go in with the latest and greatest (I want to use NoSQL to scale this to 1 million wells!), but really we should be tackling the problem at hand.
+      2. We can probably learn as much from innovations in LIC's as they can learn from us
+      3. Understand the constraints and build for them
+        - eg. Modern web is not built for low-data plans
+        - We needed to be able to support SMS as a platform
+        
+  - Next Steps
+    - For MyWell and MARVI
+      - Applying for funding
+      - opportunities for partnership between SA and Rajasthan, but before then:
+    - Personally: I'm starting a company!
+      - at least a blog: https://medium.com/aptly
+      - I think there is a need for experts in these areas of technologies.
+        - A lot of the literature and research out there is for Policy makers, I want to make these things more approachable and appealing to Developers like myself.
+        - Google, Facebook, Amazon are attractive- but they solve problems like "How do I sell more toilet paper"
+        - Goal is to find similar projects like MARVI, and apply my knowledge and "expertise" to use IT to improve lives in LIC's
