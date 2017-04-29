@@ -15,7 +15,7 @@ def get_formatted_row(row):
     resource_id = int(row[5])
     lat = float(row[6])
     lng = float(row[7])
-    last_value = 0
+    last_value = float(row[8]) #make last value the depth, that way wells don't appear to be full
     last_date = 0
     village_id = int(row[3])
     owner = row[2]

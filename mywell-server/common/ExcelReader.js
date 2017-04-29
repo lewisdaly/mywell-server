@@ -59,6 +59,11 @@ const isValidatorValid = (validator) => {
 }
 
 const isRowValid = (row) => {
+  //Check to make sure that the reading isn't 0. If it is 0, then it is invalid
+  if (row.value === 0) {
+    return false;
+  }
+
   return isFalsyDictValid(row, null);
 }
 
