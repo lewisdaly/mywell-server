@@ -13,8 +13,8 @@ def get_preable():
 def get_formatted_row(row):
   try:
     resource_id = int(row[5])
-    lat = float(row[7])
-    lng = float(row[6])
+    lat = float(row[6])
+    lng = float(row[7])
     last_value = 0
     last_date = 0
     village_id = int(row[3])

@@ -32,8 +32,8 @@ def get_formatted_row(row):
     village_id = int(row[3])
     village_name = row[1]
     postcode = int(row[0])
-    lat = float(row[7])
-    lng = float(row[6])
+    lat = float(row[6])
+    lng = float(row[7])
 
     print('previous_village', previous_village)
 
