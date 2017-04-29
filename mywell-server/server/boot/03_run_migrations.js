@@ -8,7 +8,8 @@ const migrations = [
   require('./migrations/0004_save_images'),
   require('./migrations/0005_save_images_2'),
   require('./migrations/0006_save_images_3'),
-  require('./migrations/0007_register_megraj')
+  require('./migrations/0007_register_megraj'),
+  require('./migrations/0008_save_images_4'),
 ];
 
 module.exports = function(app, next) {
