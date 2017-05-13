@@ -1,6 +1,6 @@
-#MyWell Brochure
+# MyWell Brochure
 
-##What is it
+## What is it
 
 MyWell is a Smartphone and SMS app for tracking wells in MARVI. The app works by crowdsourcing well, rainfall and checkdam readings from MARVI's network of BJs. MyWell displays the current status of each well, as well as historical and village level data for simple comparison and analysis.
 
