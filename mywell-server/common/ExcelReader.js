@@ -84,7 +84,7 @@ const isFalsyDictValid = (dict, falseValue) => {
     return false;
   }
 
-  const options = dict.optional[optionalType];
+  let options = dict.optional && dict.optional[optionalType];
   if (options) {
     Object.keys(options).forEach(key => {
       if (options[key] === falseValue) {
@@ -239,10 +239,12 @@ const validateRegistrationHeadingRow = (worksheet, end) => {
     });
 
     if (isValidatorValid(rowValidator)) {
-      validatorTuple = [rowValidator, rowNumber];
+      //a little hacky, but the rows are 1 indexed I think, and the registration data is often only in 1 row!
+      validatorTuple = [rowValidator, rowNumber - 1];
     }
   });
 
+  console.log('rowValidator is', rowValidator, validatorTuple[1]);
   return validatorTuple;
 }
 
@@ -254,7 +256,7 @@ const validateRegistrationHeadingRow = (worksheet, end) => {
  */
 const validateWorksheet = (worksheet, worksheetType) => {
   if (!worksheetType) {
-    worksheetType = worksheetType.reading;
+    worksheetType = WorksheetType.reading;
   }
 
   headingsValid = false;
@@ -321,6 +323,9 @@ const processWorksheet = (worksheet, worksheetType) => {
   worksheet.eachRow(function(row, rowNumber) {
     if (rowNumber <= headingRow) return; //skip rows before heading
 
+    //Temp skip other rows
+    if (rowNumber > 10) return;
+
     const result =  processRow(worksheetType, row, rowValidator);
     let processedRow = result[0];
     let valid = result[1];
@@ -356,6 +361,9 @@ const processReadingRow = (row, rowValidator) => {
 }
 
 const processRegistrationRow = (row, rowValidator) => {
+  console.log(row.values);
+
+
   //TODO: figure out some constant for the registration
   const lat = row.values[rowValidator.lat];
   const lng = row.values[rowValidator.lng];
@@ -374,12 +382,15 @@ const processRegistrationRow = (row, rowValidator) => {
     last_value: 0,
     last_date: 0,
     owner: row.values[rowValidator.owner],
-    type:row.values[rowValidator.type],
+    type:rowValidator.type,
     postcode:row.values[rowValidator.postcode],
     elevation:row.values[rowValidator.optional.well.elevation],
     well_depth:row.values[rowValidator.optional.well.well_depth]
   };
 
+  console.log("resource is:", resource);
+
+  //TODO: fix this, so it works better with the optionals etc.
   const valid = isRowValid(resource)
   if (valid === true) {
     console.log("found valid row:", resource);
