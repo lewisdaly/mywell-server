@@ -10,6 +10,7 @@ const migrations = [
   require('./migrations/0006_save_images_3'),
   require('./migrations/0007_register_megraj'),
   require('./migrations/0008_save_images_4'),
+  require('./migrations/0009_register_village'),
 ];
 
 module.exports = function(app, next) {

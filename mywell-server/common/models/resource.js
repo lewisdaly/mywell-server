@@ -51,36 +51,50 @@ module.exports = function(Resource) {
       }
     })
     .then(() => ExcelReader.readExcelFile(filePath))
-    // .then(() => sleep(60 * 5))
     .then(worksheets => {
       return Promise.all(worksheets.map(worksheet => {
         if (!ExcelReader.validateWorksheet(worksheet, 'registration')) {
-          throw getError(500, `Invalid worksheet. Please make sure to use the template provided`);
+          return undefined;
         }
 
         parsedRows = ExcelReader.processWorksheet(worksheet, 'registration');
         return Promise.all(parsedRows.rows.map(resource => {
-          console.log("valid resource:", resource);
-
           return Resource.create(resource, { skipUpdateModels:true})
+            .then(_resource => {
+              return _resource;
+            })
             .catch(err => {
-              // console.log("excel import - row error");
+              console.log("excel import - row error:", err.message);
             });
         }));
       }));
     })
-    .then(createdResources => {
-      // console.log("createdResources", createdResources);
+    //Find stats from the saved resources
+    .then(_createdResourceWorksheets => {
+      let created = 0;
+      let parsedRows = 0;
+      let warnings = 0;
+
+      _createdResourceWorksheets.forEach(_worksheet => {
+        _worksheet && _worksheet.forEach(_row => {
+          parsedRows++;
+          if (!_row) {
+            warnings++;
+          } else {
+            created++;
+          }
+        });
+      });
 
       return {
-        created: createdResources.length,
-        parsedRows: createdResources.readings.length,
-        warnings: createdResources.warnings
+        created: created,
+        parsedRows: parsedRows,
+        warnings: warnings
       };
     })
     .catch(err => {
       console.log(err)
-      throw err;
+      return Promise.reject(err);
     });
   }
 };

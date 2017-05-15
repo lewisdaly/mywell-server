@@ -176,7 +176,7 @@ const validateRegistrationHeadingRow = (worksheet, end) => {
   const validRows = {
     postcode:   ['post', 'code', 'zip', 'postcode', 'post code'],
     owner:      ['observer', 'owner'],
-    id:         ['wellid', 'well id', 'resourceid', 'id', 'well', 'resource', 'ranfall', 'station'],
+    id:         ['wellid', 'well id', 'resourceid', 'id', 'well', 'resource'],
     lat:        ['longitude'],
     lng:        ['latitude'],
     wt_depth:   ['watertable depth cm', 'cm', 'depth', 'wt_depth', 'wt depth', 'water level', 'waterlevel', 'water_level']
@@ -244,7 +244,6 @@ const validateRegistrationHeadingRow = (worksheet, end) => {
     }
   });
 
-  console.log('rowValidator is', rowValidator, validatorTuple[1]);
   return validatorTuple;
 }
 
@@ -361,10 +360,7 @@ const processReadingRow = (row, rowValidator) => {
 }
 
 const processRegistrationRow = (row, rowValidator) => {
-  console.log(row.values);
 
-
-  //TODO: figure out some constant for the registration
   const lat = row.values[rowValidator.lat];
   const lng = row.values[rowValidator.lng];
   let geo = null;
@@ -376,7 +372,7 @@ const processRegistrationRow = (row, rowValidator) => {
     });
   }
 
-  const resource = {
+  let resource = {
     id: row.values[rowValidator.id],
     geo: geo,
     last_value: 0,
@@ -384,11 +380,14 @@ const processRegistrationRow = (row, rowValidator) => {
     owner: row.values[rowValidator.owner],
     type:rowValidator.type,
     postcode:row.values[rowValidator.postcode],
-    elevation:row.values[rowValidator.optional.well.elevation],
-    well_depth:row.values[rowValidator.optional.well.well_depth]
   };
 
-  console.log("resource is:", resource);
+  //TODO: tidy, this logic is getting too messy
+  if (rowValidator.type === 'well'){
+    resource.elevation = row.values[rowValidator.optional.well.elevation];
+    resource.well_depth = row.values[rowValidator.optional.well.well_depth];
+  }
+
 
   //TODO: fix this, so it works better with the optionals etc.
   const valid = isRowValid(resource)
