@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-This script takes well registration data (csv) and converts it into a loopback/MySQL ready format
+This script takes village registration data (csv) and converts it into a loopback/MySQL ready format
 """
 import sys
 import csv

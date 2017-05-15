@@ -154,12 +154,12 @@ module.exports = function(Reading) {
     // .then(() => sleep(60 * 5))
     .then(worksheets => {
       return Promise.all(worksheets.map(worksheet => {
-        if (!ExcelReader.validateWorksheet(worksheet)) {
+        if (!ExcelReader.validateWorksheet(worksheet, 'reading')) {
           throw getError(500, `Invalid worksheet. Please make sure to use the template provided`);
         }
 
-        parsedRows = ExcelReader.processWorksheet(worksheet);
-        return Promise.all(parsedRows.readings.map(reading => {
+        parsedRows = ExcelReader.processWorksheet(worksheet, 'reading');
+        return Promise.all(parsedRows.rows.map(reading => {
           return Reading.create(reading, { skipUpdateModels:true})
             .catch(err => {
               console.log("excel import - row error");

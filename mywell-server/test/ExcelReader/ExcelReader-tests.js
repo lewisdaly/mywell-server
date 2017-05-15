@@ -22,9 +22,9 @@ describe('it parses excel files correctly', () => {
     const validWorksheet = ExcelReader.filterEmptyWorksheets(workbook)[0];
     const invalidWorksheet = createWorksheetInvalidHeadings();
     //The heading is on the first row
-    assert.equal(ExcelReader.validateHeadingRow(validWorksheet, 5)[1], 1);
+    assert.equal(ExcelReader.validateReadingHeadingRow(validWorksheet, 5)[1], 1);
     //No valid heading row
-    assert.equal(ExcelReader.validateHeadingRow(invalidWorksheet, 5)[1], -1);
+    assert.equal(ExcelReader.validateReadingHeadingRow(invalidWorksheet, 5)[1], -1);
   });
 
 
@@ -32,11 +32,11 @@ describe('it parses excel files correctly', () => {
     const firstWorksheet = createWorkSheetValidHeadings(0);
     const secondWorksheet = createWorkSheetValidHeadings(1);
 
-    assert.deepEqual(ExcelReader.validateHeadingRow(firstWorksheet, 5)[0], {postcode: 1,
+    assert.deepEqual(ExcelReader.validateReadingHeadingRow(firstWorksheet, 5)[0], {postcode: 1,
       resourceId: 2,
       date: 3,
       wt_depth: 4 });
-    assert.deepEqual(ExcelReader.validateHeadingRow(secondWorksheet, 5)[0], {postcode: 4,
+    assert.deepEqual(ExcelReader.validateReadingHeadingRow(secondWorksheet, 5)[0], {postcode: 4,
       resourceId: 1,
       date: 2,
       wt_depth: 3 });
