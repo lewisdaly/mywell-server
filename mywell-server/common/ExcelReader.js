@@ -79,19 +79,21 @@ const isFalsyDictValid = (dict, falseValue) => {
 
   //Check for optional values:
   const optionalType = dict.type;
-  if (optionalType === falseValue || optionalType === undefined) {
-    //Make sure we even have the optional type
-    return false;
-  }
+  // if (optionalType === falseValue || optionalType === undefined) {
+  //   //Make sure we even have the optional type
+  //   return false;
+  // }
 
-  let options = dict.optional && dict.optional[optionalType];
-  if (options) {
-    Object.keys(options).forEach(key => {
-      if (options[key] === falseValue) {
-        isValid = false;
-        return;
-      }
-    });
+  if (optionalType) {
+    let options = dict.optional && dict.optional[optionalType];
+    if (options) {
+      Object.keys(options).forEach(key => {
+        if (options[key] === falseValue) {
+          isValid = false;
+          return;
+        }
+      });
+    }
   }
 
   Object.keys(dict).forEach(key => {
@@ -103,6 +105,46 @@ const isFalsyDictValid = (dict, falseValue) => {
   return isValid;
 }
 
+const inferType = (worksheet, end) => {
+  const inferredTypes = {
+    well: ['well Id', 'well'],
+    rain_gauge: ['Rainfall Station', 'rainfall'],
+    dam: ['Checkdam'],
+  };
+
+  //Keep a tally of how many times each type was mentioned
+  const inferredTypesTally = {
+    well: 0,
+    rain_gauge: 0,
+    dam: 0,
+  };
+
+  const range = Array.from(Array(end).keys());
+
+  range.forEach(rowNumber => {
+    let row = worksheet.getRow(rowNumber).values;
+    Object.keys(inferredTypes).forEach(key => {
+      possibleValues = inferredTypes[key];
+      possibleValues.forEach(value => {
+        row.forEach((cell, idx) => {
+          if (!isNullOrUndefined(cell) && typeof cell === 'string' && cell.toLowerCase().indexOf(value) > -1) {
+            inferredTypesTally[key]++
+          }
+        });
+      });
+    });
+  });
+
+  let max = -1;
+  let inferredType = null;
+  Object.keys(inferredTypesTally).forEach(key => {
+    if (inferredTypesTally[key] > max) {
+      max = inferredTypesTally[key];
+      inferredType = key;
+    }
+  });
+  return inferredType;
+}
 
 /**
  * iterate through rows till we find a valid one
@@ -116,20 +158,22 @@ const isFalsyDictValid = (dict, falseValue) => {
  */
 
 const validateReadingHeadingRow = (worksheet, end) => {
-  let rowValidator = {postcode:false, resourceId:false, date:false, wt_depth:false};
+  let rowValidator = {postcode:false, resourceId:false, date:false, wt_depth:false, type:false};
 
   const validRows = {
     postcode:   ['post', 'code', 'zip', 'postcode', 'post code'],
     resourceId: ['wellid', 'well id', 'resourceid', 'id', 'well', 'resource'],
     date:       ['date', 'day'],
-    wt_depth:   ['watertable depth cm', 'cm', 'depth', 'wt_depth', 'wt depth', 'water level', 'waterlevel', 'water_level']
+    wt_depth:   ['watertable depth cm', 'cm', 'depth', 'wt_depth', 'wt depth', 'water level', 'waterlevel', 'water_level', 'mm']
   };
 
   const range = Array.from(Array(end).keys());
   let validatorTuple = [rowValidator, -1];
 
+  rowValidator.type = inferType(worksheet, end);
+  console.log("row validator type is:", rowValidator.type)
+
   range.forEach(rowNumber => {
-    rowValidator = {postcode:false, resourceId:false, date:false, wt_depth:false};
     firstRow = worksheet.getRow(rowNumber).values;
     Object.keys(validRows).forEach(key => {
       possibleValues = validRows[key];
@@ -182,49 +226,9 @@ const validateRegistrationHeadingRow = (worksheet, end) => {
     wt_depth:   ['watertable depth cm', 'cm', 'depth', 'wt_depth', 'wt depth', 'water level', 'waterlevel', 'water_level']
   };
 
-  //TODO: infer the type from the text!
-  const inferredTypes = {
-    well: ['well Id', 'well'],
-    rain_gauge: ['Rainfall Station', 'rainfall'],
-    dam: ['Checkdam'],
-  };
-
-  //Keep a tally of how many times each type was mentioned
-  const inferredTypesTally = {
-    well: 0,
-    rain_gauge: 0,
-    dam: 0,
-  };
-
+  rowValidator.type = inferType(worksheet, end);
   const range = Array.from(Array(end).keys());
-  let validatorTuple = [rowValidator, -1];
-
   range.forEach(rowNumber => {
-    let row = worksheet.getRow(rowNumber).values;
-    Object.keys(inferredTypes).forEach(key => {
-      possibleValues = inferredTypes[key];
-      possibleValues.forEach(value => {
-        row.forEach((cell, idx) => {
-          if (!isNullOrUndefined(cell) && typeof cell === 'string' && cell.toLowerCase().indexOf(value) > -1) {
-            inferredTypesTally[key]++
-          }
-        });
-      });
-    });
-  });
-
-  let max = -1;
-  let inferredType = null;
-  Object.keys(inferredTypesTally).forEach(key => {
-    if (inferredTypesTally[key] > max) {
-      max = inferredTypesTally[key];
-      inferredType = key;
-    }
-  });
-  rowValidator.type = inferredType;
-
-  range.forEach(rowNumber => {
-    // rowValidator = {postcode:false, resourceId:false, date:false, wt_depth:false};
     let firstRow = worksheet.getRow(rowNumber).values;
     Object.keys(validRows).forEach(key => {
       possibleValues = validRows[key];
@@ -266,7 +270,7 @@ const validateWorksheet = (worksheet, worksheetType) => {
 
   switch (worksheetType) {
     case WorksheetType.reading:
-      [rowValidator, headingRow]  = validateReadingHeadingRow(worksheet, 5);
+      [rowValidator, headingRow]  = validateReadingHeadingRow(worksheet, 2);
       break;
     case WorksheetType.registration:
       [rowValidator, headingRow]  = validateRegistrationHeadingRow(worksheet, 5);
@@ -302,7 +306,7 @@ const processWorksheet = (worksheet, worksheetType) => {
 
   switch (worksheetType) {
     case WorksheetType.reading:
-      [rowValidator, headingRow]  = validateReadingHeadingRow(worksheet, 5);
+      [rowValidator, headingRow]  = validateReadingHeadingRow(worksheet, 2);
       break;
     case WorksheetType.registration:
       [rowValidator, headingRow]  = validateRegistrationHeadingRow(worksheet, 5);
@@ -321,9 +325,6 @@ const processWorksheet = (worksheet, worksheetType) => {
   //Format: {resourceId:1101,villageId:1101,value:9.17000007629394,date:"2012-08-26T00:00:00.000Z",postcode:313603},
   worksheet.eachRow(function(row, rowNumber) {
     if (rowNumber <= headingRow) return; //skip rows before heading
-
-    //Temp skip other rows
-    if (rowNumber > 10) return;
 
     const result =  processRow(worksheetType, row, rowValidator);
     let processedRow = result[0];
@@ -346,11 +347,28 @@ const processWorksheet = (worksheet, worksheetType) => {
 }
 
 const processReadingRow = (row, rowValidator) => {
+  // console.log("processReadingRow", rowValidator);
+
   const reading = {resourceId:null, villageId:null, value:null, postcode:null, date:null};
   reading.resourceId = row.values[rowValidator['resourceId']];
   reading.villageId = !isNullOrUndefined(reading.resourceId) && `${reading.resourceId}`.substring(0, 2);
-  valueCm = row.values[rowValidator['wt_depth']];
-  reading.value = valueCm/100;
+  value = row.values[rowValidator['wt_depth']];
+
+  if (!value || value == 0) {
+    reading.value = 0;
+  } else {
+    switch (rowValidator.type) {
+      case 'rain_gauge':
+          //Rain gauge is in mm!
+          reading.value = value/1000
+        break;
+      case 'well':
+      default:
+        //Well and default is in cm
+        reading.value = value/100;
+    }
+  }
+
   reading.postcode = row.values[rowValidator['postcode']];
   raw_date = row.values[rowValidator['date']];
   reading.date = !isNullOrUndefined(raw_date) && parseDateForgivingly(raw_date);

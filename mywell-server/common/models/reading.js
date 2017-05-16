@@ -151,27 +151,46 @@ module.exports = function(Reading) {
       }
     })
     .then(() => ExcelReader.readExcelFile(filePath))
-    // .then(() => sleep(60 * 5))
     .then(worksheets => {
       return Promise.all(worksheets.map(worksheet => {
         if (!ExcelReader.validateWorksheet(worksheet, 'reading')) {
-          throw getError(500, `Invalid worksheet. Please make sure to use the template provided`);
+          return undefined;
         }
 
         parsedRows = ExcelReader.processWorksheet(worksheet, 'reading');
         return Promise.all(parsedRows.rows.map(reading => {
           return Reading.create(reading, { skipUpdateModels:true})
             .catch(err => {
-              console.log("excel import - row error");
+              console.log("excel import - row error", err.message);
             });
         }));
       }));
     })
-    .then(createdReadings => {
+    //Find stats from the saved resources
+    .then(_createdReadings => {
+      let created = 0;
+      let parsedRows = 0;
+      let warnings = 0;
+
+      _createdReadings.forEach(_worksheet => {
+        _worksheet && _worksheet.forEach(_row => {
+          parsedRows++;
+          if (!_row) {
+            warnings++;
+          } else {
+            created++;
+          }
+        });
+      });
+
+      if (created == 0 && parsedRows == 0 && warnings == 0) {
+        return Promise.reject(getError(500, `Invalid worksheet. Please make sure to use the template provided`));
+      }
+
       return {
-        created: createdReadings.length,
-        parsedRows: parsedRows.readings.length,
-        warnings: parsedRows.warnings
+        created: created,
+        parsedRows: parsedRows,
+        warnings: warnings
       };
     })
     .catch(err => {
