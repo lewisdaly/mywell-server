@@ -11,6 +11,7 @@ const migrations = [
   require('./migrations/0007_register_megraj'),
   require('./migrations/0008_save_images_4'),
   require('./migrations/0009_register_village'),
+  require('./migrations/0010_register_udaipur'),
 ];
 
 module.exports = function(app, next) {

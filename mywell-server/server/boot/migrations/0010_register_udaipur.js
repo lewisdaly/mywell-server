@@ -5,11 +5,14 @@ const fs = require('fs');
 const isNullOrUndefined = require('util').isNullOrUndefined;
 
 const villages = [
-  {id:11, name:"Vallabhnagar", postcode:313601, coordinates:new loopback.GeoPoint({lat:24.6734,lng:74.0022})},
   {id:11, name:"Udaipur", postcode:313001, coordinates:new loopback.GeoPoint({lat:24.594875,lng:73.735913})},
 ];
 
-const name = '0009_register_village';
+const resources = [
+  {id:1170,geo:new loopback.GeoPoint({lat:24.594875,lng:73.735913}),last_value:0, last_date:0, villageId:11, owner:"Yogita Dashora", elevation:0, type:"raingauge", postcode:313001, well_depth:0},
+]
+
+const name = '0010_register_udaipur';
 const log = (details) => {
   console.log(`     - [${name}] ${details}`)
 }
@@ -19,6 +22,7 @@ const runMigration = (app) => {
 
   return Promise.all([
     createModel(app.models.Village, villages, true),
+    createModel(app.models.Resource, resources, true),
   ])
   .then(() => {
     log("seeded the village");

@@ -154,10 +154,11 @@ module.exports = function(Reading) {
     .then(worksheets => {
       return Promise.all(worksheets.map(worksheet => {
         if (!ExcelReader.validateWorksheet(worksheet, 'reading')) {
+          console.log("worksheet is invalid")
           return undefined;
         }
-
         parsedRows = ExcelReader.processWorksheet(worksheet, 'reading');
+
         return Promise.all(parsedRows.rows.map(reading => {
           return Reading.create(reading, { skipUpdateModels:true})
             .catch(err => {
@@ -182,10 +183,6 @@ module.exports = function(Reading) {
           }
         });
       });
-
-      if (created == 0 && parsedRows == 0 && warnings == 0) {
-        return Promise.reject(getError(500, `Invalid worksheet. Please make sure to use the template provided`));
-      }
 
       return {
         created: created,

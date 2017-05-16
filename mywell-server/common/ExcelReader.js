@@ -108,15 +108,15 @@ const isFalsyDictValid = (dict, falseValue) => {
 const inferType = (worksheet, end) => {
   const inferredTypes = {
     well: ['well Id', 'well'],
-    rain_gauge: ['Rainfall Station', 'rainfall'],
-    dam: ['Checkdam'],
+    raingauge: ['Rainfall Station', 'rainfall'],
+    checkdam: ['Checkdam', 'check'],
   };
 
   //Keep a tally of how many times each type was mentioned
   const inferredTypesTally = {
     well: 0,
-    rain_gauge: 0,
-    dam: 0,
+    raingauge: 0,
+    checkdam: 0,
   };
 
   const range = Array.from(Array(end).keys());
@@ -192,6 +192,7 @@ const validateReadingHeadingRow = (worksheet, end) => {
     }
   });
 
+  console.log(validatorTuple);
   return validatorTuple;
 }
 
@@ -220,7 +221,7 @@ const validateRegistrationHeadingRow = (worksheet, end) => {
   const validRows = {
     postcode:   ['post', 'code', 'zip', 'postcode', 'post code'],
     owner:      ['observer', 'owner'],
-    id:         ['wellid', 'well id', 'resourceid', 'id', 'well', 'resource'],
+    id:         ['wellid', 'well id', 'resourceid', 'id', 'well', 'resource', 'check id'],
     lat:        ['longitude'],
     lng:        ['latitude'],
     wt_depth:   ['watertable depth cm', 'cm', 'depth', 'wt_depth', 'wt depth', 'water level', 'waterlevel', 'water_level']
@@ -228,6 +229,8 @@ const validateRegistrationHeadingRow = (worksheet, end) => {
 
   rowValidator.type = inferType(worksheet, end);
   const range = Array.from(Array(end).keys());
+  let validatorTuple = [rowValidator, -1];
+
   range.forEach(rowNumber => {
     let firstRow = worksheet.getRow(rowNumber).values;
     Object.keys(validRows).forEach(key => {
@@ -358,7 +361,7 @@ const processReadingRow = (row, rowValidator) => {
     reading.value = 0;
   } else {
     switch (rowValidator.type) {
-      case 'rain_gauge':
+      case 'raingauge':
           //Rain gauge is in mm!
           reading.value = value/1000
         break;
@@ -390,6 +393,9 @@ const processRegistrationRow = (row, rowValidator) => {
     });
   }
 
+  const id = row.values[rowValidator.id];
+  const villageId = parseInt(`${id}`.substring(0,2));
+
   let resource = {
     id: row.values[rowValidator.id],
     geo: geo,
@@ -398,6 +404,7 @@ const processRegistrationRow = (row, rowValidator) => {
     owner: row.values[rowValidator.owner],
     type:rowValidator.type,
     postcode:row.values[rowValidator.postcode],
+    villageId:villageId
   };
 
   //TODO: tidy, this logic is getting too messy
