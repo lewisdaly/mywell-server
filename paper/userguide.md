@@ -123,17 +123,19 @@ MyWell's SMS number is `'90000000'`, and messages to MyWell SMS all start with t
 ```
 SMA <code> <pincode>
 ```
-Where `<code>` is 000 for saving a reading, and 999 for requesting information,
-and   `<pincode>` is the pincode that the Well, Checkdam or Rain Gauge is located in.
+Where:
+`<code>` is 000 for saving a reading, and 999 for requesting information
+`<pincode>` is the pincode that the Well, Checkdam or Rain Gauge is located in
 
 ### Recording a new Reading
 A Recording takes 3 additional parameters:
 ```
 <date> <resourceId> <reading>
 ```
-Where `<date>` is a 6 digit date that the reading has been taken, in format YYMMDD,
-and `<resourceId>` is the 4 digit id of the resource being recorded,
-and `<reading>` is the value of the reading, in cm
+Where:
+`<date>` is a 6 digit date that the reading has been taken, in format YYMMDD
+`<resourceId>` is the 4 digit id of the resource being recorded
+`<reading>` is the value of the reading, in cm
 
 #### Examples
 ```
@@ -145,7 +147,8 @@ A Query takes 1 additional parameter:
 ```
 <id>
 ```
-where `<id>` is the 2 digit villageId, or the 4 digit resourceId
+Where:
+`<id>` is the 2 digit villageId, or the 4 digit resourceId
 
 #### Example
 ```
