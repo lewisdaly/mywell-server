@@ -1,7 +1,7 @@
 # MyWell User Guide
 **MyWell Version 1.3.0**
 
-![icon](https://github.com/lewisdaly/mywell-server/blob/master/paper/userguide_images/icon.jpg)
+![icon](userguide_images/icon.jpg)
 
 MyWell is a Smartphone and SMS app for tracking wells in MARVI. The app works by crowdsourcing well, rainfall and checkdam readings from MARVI's network of BJs. MyWell displays the current status of each well, as well as historical and village level data for simple comparison and analysis.
 
@@ -35,27 +35,26 @@ MyWell is a Smartphone and SMS app for tracking wells in MARVI. The app works by
 <!-- /TOC -->
 ## MyWell App
 The MyWell App runs on Android or Web.
-[image-0-overview]
 
-![overview](https://github.com/lewisdaly/mywell-server/blob/master/paper/userguide_images/image-0-overview.png)
+![overview](userguide_images/image-0-overview.png)
 
 
-You can access the web one here: [mywell.marvi.org.in](http://mywell.marvi.org.in), or
-Download the Android app here: [Google Play Store](https://play.google.com/store/apps/details?id=com.ionicframework.ionicrainapp175406&hl=en)
+You can access MyWell web here: [mywell.marvi.org.in](http://mywell.marvi.org.in), or
+download the Android app here: [Google Play Store](https://play.google.com/store/apps/details?id=com.ionicframework.ionicrainapp175406&hl=en)
 
 ### The Map View
 From the map view, you can see all of the different wells, checkdams and rainfall stations that are being monitored in MyWell.
 
 A resource is one of these wells, checkdams or rainfall stations. They each have different icons:
-![image-1-icons](https://github.com/lewisdaly/mywell-server/blob/master/paper/userguide_images/1.png)
+![image-1-icons](userguide_images/1.png)
 
 Click on a resource to find out more information.
-![image-2-map-popup](https://github.com/lewisdaly/mywell-server/blob/master/paper/userguide_images/2.png)
+![image-2-map-popup](userguide_images/2.png)
 
 #### Map Detail
 From the popup window of a resource, click 'More' to find out more about this Well, Checkdam or Rainfall Station.
 
-![image-3-map-detail](https://github.com/lewisdaly/mywell-server/blob/master/paper/userguide_images/image-3-map-detail.png)
+![image-3-map-detail](userguide_images/image-3-map-detail.png)
 
 This page shows the resource's Photo, some statistics at a glance, and a graph of it's readings.
 
@@ -67,58 +66,58 @@ The average shows the current average watertable depth
 
 #### Reading Graphs
 
-![image-4-reading-graphs](https://github.com/lewisdaly/mywell-server/blob/master/paper/userguide_images/image-4-reading-graphs.png)
+![image-4-reading-graphs](userguide_images/image-4-reading-graphs.png)
 The reading graphs show a snapshot of 1 month, 3 month and 1 year long intervals. They show the data collected over the last 3 years, and allow for easy comparison from one year to the next
 
 
 ### Recording
 It's easy to record a new reading using MyWell.
-![image-5-recording-overview](https://github.com/lewisdaly/mywell-server/blob/master/paper/userguide_images/5.png)
+![image-5-recording-overview](userguide_images/5.png)
 
 #### Logging in
 First time users will need to log in, using the login button on the top right hand corner.
-![image-6-login-button](https://github.com/lewisdaly/mywell-server/blob/master/paper/userguide_images/6.png)
+![image-6-login-button](userguide_images/6.png)
 
 From this page, enter the login code that you were provided.
-![image-7-login-page](https://github.com/lewisdaly/mywell-server/blob/master/paper/userguide_images/7.png)
+![image-7-login-page](userguide_images/7.png)
 
 #### Saving a Reading
 Steps:
 1. Select the type of reading to be recorded
-![image-8-reading-selection](https://github.com/lewisdaly/mywell-server/blob/master/paper/userguide_images/8.png)
+![image-8-reading-selection](userguide_images/8.png)
 2. Enter in the pincode, date, ResourceId of the reading
-![image-9-reading-values](https://github.com/lewisdaly/mywell-server/blob/master/paper/userguide_images/9.png)
+![image-9-reading-values](userguide_images/9.png)
 3. Fill in any values specific to your reading. For wells, this is WaterTable depth, in metres
 4. Click submit, and your reading will be saved
 
 #### Offline readings
 If you don't have internet connectivity, your readings will be saved for a later date.
 You will see them in a queue below the submit button.
-![image-10-offline-submission](https://github.com/lewisdaly/mywell-server/blob/master/paper/userguide_images/11.png)
+![image-10-offline-submission](userguide_images/11.png)
 
 #### Bulk Upload (Web only)
 If you want to upload many readings at once, you can drag and drop an excel file here:
 [image-11-drag and drop]
 Download a template for an example of a correct file from the settings page:
-![image-12-download-template](https://github.com/lewisdaly/mywell-server/blob/master/paper/userguide_images/12.png)
+![image-12-download-template](userguide_images/12.png)
 
 ### MyWell Settings
 From this page, you can register a new resource, update a resource's image, and find out more information about MyWell. You must be logged in to make any of these changes.
 
-![image-13-mywell-settings](https://github.com/lewisdaly/mywell-server/blob/master/paper/userguide_images/13.png)
+![image-13-mywell-settings](userguide_images/13.png)
 
 #### Register a new Resource
 1. From the settings page, tap 'Register a new Well, Rain Gauge or Checkdam'
-![image-14-register-resource](https://github.com/lewisdaly/mywell-server/blob/master/paper/userguide_images/14.png)
+![image-14-register-resource](userguide_images/14.png)
 2. Drag around on the map, or use  your device's location to set the latitude and longitude of the new resource
 3. Enter the pin code, well owner, and the designated Id for the resource.
 4. Select what type of resource you are creating, and fill out any more necessary fields
-![image-15-register-dropdown](https://github.com/lewisdaly/mywell-server/blob/master/paper/userguide_images/15.png)
+![image-15-register-dropdown](userguide_images/15.png)
 5. Hit 'save'. If everything has been filled out correctly, it will add a new resource.
 
 #### Update a resource's photo (App only)
 1. From the settings page, tap 'Change an Image'
-![image-16-change-image-popup](https://github.com/lewisdaly/mywell-server/blob/master/paper/userguide_images/16.png)
+![image-16-change-image-popup](userguide_images/16.png)
 2. Enter the Pin code & Id of the resource you want to Change
 3. Take a photo and hit 'save'. The photo will be updated
 
