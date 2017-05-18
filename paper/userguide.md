@@ -4,19 +4,29 @@ MyWell is a Smartphone and SMS app for tracking wells in MARVI. The app works by
 
 ## Contents
 
-- map
-  - Map detail
-    - Statistics
-    - Readings
-- recording
-  - record a rainfall or checkdam reading
-  - bulk upload
-  - logging in
-- settings
-  - Register a new resource
-  - Change well photo
-  - Other
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
+- [MyWell User Guide](#mywell-user-guide)
+	- [Contents](#contents)
+	- [MyWell App](#mywell-app)
+		- [The Map View](#the-map-view)
+			- [Map Detail](#map-detail)
+			- [Statistics](#statistics)
+			- [Reading Graphs](#reading-graphs)
+		- [Recording](#recording)
+			- [Logging in](#logging-in)
+			- [Saving a Reading](#saving-a-reading)
+			- [Offline readings](#offline-readings)
+			- [Bulk Upload](#bulk-upload)
+		- [MyWell Settings](#mywell-settings)
+			- [Register a new Resource](#register-a-new-resource)
+			- [Update a resource's photo](#update-a-resources-photo)
+			- [Other](#other)
+	- [MyWell SMS](#mywell-sms)
+		- [Recording a new Reading](#recording-a-new-reading)
+		- [Query MyWell for Information](#query-mywell-for-information)
+
+<!-- /TOC -->
 ## MyWell App
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
@@ -52,14 +62,14 @@ The reading graphs show a snapshot of 1 month, 3 month and 1 year long intervals
 It's easy to record a new reading using MyWell.
 [image-5-recording-overview]
 
-### Logging in
+#### Logging in
 First time users will need to log in, using the login button on the top right hand corner.
 [image-6-login-button]
 
 From this page, enter the login code that you were provided.
 [image-7-login-page]
 
-### Saving a Recording
+#### Saving a Reading
 Steps:
 1. Select the type of reading to be recorded
 [image-8-reading-selection]
@@ -73,10 +83,19 @@ If you don't have internet connectivity, your readings will be saved for a later
 You will see them in a queue below the submit button.
 [image-10-offline-submission]
 
+#### Bulk Upload
 
+### MyWell Settings
+From this page, you can
 
+#### Register a new Resource
+
+#### Update a resource's photo
+
+#### Other
 
 ## MyWell SMS
 
-- recording a reading
-- querying MyWell's database
+### Recording a new Reading
+
+### Query MyWell for Information
