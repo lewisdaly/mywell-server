@@ -1,4 +1,5 @@
 # MyWell User Guide
+**MyWell Version 2.1**
 
 MyWell is a Smartphone and SMS app for tracking wells in MARVI. The app works by crowdsourcing well, rainfall and checkdam readings from MARVI's network of BJs. MyWell displays the current status of each well, as well as historical and village level data for simple comparison and analysis.
 
@@ -17,14 +18,17 @@ MyWell is a Smartphone and SMS app for tracking wells in MARVI. The app works by
 			- [Logging in](#logging-in)
 			- [Saving a Reading](#saving-a-reading)
 			- [Offline readings](#offline-readings)
-			- [Bulk Upload](#bulk-upload)
+			- [Bulk Upload (Web only)](#bulk-upload-web-only)
 		- [MyWell Settings](#mywell-settings)
 			- [Register a new Resource](#register-a-new-resource)
-			- [Update a resource's photo](#update-a-resources-photo)
+			- [Update a resource's photo (App only)](#update-a-resources-photo-app-only)
 			- [Other](#other)
 	- [MyWell SMS](#mywell-sms)
 		- [Recording a new Reading](#recording-a-new-reading)
+			- [Examples](#examples)
 		- [Query MyWell for Information](#query-mywell-for-information)
+			- [Example](#example)
+		- [MyWell SMS Screenshots](#mywell-sms-screenshots)
 
 <!-- /TOC -->
 ## MyWell App
@@ -83,19 +87,70 @@ If you don't have internet connectivity, your readings will be saved for a later
 You will see them in a queue below the submit button.
 [image-10-offline-submission]
 
-#### Bulk Upload
+#### Bulk Upload (Web only)
+If you want to upload many readings at once, you can drag and drop an excel file here:
+[image-11-drag and drop]
+Download a template for an example of a correct file from the settings page:
+[image-12-download-template]
 
 ### MyWell Settings
-From this page, you can
+From this page, you can register a new resource, update a resource's image, and find out more information about MyWell. You must be logged in to make any of these changes.
+
+[image-13-mywell-settings]
 
 #### Register a new Resource
+1. From the settings page, tap 'Register a new Well, Rain Gauge or Checkdam'
+[image-14-register-resource]
+2. Drag around on the map, or use  your device's location to set the latitude and longitude of the new resource
+3. Enter the pin code, well owner, and the designated Id for the resource.
+4. Select what type of resource you are creating, and fill out any more necessary fields
+[image-15-register-dropdown]
+5. Hit 'save'. If everything has been filled out correctly, it will add a new resource.
 
-#### Update a resource's photo
+#### Update a resource's photo (App only)
+1. From the settings page, tap 'Change an Image'
+[image-15-change-image-popup]
+2. Enter the Pin code & Id of the resource you want to Change
+3. Take a photo and hit 'save'. The photo will be updated
 
 #### Other
+You can also download all of the readings in mywell's database as an excel file, and download an example template for bulk uploading many readings at once.
 
 ## MyWell SMS
+Two of the key MyWell tools are available over SMS as well as through the MyWell app; Recording a new reading, and querying a Well, Checkdam or Raingauge for information
+
+MyWell's SMS number is '90000000', and messages to MyWell SMS all start with the same format:
+```
+SMA <code> <pincode>
+```
+Where `<code>` is 000 for saving a reading, and 999 for requesting information,
+and   `<pincode>` is the pincode that the Well, Checkdam or Rain Gauge is located in.
 
 ### Recording a new Reading
+A Recording takes 3 additional parameters:
+```
+<date> <resourceId> <reading>
+```
+Where `<date>` is a 6 digit date that the reading has been taken, in format YYMMDD,
+and `<resourceId>` is the 4 digit id of the resource being recorded,
+and `<reading>` is the value of the reading, in cm
+
+#### Examples
+```
+SMA 000 313603 170125 1501 1500 # update resource 1501 to a reading of 1500cm in village with pincode 313603, on the 25th of Jan, 2017
+```
 
 ### Query MyWell for Information
+A Query takes 1 additional parameter:
+```
+<id>
+```
+where `<id>` is the 2 digit villageId, or the 4 digit resourceId
+
+#### Example
+```
+SMA 999 313603 15                #Query information from village 15 in pincode 313603
+SMA 999 313603 1560              #Query information from resource 1560 in pincode 313603
+```
+
+### MyWell SMS Screenshots
