@@ -119,7 +119,7 @@ You can also download all of the readings in mywell's database as an excel file,
 ## MyWell SMS
 Two of the key MyWell tools are available over SMS as well as through the MyWell app; Recording a new reading, and querying a Well, Checkdam or Raingauge for information
 
-MyWell's SMS number is '90000000', and messages to MyWell SMS all start with the same format:
+MyWell's SMS number is `'90000000'`, and messages to MyWell SMS all start with the same format:
 ```
 SMA <code> <pincode>
 ```
@@ -154,3 +154,5 @@ SMA 999 313603 1560              #Query information from resource 1560 in pincod
 ```
 
 ### MyWell SMS Screenshots
+
+[image-17-sms-screenshots]
