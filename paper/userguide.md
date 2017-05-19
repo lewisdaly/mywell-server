@@ -69,7 +69,7 @@ The average shows the current average watertable depth
 
 #### Reading Graphs
 
-![image-4-reading-graphs](userguide_images/image-4-reading-graphs.png)
+![image-4-reading-graphs](userguide_images/image-4-reading-graphs.png | width=100)
 The reading graphs show a snapshot of 1 month, 3 month and 1 year long intervals. They show the data collected over the last 3 years, and allow for easy comparison from one year to the next
 
 
