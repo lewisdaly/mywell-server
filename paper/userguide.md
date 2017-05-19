@@ -49,16 +49,14 @@ A resource is one of these wells, checkdams or rainfall stations. They each have
 
 <img src="userguide_images/1.png" alt="image-1-icons" width="200px;"/>
 
-
-
 Click on a resource to find out more information.
-<img src="userguide_images/2.png" alt="image-2-map-popup" style="width: 200px;"/>
+<img src="userguide_images/2.png" alt="image-2-map-popup" width="200px;"/>
 
 
 #### Map Detail
 From the popup window of a resource, click 'More' to find out more about this Well, Checkdam or Rainfall Station.
 
-<img src="userguide_images/image-3-map-detail.png" alt="image-3-map-detail" style="width: 500px;"/>
+<img src="userguide_images/image-3-map-detail.png" alt="image-3-map-detail" width="500px;"/>
 
 
 This page shows the resource's Photo, some statistics at a glance, and a graph of it's readings.
@@ -71,7 +69,7 @@ The average shows the current average watertable depth
 
 #### Reading Graphs
 
-![image-4-reading-graphs](userguide_images/image-4-reading-graphs.png | width=100)
+![image-4-reading-graphs](userguide_images/image-4-reading-graphs.png)
 The reading graphs show a snapshot of 1 month, 3 month and 1 year long intervals. They show the data collected over the last 3 years, and allow for easy comparison from one year to the next
 
 
@@ -82,48 +80,57 @@ It's easy to record a new reading using MyWell.
 
 #### Logging in
 First time users will need to log in, using the login button on the top right hand corner.
-![image-6-login-button](userguide_images/6.png)
+<img src="userguide_images/6.png" alt="login-button" style="width: 300px;"/>
+
 
 From this page, enter the login code that you were provided.
-![image-7-login-page](userguide_images/7.png)
+<img src="userguide_images/7.png" alt="login-page" style="width: 300px;"/>
+
 
 #### Saving a Reading
 Steps:
 1. Select the type of reading to be recorded
-![image-8-reading-selection](userguide_images/8.png)
+<img src="userguide_images/8.png" alt="reading-selection" style="width: 300px;"/>
+
 2. Enter in the pincode, date, ResourceId of the reading
-![image-9-reading-values](userguide_images/9.png)
+<img src="userguide_images/9.png" alt="login-button" style="width: 300px;"/>
+
 3. Fill in any values specific to your reading. For wells, this is WaterTable depth, in metres
 4. Click submit, and your reading will be saved
 
 #### Offline readings
 If you don't have internet connectivity, your readings will be saved for a later date.
 You will see them in a queue below the submit button.
-![image-10-offline-submission](userguide_images/11.png)
+<img src="userguide_images/11.png" alt="login-button" style="width: 500px;"/>
 
 #### Bulk Upload (Web only)
 If you want to upload many readings at once, you can drag and drop an excel file here:
 [image-11-drag and drop]
 Download a template for an example of a correct file from the settings page:
-![image-12-download-template](userguide_images/12.png)
+<img src="userguide_images/12.png" alt="login-button" style="width: 500px;"/>
+
 
 ### MyWell Settings
 From this page, you can register a new resource, update a resource's image, and find out more information about MyWell. You must be logged in to make any of these changes.
 
-![image-13-mywell-settings](userguide_images/13.png)
+<img src="userguide_images/13.png" alt="login-button" style="width: 400px;"/>
+
 
 #### Register a new Resource
 1. From the settings page, tap 'Register a new Well, Rain Gauge or Checkdam'
-![image-14-register-resource](userguide_images/14.png)
+<img src="userguide_images/14.png" alt="login-button" style="width: 400px;"/>
+
 2. Drag around on the map, or use  your device's location to set the latitude and longitude of the new resource
 3. Enter the pin code, well owner, and the designated Id for the resource.
 4. Select what type of resource you are creating, and fill out any more necessary fields
-![image-15-register-dropdown](userguide_images/15.png)
+<img src="userguide_images/15.png" alt="login-button" style="width: 400px;"/>
+
 5. Hit 'save'. If everything has been filled out correctly, it will add a new resource.
 
 #### Update a resource's photo (App only)
 1. From the settings page, tap 'Change an Image'
-![image-16-change-image-popup](userguide_images/16.png)
+<img src="userguide_images/16.png" alt="login-button" style="width: 400px;"/>
+
 2. Enter the Pin code & Id of the resource you want to Change
 3. Take a photo and hit 'save'. The photo will be updated
 
