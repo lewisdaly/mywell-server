@@ -50,6 +50,8 @@ A resource is one of these wells, checkdams or rainfall stations. They each have
 <img src="userguide_images/1.png" alt="image-1-icons" width="200px;"/>
 
 Click on a resource to find out more information.
+
+
 <img src="userguide_images/2.png" alt="image-2-map-popup" width="200px;"/>
 
 
