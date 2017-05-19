@@ -46,15 +46,18 @@ download the Android app here: [Google Play Store](https://play.google.com/store
 From the map view, you can see all of the different wells, checkdams and rainfall stations that are being monitored in MyWell.
 
 A resource is one of these wells, checkdams or rainfall stations. They each have different icons:
-![image-1-icons](userguide_images/1.png)
+<img src="userguide_images/1.png" alt="image-1-icons" style="width: 200px;"/>
+
 
 Click on a resource to find out more information.
-![image-2-map-popup](userguide_images/2.png)
+<img src="userguide_images/2.png" alt="image-2-map-popup" style="width: 200px;"/>
+
 
 #### Map Detail
 From the popup window of a resource, click 'More' to find out more about this Well, Checkdam or Rainfall Station.
 
-![image-3-map-detail](userguide_images/image-3-map-detail.png)
+<img src="userguide_images/image-3-map-detail.png" alt="image-3-map-detail" style="width: 500px;"/>
+
 
 This page shows the resource's Photo, some statistics at a glance, and a graph of it's readings.
 
@@ -72,7 +75,8 @@ The reading graphs show a snapshot of 1 month, 3 month and 1 year long intervals
 
 ### Recording
 It's easy to record a new reading using MyWell.
-![image-5-recording-overview](userguide_images/5.png)
+<img src="userguide_images/5.png" alt="mage-5-recording-overview" style="width: 300px;"/>
+
 
 #### Logging in
 First time users will need to log in, using the login button on the top right hand corner.
