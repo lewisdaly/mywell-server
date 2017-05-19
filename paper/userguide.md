@@ -46,10 +46,12 @@ download the Android app here: [Google Play Store](https://play.google.com/store
 From the map view, you can see all of the different wells, checkdams and rainfall stations that are being monitored in MyWell.
 
 A resource is one of these wells, checkdams or rainfall stations. They each have different icons:
-<img src="userguide_images/1.png" alt="image-1-icons" style="width: 200px;"/>  
+
+<img src="userguide_images/1.png" alt="image-1-icons" width="200px;"/>
 
 
-Click on a resource to find out more information.  
+
+Click on a resource to find out more information.
 <img src="userguide_images/2.png" alt="image-2-map-popup" style="width: 200px;"/>
 
 
@@ -135,19 +137,19 @@ MyWell's SMS number is `'90000000'`, and messages to MyWell SMS all start with t
 ```
 SMA <code> <pincode>
 ```
-**Where:**
-`<code>` is 000 for saving a reading, and 999 for requesting information
-`<pincode>` is the pincode that the Well, Checkdam or Rain Gauge is located in
+>**Where:**
+>`<code>` is 000 for saving a reading, and 999 for requesting information
+>`<pincode>` is the pincode that the Well, Checkdam or Rain Gauge is located in
 
 ### Recording a new Reading
 A Recording takes 3 additional parameters:
 ```
 <date> <resourceId> <reading>
 ```
-**Where:**
-`<date>` is a 6 digit date that the reading has been taken, in format YYMMDD
-`<resourceId>` is the 4 digit id of the resource being recorded
-`<reading>` is the value of the reading, in cm
+>**Where:**
+>`<date>` is a 6 digit date that the reading has been taken, in format YYMMDD
+>`<resourceId>` is the 4 digit id of the resource being recorded
+>`<reading>` is the value of the reading, in cm
 
 #### Examples
 ```
@@ -159,8 +161,8 @@ A Query takes 1 additional parameter:
 ```
 <id>
 ```
-**Where:**
-`<id>` is the 2 digit villageId, or the 4 digit resourceId
+>**Where:**
+>`<id>` is the 2 digit villageId, or the 4 digit resourceId
 
 #### Example
 ```
