@@ -56,7 +56,7 @@ Click on a resource to find out more information.
 
 
 #### Map Detail
-From the popup window of a resource, click 'More' to find out more about this Well, Checkdam or Rainfall Station.
+From the popup window of a resource, click **'More'** to find out more about this Well, Checkdam or Rainfall Station.
 
 <img src="userguide_images/image-3-map-detail.png" alt="image-3-map-detail" width="500px;"/>
 
@@ -77,25 +77,25 @@ The reading graphs show a snapshot of 1 month, 3 month and 1 year long intervals
 
 ### Recording
 It's easy to record a new reading using MyWell.
-<img src="userguide_images/5.png" alt="mage-5-recording-overview" style="width: 300px;"/>
+<img src="userguide_images/5.png" alt="mage-5-recording-overview" width="300px;"/>
 
 
 #### Logging in
 First time users will need to log in, using the login button on the top right hand corner.
-<img src="userguide_images/6.png" alt="login-button" style="width: 300px;"/>
+<img src="userguide_images/6.png" alt="login-button" width="300px;"/>
 
 
 From this page, enter the login code that you were provided.
-<img src="userguide_images/7.png" alt="login-page" style="width: 300px;"/>
+<img src="userguide_images/7.png" alt="login-page" width="300px;"/>
 
 
 #### Saving a Reading
 Steps:
 1. Select the type of reading to be recorded
-<img src="userguide_images/8.png" alt="reading-selection" style="width: 300px;"/>
+<img src="userguide_images/8.png" alt="reading-selection" width="300px;"/>
 
 2. Enter in the pincode, date, ResourceId of the reading
-<img src="userguide_images/9.png" alt="login-button" style="width: 300px;"/>
+<img src="userguide_images/9.png" alt="login-button" width="300px;"/>
 
 3. Fill in any values specific to your reading. For wells, this is WaterTable depth, in metres
 4. Click submit, and your reading will be saved
@@ -103,35 +103,35 @@ Steps:
 #### Offline readings
 If you don't have internet connectivity, your readings will be saved for a later date.
 You will see them in a queue below the submit button.
-<img src="userguide_images/11.png" alt="login-button" style="width: 500px;"/>
+<img src="userguide_images/11.png" alt="login-button" width="500px;"/>
 
 #### Bulk Upload (Web only)
 If you want to upload many readings at once, you can drag and drop an excel file here:
 [image-11-drag and drop]
 Download a template for an example of a correct file from the settings page:
-<img src="userguide_images/12.png" alt="login-button" style="width: 500px;"/>
+<img src="userguide_images/12.png" alt="login-button" width="500px;"/>
 
 
 ### MyWell Settings
 From this page, you can register a new resource, update a resource's image, and find out more information about MyWell. You must be logged in to make any of these changes.
 
-<img src="userguide_images/13.png" alt="login-button" style="width: 400px;"/>
+<img src="userguide_images/13.png" alt="login-button" width="400px;"/>
 
 
 #### Register a new Resource
 1. From the settings page, tap 'Register a new Well, Rain Gauge or Checkdam'
-<img src="userguide_images/14.png" alt="login-button" style="width: 400px;"/>
+<img src="userguide_images/14.png" alt="login-button" width="400px;"/>
 
 2. Drag around on the map, or use  your device's location to set the latitude and longitude of the new resource
 3. Enter the pin code, well owner, and the designated Id for the resource.
 4. Select what type of resource you are creating, and fill out any more necessary fields
-<img src="userguide_images/15.png" alt="login-button" style="width: 400px;"/>
+<img src="userguide_images/15.png" alt="login-button" width="400px;"/>
 
 5. Hit 'save'. If everything has been filled out correctly, it will add a new resource.
 
 #### Update a resource's photo (App only)
 1. From the settings page, tap 'Change an Image'
-<img src="userguide_images/16.png" alt="login-button" style="width: 400px;"/>
+<img src="userguide_images/16.png" alt="login-button" width="400px;"/>
 
 2. Enter the Pin code & Id of the resource you want to Change
 3. Take a photo and hit 'save'. The photo will be updated
