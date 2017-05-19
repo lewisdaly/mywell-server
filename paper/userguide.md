@@ -46,10 +46,10 @@ download the Android app here: [Google Play Store](https://play.google.com/store
 From the map view, you can see all of the different wells, checkdams and rainfall stations that are being monitored in MyWell.
 
 A resource is one of these wells, checkdams or rainfall stations. They each have different icons:
-<img src="userguide_images/1.png" alt="image-1-icons" style="width: 200px;"/>
+<img src="userguide_images/1.png" alt="image-1-icons" style="width: 200px;"/>  
 
 
-Click on a resource to find out more information.
+Click on a resource to find out more information.  
 <img src="userguide_images/2.png" alt="image-2-map-popup" style="width: 200px;"/>
 
 
