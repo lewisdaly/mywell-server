@@ -9,6 +9,11 @@ services:
      - ./mywell-server/node_modules:/usr/src/app/node_modules
     environment:
       - "TERM=xterm-256color"
+      - VIRTUAL_HOST=mywell-server.marvi.org.in
+      - HTTPS_METHOD=redirect
+      - VIRTUAL_PORT=3000
+      - LETSENCRYPT_EMAIL=lewis@vesselstech.com
+      - LETSENCRYPT_HOST=mywell-server.marvi.org.in
     links:
     - db:db
 
