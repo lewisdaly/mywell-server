@@ -17,3 +17,5 @@ npm run babel
 
 cd ~/mywell-server/
 ./run_server.sh production
+
+exit

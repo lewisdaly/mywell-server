@@ -30,6 +30,8 @@ then
   echo "running server in production mode"
   export VERSION_NUMBER=1.3
   export ENVIRONMENT=production
+  docker-compose up -d
+  exit 0
 fi
 
 docker-compose up

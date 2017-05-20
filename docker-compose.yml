@@ -25,9 +25,9 @@ services:
       - VIRTUAL_PORT=8080
       - LETSENCRYPT_EMAIL=lewis@vesselstech.com
       - LETSENCRYPT_HOST=mywell.marvi.org.in
-      - ENVIRONMENT:
-      - ENABLE_LOGS:
-      - VERSION_NUMBER:
+      - ENVIRONMENT
+      - ENABLE_LOGS
+      - VERSION_NUMBER
 
   db:
     image: mariadb:10.0
