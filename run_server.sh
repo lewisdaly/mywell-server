@@ -23,12 +23,13 @@ fi
 
 export ENVIRONMENT=development
 export ENABLE_LOGS=true
+export VERSION_NUMBER=dev_1.3
 
 if [ "$1" == "production" ]
 then
   echo "running server in production mode"
+  export VERSION_NUMBER=1.3
   export ENVIRONMENT=production
 fi
-
 
 docker-compose up

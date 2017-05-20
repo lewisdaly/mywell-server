@@ -1,4 +1,5 @@
 #!/bin/bash
+export VERSION_NUMBER=1.3
 
 cd /Users/lewis/developer/mywell/src/mywell-ui/src
 gulp replace --env prod #just once really

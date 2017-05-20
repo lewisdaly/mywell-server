@@ -22,6 +22,7 @@ services:
     environment:
       ENVIRONMENT:
       ENABLE_LOGS:
+      VERSION_NUMBER:
 
   db:
     image: mariadb:10.0
