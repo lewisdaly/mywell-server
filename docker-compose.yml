@@ -22,7 +22,7 @@ services:
     environment:
       - VIRTUAL_HOST=mywell.marvi.org.in
       - HTTPS_METHOD=redirect
-      - VIRTUAL_PORT=8080
+      - VIRTUAL_PORT=80
       - LETSENCRYPT_EMAIL=lewis@vesselstech.com
       - LETSENCRYPT_HOST=mywell.marvi.org.in
       - ENVIRONMENT
