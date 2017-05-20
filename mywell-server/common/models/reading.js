@@ -202,6 +202,8 @@ module.exports = function(Reading) {
    */
   Reading.getCurrentReading = (resourceId, postcode) => {
 
+    console.log("getCurrentReading", resourceId, postcode);
+
     const now = moment();
     const upperDate = now.clone();
     const lowerDate = now.clone().subtract(7, 'days');
@@ -251,9 +253,7 @@ module.exports = function(Reading) {
     Reading.app.models.resource.find({where:{and: [{id:reading.resourceId},{postcode:reading.postcode}]}}, (err, resources) => {
       if (err) next(err);
 
-      // console.log("found resource", resources);
       if (isNullOrUndefined(resources) || isNullOrUndefined(resources[0])) {
-        //TODO: throw error, return 400
         return next(new Error("resource doesnt exist!"));
       }
 
@@ -272,7 +272,6 @@ module.exports = function(Reading) {
         let err = new Error("Reading recorded, but resource not updated. A newer reading exists.")
         err.statusCode = 206;
         return next(err);
-
       }
     });
    });

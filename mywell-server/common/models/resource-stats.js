@@ -396,8 +396,8 @@ module.exports = function(ResourceStats) {
       {
        accepts: [
          {arg: 'villageId', type:'number', description:'resourceId', required:true},
-         {arg: 'postcode', type:'number', description:'postcode. defaults to 313603', required:true},
          {arg: 'resourceType', type:'string', description:'Resourcetype [well, checkdam, raingauge]. Defaults to well', required:false},
+         {arg: 'postcode', type:'number', description:'postcode. defaults to 313603', required:true},
          {arg: 'month', type:'string', description:'month string in the format of YYYY-mm, debugging use only - use historic as it is more optimized'}
        ],
        description: 'Gets the running average for the village for this month',
@@ -429,6 +429,8 @@ module.exports = function(ResourceStats) {
             resource.type = "${resourceType}"
       GROUP BY reading.villageId, reading.postcode;
       `;
+
+      console.log("query is:", query);
 
       const datasource = ResourceStats.dataSource;
       return ResourceStats.queryDatasource(query, datasource)
