@@ -81,7 +81,7 @@ module.exports = function(Reading) {
           if (isNullOrUndefined(reading)) {
             return null; //make sure we actually return null
           }
-          return reading
+          return reading.toFixed(2);
         });
 
         return {
