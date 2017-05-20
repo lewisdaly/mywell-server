@@ -22,6 +22,7 @@ then
 fi
 
 export ENVIRONMENT=development
+export ENABLE_LOGS=true
 
 if [ "$1" == "production" ]
 then

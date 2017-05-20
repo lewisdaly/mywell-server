@@ -21,6 +21,7 @@ services:
     command: /usr/src/app/entrypoint.sh
     environment:
       ENVIRONMENT:
+      ENABLE_LOGS:
 
   db:
     image: mariadb:10.0
