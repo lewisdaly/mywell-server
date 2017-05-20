@@ -237,9 +237,9 @@ module.exports = function(Reading) {
 
 
   /**
-   * Before saving, validate, and update the correct resource table
+   * After saving, validate, and update the correct resource table
    */
-   Reading.observe('before save', function updateModels(ctx, next) {
+   Reading.observe('after save', function updateModels(ctx, next) {
     //get app
     if (ctx.options && ctx.options.skipUpdateModels) {
       return next();
