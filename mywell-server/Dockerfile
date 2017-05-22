@@ -2,6 +2,7 @@ FROM node:latest
 
 #Create app directory
 RUN mkdir -p /usr/src/app
+RUN mkdir -p /usr/src/app/storage
 
 RUN npm install nodemon -g
 RUN npm install loopback -g
