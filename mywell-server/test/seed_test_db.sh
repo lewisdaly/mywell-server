@@ -4,9 +4,10 @@
 RETRIES=10
 
 function seedDB() {
-  echo 'seeding db'
+  echo 'clearing db'
   mysql -u mywell -ppassword -e "DROP DATABASE mywell;"
   mysql -u mywell -ppassword -e "CREATE DATABASE mywell;"
+  echo 'seeding db...'
   mysql mywell -u mywell -ppassword < /usr/ubuntu/mywell_test_seed.sql
   echo 'seeding complete'
   tail -f /dev/null

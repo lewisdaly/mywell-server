@@ -25,7 +25,7 @@ describe('GET /resource_stats', () => {
         })
     });
 
-    it('gets the current monthly average for a village', () => {
+    it.skip('gets the current monthly average for a village', () => {
       mockDate.set(moment('2012-08-01'));
 
       return app.models.ResourceStats.getCurrentVillageAverage(12, 'well', 313603)
@@ -65,7 +65,7 @@ describe('GET /resource_stats', () => {
         });
     });
 
-    it('gets the difference from June for a village', () => {
+    it.skip('gets the difference from June for a village', () => {
       mockDate.set(moment('2013-08-17'));
 
       return app.models.ResourceStats.getDifferenceFromJune(Enums.ResourceType.WELL, Enums.ReadingType.VILLAGE, 13, 313603)
@@ -75,7 +75,7 @@ describe('GET /resource_stats', () => {
         });
     });
 
-    it('gets the difference from June for a postcode', () => {
+    it.skip('gets the difference from June for a postcode', () => {
       mockDate.set(moment('2013-08-17'));
 
       return app.models.ResourceStats.getDifferenceFromJune(Enums.ResourceType.WELL, Enums.ReadingType.POSTCODE, 13, 313603)

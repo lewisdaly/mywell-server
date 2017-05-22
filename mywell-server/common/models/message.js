@@ -3,6 +3,10 @@ var MessageUtils = require('../MessageUtils')
 var moment = require('moment');
 var isNullOrUndefined = require('util').isNullOrUndefined;
 
+const getVillageId = (resourceId) => {
+  return `${resourceId}`.substring(0,2);
+}
+
 module.exports = function(Message) {
 
   /*
@@ -33,49 +37,16 @@ module.exports = function(Message) {
     //eg: http://mywell.marvi.org.in:3000/api/messages/sms?no=61410237238&msg=SMA+999+313603+5
     console.log("Number", number, "message", msg);
 
-    return handleSMS(number, msg)
-      .then(() => {
+    return parseMessage(msg)
+      .then(response => {
+        MessageUtils.sendSMSMessage(message, number);
         return "message recieved";
       })
       .catch(err => {
         console.error("err: ", err);
+        MessageUtils.sendSMSMessage(err.message, number);
         return "message recieved";
-      })
-
-    var reply = function(){}; //pass through dummy reply to hold special parameters
-    //TODO: restructure with a proper callback...
-    try {
-      reply.number = mobile; //this is a little hacky
-      const parsedMessage = parseMessage(msg, reply);
-    }
-  }
-
-  const handleSMS = (number, message) => {
-
-
-
-  }
-
-  //Grab the message
-  replyToSMS = function(response, cb) {
-    console.log(response);
-    let message = response; //this is if message is just a string, as we want to be able to pass errors to this function
-
-    if (!isNullOrUndefined(response.message)) {
-      message = response.message
-    }
-
-    //send SMS reply!
-    MessageUtils.sendSMSMessage(message, cb.number);
-
-    if (response.name == "Error") {
-      console.log("SMS ERROR", response.message)
-      cb(response);
-    }
-
-    //Reply to Client - may not be needed, good for testing
-    //TODO: set this based on ENV
-    cb(null, response);
+      });
   }
 
   //Parse the message, and return an object to be updated, query to be made or an error
@@ -85,14 +56,14 @@ module.exports = function(Message) {
 
     if (split[1] === '000') {
       messageType = MessageType.update;
-      return parseUpdate(split);
 
+      return parseUpdate(split);
     } else if (split[1] === '999') {
       messageType = MessageType.query;
-      return parseQuery(split);
 
+      return parseQuery(split);
     } else {
-      return Promise.reject(new Error("Could not understand message. Message must start with 000 or 999.");
+      return Promise.reject(new Error("Could not understand message. Message must start with 000 or 999."));
     }
   }
 
@@ -109,14 +80,10 @@ module.exports = function(Message) {
     }
 
     //Check to make sure postcode exists:
-    Message.app.models.village.find({"where":{"postcode":postcode}}, (err, villages) => {
-      if(err) {
-        console.log(err);
-        return Promise.reject(err);
-      }
-
+    return Message.app.models.village.find({"where":{"postcode":postcode}})
+    .then(villages => {
       if (villages.length == 0) {
-        return Promise.reject(err);
+        return Promise.reject(new Error("No villages found in postcode."));
       }
 
       if (isNullOrUndefined(resourceId)){
@@ -136,8 +103,6 @@ module.exports = function(Message) {
 
   parseQueryPostcode = (postcode, cb) => {
     console.log('TODO: parse postcode');
-
-
   }
 
   parseQueryVillage = (postcode, villageId) => {
@@ -152,7 +117,6 @@ module.exports = function(Message) {
       app.models.resource_stats._getHistoricalVillageAverages(villageId, postcode, '', lastYear, lastYear),
     ])
     .then(results => {
-
       //TODO: fix inconsistencies here - each method returns something slightly different
       const village = results[0];
       if (isNullOrUndefined(village)) {
@@ -188,20 +152,26 @@ module.exports = function(Message) {
     });
   }
 
-  parseQueryResource = (postcode, resourceId, cb) => {
+  parseQueryResource = (postcode, resourceId) => {
+    console.log("parseQueryResource: ", postcode, resourceId);
+    console.log("villageid:", getVillageId(resourceId));
+
     const app = Message.app;
     const lastMonth =  moment().subtract(1, 'months').format('Y-M');
     const lastYear = moment().subtract(12, 'months').format('Y-M');
 
     //Resolves [current, last_month, last_year]
     return Promise.all([
-      app.models.resource.findById(resourceId, {where:{postcode:postcode}, include: 'village'}),
+      app.models.village.findOne({where:{and:[{postcode:postcode}, {id:getVillageId(resourceId)}]}}),
+      app.models.resource.findById(resourceId, {where:{postcode:postcode}}),
       app.models.resource_stats.find({where: {and: [{resourceId: resourceId}, {postcode: postcode}, {month:lastMonth}]}}),
       app.models.resource_stats.find({where: {and: [{resourceId: resourceId}, {postcode: postcode}, {month:lastYear}]}})
     ])
-    .then((results) => {
-      const resource = results[0];
-      const village = resource.village;
+    .then(results => {
+      const village = results[0];
+
+      console.log("found village:", village);
+      const resource = results[1];
       let lastMonth = null;
       let lastYear = null;
       if (!isNullOrUndefined(results[1]) && !isNullOrUndefined(results[1][0])) {
@@ -225,6 +195,8 @@ module.exports = function(Message) {
 
   //from an array of strings, parse the update message
   parseUpdate = function(splitMessage, cb) {
+    let date = null;
+
     if (splitMessage.length != 6) {
       return replyToSMS(new Error("Incorrect number of arguments. Update requires 6."), cb);
     }
@@ -241,7 +213,7 @@ module.exports = function(Message) {
       if (villages.length == 0) {
         return Promise.reject(new Error("No villages exist for this postcode."));
       }
-      let date = moment(dateString, "YYMMDD");
+      date = moment(dateString, "YYMMDD");
 
       return Message.app.models.resource.findById(resourceId)
     })
@@ -255,13 +227,13 @@ module.exports = function(Message) {
       //Parse the depth:
       let depthFloat;
       try {
-        depthFloat = parseFloat(depthString);
-        depthFloat = depthFloat/100;
-        depthFloat = depthFloat.toFixed(2);
+        depthFloat = (parseFloat(depthString)/100).toFixed(2);
+      } catch (err) {
+        return Promise.reject(new Error("Reading value is invalid"));
       }
 
       if (isNullOrUndefined(depthFloat)) {
-        return Promise.reject(new Error("Reading value is null or undefined."));
+        return Promise.reject(new Error("Reading value is not found."));
       }
 
       //TODO: We could probably also check to make sure the depth doesn't exceed the max of the resource

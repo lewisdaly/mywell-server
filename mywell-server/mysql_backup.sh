@@ -18,7 +18,6 @@ mv $BACKUP_FOLDER/backup.sql $BACKUP_FOLDER/mywell_$BACKUP_NAME.sql
 #save to s3
 aws s3 cp $BACKUP_FOLDER/mywell_$BACKUP_NAME.sql s3://mywell/backups/
 
-
 #also save all readings as .csv file:
 docker exec $db_container /bin/bash -c "mysqldump -u root -ppassword  --fields-optionally-enclosed-by='\"' --fields-terminated-by=',' --tab /tmp/ mywell reading"
 docker cp $db_container:/tmp/reading.txt ./storage/container1/reading.csv

@@ -4,6 +4,7 @@
  */
 const isNullOrUndefined = require('util').isNullOrUndefined;
 const request = require('request-promise-native');
+const moment = require('moment');
 
 
 module.exports.convertVillageToMessage = (reading) => {
@@ -31,6 +32,31 @@ module.exports.convertVillageToMessage = (reading) => {
 }
 
 
+const getReadingHeadingForType = (resourceType) => {
+  switch (resourceType) {
+    case 'well':
+      return 'Current WT Depth:'
+    case 'checkdam':
+      return 'Water column height:'
+    case 'raingauge':
+      return 'Last rainfall amount:'
+    default:
+      throw new Error(`Unknown resource type ${resourceType}`);
+  }
+}
+
+const getReadingEndingForType = (resourceType) => {
+  switch (resourceType) {
+    case 'well':
+    case 'checkdam':
+      return 'm'
+    case 'raingauge':
+      return 'mm'
+    default:
+      throw new Error(`Unknown resource type ${resourceType}`);
+  }
+}
+
 /**
  * Take a Resource object, convert to a nice message format
  */
@@ -40,23 +66,24 @@ module.exports.convertResourceToMessage = (reading) => {
   const lastMonth = reading.lastMonth;
   const lastYear = reading.lastYear;
 
+  const date = moment(resource.date).format("DD/MM/YY");
+
   let lastMonthLine = `No reading for 1 month ago\n`;
-  let lastYearLine =  `No reading for 1 year ago\n`;
+  let lastYearLine =  `No reading for 1 year ago`;
 
   if (!isNullOrUndefined(lastMonth)) {
     lastMonthLine = `1 Month ago: ${lastMonth}m\n`;
   }
 
   if (!isNullOrUndefined(lastYear)) {
-    lastYearLine = `1 Year ago: ${lastYear}m\n`;
+    lastYearLine = `1 Year ago: ${lastYear}m`;
   }
 
   return `Village: ${village.name}\n`
                   + `Well Owner: ${resource.owner}\n`
-                  + `ResourceId: ${resource.id}\n`
-                  + `ResourceType: ${resource.type}\n`
-                  + `Last Updated: ${resource.last_date}\n\n`
-                  + `Current WT Depth ${resource.last_value}m\n`
+                  + `Resource: ${resource.type} - ${resource.id}\n`
+                  + `Last Updated: ${date}\n\n`
+                  + `${getReadingHeadingForType(resource.type)} ${resource.last_value} ${getReadingEndingForType(resource.type)}\n`
                   + lastMonthLine
                   + lastYearLine;
 }
