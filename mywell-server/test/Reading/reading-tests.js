@@ -17,7 +17,7 @@ const fileExists = (filePath) => {
 }
 
 describe('GET readingsByWeek', () => {
-  it.only('gets the readings by week', () => {
+  it('gets the readings by week', () => {
     return Reading.getReadingsByWeek(313603, 1211)
       .then(response => {
         response.readings.forEach(value => console.log(value));
