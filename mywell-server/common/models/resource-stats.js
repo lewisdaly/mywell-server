@@ -70,12 +70,7 @@ module.exports = function(ResourceStats) {
     .then(results => {
       const pastReading = results[0];
       const currentReading = results[1];
-
-      console.log(pastReading);
-      console.log(currentReading);
-
       const difference = currentReading.value - pastReading.value;
-
 
       return {
         difference: difference,
@@ -429,8 +424,6 @@ module.exports = function(ResourceStats) {
             resource.type = "${resourceType}"
       GROUP BY reading.villageId, reading.postcode;
       `;
-
-      console.log("query is:", query);
 
       const datasource = ResourceStats.dataSource;
       return ResourceStats.queryDatasource(query, datasource)
