@@ -6,7 +6,6 @@ const isNullOrUndefined = require('util').isNullOrUndefined;
 const request = require('request-promise-native');
 const moment = require('moment');
 
-
 module.exports.convertVillageToMessage = (reading) => {
   let thisMonthLine = `No reading for this month\n`;
   let lastMonthLine = `No reading for last month\n`;

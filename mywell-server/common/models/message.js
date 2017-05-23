@@ -39,7 +39,7 @@ module.exports = function(Message) {
 
     return parseMessage(msg)
       .then(response => {
-        MessageUtils.sendSMSMessage(message, number);
+        MessageUtils.sendSMSMessage(response, number);
         return "message recieved";
       })
       .catch(err => {
@@ -146,16 +146,11 @@ module.exports = function(Message) {
         lastYear: lastYear
       };
 
-      console.log('reading is:', reading);
-
       return MessageUtils.convertVillageToMessage(reading);
     });
   }
 
   parseQueryResource = (postcode, resourceId) => {
-    console.log("parseQueryResource: ", postcode, resourceId);
-    console.log("villageid:", getVillageId(resourceId));
-
     const app = Message.app;
     const lastMonth =  moment().subtract(1, 'months').format('Y-M');
     const lastYear = moment().subtract(12, 'months').format('Y-M');
@@ -169,8 +164,6 @@ module.exports = function(Message) {
     ])
     .then(results => {
       const village = results[0];
-
-      console.log("found village:", village);
       const resource = results[1];
       let lastMonth = null;
       let lastYear = null;
