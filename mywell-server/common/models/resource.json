@@ -55,6 +55,11 @@
     "image": {
       "type": "text",
       "required": false
+    },
+    "mobile": {
+      "type": "string",
+      "required": false,
+      "description": "The mobile number of the resource owner/person who registered the well"
     }
   },
   "validations": [],

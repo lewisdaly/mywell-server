@@ -91,7 +91,6 @@ module.exports.convertResourceToMessage = (reading) => {
 /*
  * Process the POST request to W2M
  */
-
 module.exports.sendSMSMessage = (message, number) => {
   console.log("Sending message: \"" + message + "\" to number:" +number);
 
