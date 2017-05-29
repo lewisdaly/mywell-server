@@ -33,49 +33,95 @@ const range = (start, end, step) => {
 }
 
 const getUnusedIds = (usedIds, type) => {
-  return Promise.resolve(true)
-    .then(() => {
-      switch (type) {
-        case "well":
-          return range(10, 69);
-        case "raingauge":
-          return range(70, 80);
-        case "checkdam":
-          return range(80, 99);
-      }
-    })
-    .then(allIds => {
-      return allIds.filter(ids => !usedIds[ids]);
-    });
+  let allIds = null;
+
+  switch (type) {
+    case "well":
+      allIds = range(10, 69);
+      break;
+    case "raingauge":
+      allIds = range(70, 80);
+      break;
+    case "checkdam":
+      allIds = range(80, 99);
+      break;
+  }
+
+  return allIds.filter(ids => !usedIds[ids]);
 }
 
 module.exports = function(Resource) {
 
-  const _findAvailableIds = (postcode, villageId, type) => {
-    let usedIdsMap = {};
-
-    //Look up all resources in postcode and village, assign a new id based on resource type
-    return Promise.resolve(true)
-      .then(() => console.log("finding available ids"))
-      .then(() => Resource.find({where:{and:[{postcode:postcode}, {villageId:villageId}, {type:type}]}}))
-      //we just want the last 2 digits
-      .then(_resources => _resources.forEach(resource => {
-        usedIdsMap[`${resource.id}`.substring(2,4)] = true;
-      }))
-      .then(() => console.log('getting unused ids'))
-      .then(() => getUnusedIds(usedIdsMap, type));
-  }
+  // function _findAvailableIds(postcode, villageId, type) {
+  //   let usedIdsMap = {};
+  //
+  //   //Look up all resources in postcode and village, assign a new id based on resource type
+  //   return Resource.find({where:{and:[{postcode:postcode}, {villageId:villageId}, {type:type}]}})
+  //     .then(_resources => {
+  //       return _resources.forEach(resource => {
+  //         usedIdsMap[`${resource.id}`.substring(2,4)] = true;
+  //       });
+  //     })
+  //     .then(() => getUnusedIds(usedIdsMap, type));
+  // }
 
 
   /**
    * Create a new id if not exists in save
    */
+  // Resource.observe('before save', function(ctx, next) {
+  //   console.log("before save");
+  //
+  //   if (ctx.options && ctx.options.skipUpdateModels) {
+  //     return next();
+  //   }
+  //
+  //   const resource = (typeof ctx.instance === "undefined") ? ctx.currentInstance : ctx.instance;
+  //
+  //   //Assume they have been given/have a valid id already
+  //   if (resource.id) {
+  //     console.log("already have id");
+  //     return next();
+  //   }
+  //
+  //   if (!resource.villageId) {
+  //     return next(new Error("id or villageId is required to create a new resource"));
+  //   }
+  //
+  //   _findAvailableIds(resource.postcode, resource.villageId, resource.type)
+  //   .then(availableIds => {
+  //     if (availableIds.length == 0) {
+  //       return next(new Error(`Error creating a new resouce, all id's are taken for: pincode: ${resource.postcode} villageId:${resource.villageId}, type: ${resource.type}`));
+  //     }
+  //     //Save with one of the new ids - not thread safe!
+  //     resource.id = parseInt(`${resource.villageId}${availableIds[0]}`);
+  //   })
+  //   .then(() => {
+  //     console.log("calling next");
+  //     next(null);
+  //   })
+  //   .catch(next);
+  // });
+
   Resource.observe('before save', function(ctx, next) {
-    console.log("before save");
+    console.log("HEY");
+
+    const _findAvailableIds = (postcode, villageId, type) => {
+      let usedIdsMap = {};
+
+      //Look up all resources in postcode and village, assign a new id based on resource type
+      return Resource.find({where:{and:[{postcode:postcode}, {villageId:villageId}, {type:type}]}})
+        .then(_resources => {
+            _resources.forEach(resource => {
+              usedIdsMap[`${resource.id}`.substring(2,4)] = true;
+            });
+            return getUnusedIds(usedIdsMap, type)
+        });
+    }
 
     if (ctx.options && ctx.options.skipUpdateModels) {
-      return next();
-    }
+        return next();
+      }
 
     const resource = (typeof ctx.instance === "undefined") ? ctx.currentInstance : ctx.instance;
 
@@ -90,20 +136,18 @@ module.exports = function(Resource) {
     }
 
     Promise.resolve(true)
-      .then(() => console.log("hey"))
-      .then(() => {
-        return _findAvailableIds(resource.postcode, resource.villageId, resource.type);
-      })
+      .then(() => _findAvailableIds(resource.postcode, resource.villageId, resource.type))
       .then(availableIds => {
-        console.log("available Ids", availableIds);
-        if (availableIds.length == 0) {
-          return next(new Error(`Error creating a new resouce, all id's are taken for: pincode: ${resource.postcode} villageId:${resource.villageId}, type: ${resource.type}`));
-        }
-        //Save with one of the new ids - not thread safe!
+        console.log("availableIds:", availableIds);
         resource.id = parseInt(`${resource.villageId}${availableIds[0]}`);
-        return next();
+
+        next();
+      })
+      .catch(err => {
+        next(err);
       });
   });
+
 
   /**
    * After saving, if the user supplied a mobile number, send them a message
