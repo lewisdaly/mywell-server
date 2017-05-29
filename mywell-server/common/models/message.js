@@ -49,6 +49,23 @@ module.exports = function(Message) {
       });
   }
 
+  Message.remoteMethod(
+    'testSms',
+    {
+      accepts: [
+        {arg: 'no', type: 'number'},
+        {arg: 'msg', type: 'string'}
+      ],
+      'description': 'Test endpoint. Does not send SMS back to Way2Mint',
+      http: {path: '/testSms', verb: 'get', status:200},
+      returns: {arg: 'response', type: 'string'}
+    }
+  );
+
+  Message.testSms = function(no, msg) {
+    return parseMessage(msg);
+  }
+
   //Parse the message, and return an object to be updated, query to be made or an error
   parseMessage = function(message) {
     let messageType;
@@ -111,16 +128,17 @@ module.exports = function(Message) {
     const lastYear = moment().subtract(12, 'months').format('Y-M');
 
     return Promise.all([
-      app.models.village.findById(villageId, {where:{postcode:postcode}}),
-      app.models.resource_stats.getCurrentVillageAverage(villageId, postcode),
+      app.models.village.findOne({where:{and:[{postcode:postcode}, {id:villageId}]}}),
+      app.models.resource_stats.getCurrentVillageAverage(villageId, '',  postcode),
       app.models.resource_stats._getHistoricalVillageAverages(villageId, postcode, '', lastMonth, lastMonth),
       app.models.resource_stats._getHistoricalVillageAverages(villageId, postcode, '', lastYear, lastYear),
     ])
     .then(results => {
       //TODO: fix inconsistencies here - each method returns something slightly different
       const village = results[0];
+      console.log("village:", village);
       if (isNullOrUndefined(village)) {
-        return replyToSMS(new Error("Invalid villageId."), cb);
+        return Promise.reject(new Error(`Sorry, could not find Village with id: ${villageId} in pincode: ${postcode}`));
       }
 
       let thisMonth = null;
@@ -158,13 +176,18 @@ module.exports = function(Message) {
     //Resolves [current, last_month, last_year]
     return Promise.all([
       app.models.village.findOne({where:{and:[{postcode:postcode}, {id:getVillageId(resourceId)}]}}),
-      app.models.resource.findById(resourceId, {where:{postcode:postcode}}),
+      app.models.resource.findOne({where:{and: [{postcode:postcode}, {id:resourceId}]}}),
       app.models.resource_stats.find({where: {and: [{resourceId: resourceId}, {postcode: postcode}, {month:lastMonth}]}}),
       app.models.resource_stats.find({where: {and: [{resourceId: resourceId}, {postcode: postcode}, {month:lastYear}]}})
     ])
     .then(results => {
       const village = results[0];
       const resource = results[1];
+
+      if (!village || !resource) {
+        return Promise.reject(new Error(`Sorry, could not find resource with id: ${resourceId} in pincode: ${postcode}`));
+      }
+
       let lastMonth = null;
       let lastYear = null;
       if (!isNullOrUndefined(results[1]) && !isNullOrUndefined(results[1][0])) {
