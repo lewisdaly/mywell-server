@@ -95,12 +95,11 @@ module.exports.sendSMSMessage = (message, number) => {
   console.log("Sending message: \"" + message + "\" to number:" +number);
 
   const url = `http://fastsms.way2mint.com/SendSMS/sendmsg.php?uname=basantm&pass=12345678&send=Way2mint&dest=${number}&msg=${message}&prty=1&vp=30&dlr-url=1`;
-
-  request({uri: url})
+  return request({uri: url})
   .then(response => {
     console.log('w2m reply', response);
   })
   .catch(err => {
     console.log(err);
-  })
+  });
 }

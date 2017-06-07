@@ -24,12 +24,14 @@ fi
 export ENVIRONMENT=development
 export ENABLE_LOGS=true
 export VERSION_NUMBER=dev_1.3
+export ENABLE_NOTIFICATIONS=false
 
 if [ "$1" == "production" ]
 then
   echo "running server in production mode"
   export VERSION_NUMBER=1.3
   export ENVIRONMENT=production
+  export ENABLE_NOTIFICATIONS=true
   docker-compose up -d
   exit 0
 fi

@@ -15,6 +15,7 @@ import csv
 import json
 import os
 import sys
+import requests
 
 class Processor:
 
@@ -22,13 +23,16 @@ class Processor:
     return '{{"id":{}, "name":"{}", "postcode":{}, "coordinates":{{"lat":{},"lng":{}}} }} \
            \n'.format(village['id'], village['name'], village['postcode'], village['lat'], village['lng'])
 
+
   def resource_to_jsonstring(self, resource):
     return '{{"id":{},"geo":{{"lat":{},"lng":{}}},"villageId":{}, "owner":"{}", "type":"{}", "postcode":{}, "mobile":{}}} \
            \n'.format(resource['id'], resource['lat'], resource['lng'],resource['village_id'],resource['owner'], resource['type'], resource['postcode'], resource['mobile'])
 
+
   def lookup_latlng(self, postcode, village_name, country_name):
-    #TODO: perform lookup on google maps!}
-    return [123.00, 456.00]
+    ## http://maps.googleapis.com/maps/api/geocode/json?address=248001,%20india,Himachal
+    request = requests.get(url='http://maps.googleapis.com/maps/api/geocode/json?address={},{},{}'.format(postcode,village_name, country_name))
+    return request.json()['results'][0]['geometry']['location']
 
 
   def check_invalid_row(self, row, errors):
@@ -78,21 +82,25 @@ class Processor:
           continue
 
         postcode, mobile, owner, email, village_name, resource_id = row[:6]
-        latlng = self.lookup_latlng(postcode, village_name, 'India')
+        try:
+          latlng = self.lookup_latlng(postcode, village_name, 'India')
+        except Exception as e:
+          errors.append("{}, row: {}".format(e, row))
+          continue
 
         villages.append({
           'id': int(resource_id[0:2]),
           'name': village_name,
           'postcode': int(postcode),
-          'lat': latlng[0],
-          'lng': latlng[1]
+          'lat': latlng['lat'],
+          'lng': latlng['lat']
         });
 
         resources.append({
           'id': int(resource_id),
           'village_id': int(resource_id[0:2]),
-          'lat': latlng[0],
-          'lng': latlng[1],
+          'lat': latlng['lat'],
+          'lng': latlng['lat'],
           'owner': owner,
           'type': resource_type,
           'postcode': int(postcode),
