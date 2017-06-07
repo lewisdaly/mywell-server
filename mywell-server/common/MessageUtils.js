@@ -6,6 +6,11 @@ const isNullOrUndefined = require('util').isNullOrUndefined;
 const request = require('request-promise-native');
 const moment = require('moment');
 
+let ENABLE_NOTIFICATIONS = false;
+if (process.env.ENABLE_NOTIFICATIONS === true || process.env.ENABLE_NOTIFICATIONS === 'true') {
+  ENABLE_NOTIFICATIONS = true;
+}
+
 module.exports.convertVillageToMessage = (reading) => {
   let thisMonthLine = `No reading for this month\n`;
   let lastMonthLine = `No reading for last month\n`;
@@ -95,6 +100,11 @@ module.exports.sendSMSMessage = (message, number) => {
   console.log("Sending message: \"" + message + "\" to number:" +number);
 
   const url = `http://fastsms.way2mint.com/SendSMS/sendmsg.php?uname=basantm&pass=12345678&send=Way2mint&dest=${number}&msg=${message}&prty=1&vp=30&dlr-url=1`;
+  if (ENABLE_NOTIFICATIONS === false ) {
+    console.log("Skipping message, as ENABLE_NOTIFICATIONS is false");
+    return Promise.resolve(true);
+  }
+
   return request({uri: url})
   .then(response => {
     console.log('w2m reply', response);

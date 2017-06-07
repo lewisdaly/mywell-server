@@ -53,9 +53,7 @@ const registerRequest = (resource, type) => {
     json: true
   };
 
-  console.log(JSON.stringify(options, null, 2));
-
-  request(options);
+  return request(options);
 }
 
 const data = [];
@@ -69,8 +67,15 @@ lineReader.on('line', (line) => {
 });
 
 lineReader.on('close', function () {
-    console.log(data);
-    console.log(errors);
-
-    registerRequest(data[0], argv.type);
+    return Promise.all(data.map(item => {
+      return registerRequest(item, argv.type)
+        .catch(err => errors.push(err))
+    }))
+    .then(() => {
+      console.log(`Registered ${data.length} ${argv.type}s, with ${errors.length} errors`);
+      if (errors.length > 0) {
+        console.log("errors:")
+        errors.forEach(error => console.log(`\t${error.status}:${error.message}`));
+      }
+    });
 });

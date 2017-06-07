@@ -93,14 +93,14 @@ class Processor:
           'name': village_name,
           'postcode': int(postcode),
           'lat': latlng['lat'],
-          'lng': latlng['lat']
+          'lng': latlng['lng']
         });
 
         resources.append({
           'id': int(resource_id),
           'village_id': int(resource_id[0:2]),
           'lat': latlng['lat'],
-          'lng': latlng['lat'],
+          'lng': latlng['lng'],
           'owner': owner,
           'type': resource_type,
           'postcode': int(postcode),
