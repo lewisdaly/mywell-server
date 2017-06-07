@@ -52,3 +52,8 @@ docker exec -i -t mywellserver_mywell-server_1 /bin/bash
 docker exec -it mywellserver_db_1 /bin/bash -c "TERM=dumb mysql mywell -u mywell -ppassword"
 ```
 
+
+
+
+register.js --file ../scripts/test_resource.csv --type resource
+./signup_preprocessor.py --input_path ../../data/rainfall_station_registration.csv  --resource_type raingauge --output_path test

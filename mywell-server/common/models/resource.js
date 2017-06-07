@@ -3,6 +3,7 @@ var isNullOrUndefined = require('util').isNullOrUndefined;
 const Enums = require('../Enums');
 const Utils = require('../Utils');
 const ExcelReader = require('../ExcelReader');
+var MessageUtils = require('../MessageUtils')
 const fs = require('fs');
 
 const fileExists = (filePath) => {
@@ -52,82 +53,32 @@ const getUnusedIds = (usedIds, type) => {
 
 module.exports = function(Resource) {
 
-  // function _findAvailableIds(postcode, villageId, type) {
-  //   let usedIdsMap = {};
-  //
-  //   //Look up all resources in postcode and village, assign a new id based on resource type
-  //   return Resource.find({where:{and:[{postcode:postcode}, {villageId:villageId}, {type:type}]}})
-  //     .then(_resources => {
-  //       return _resources.forEach(resource => {
-  //         usedIdsMap[`${resource.id}`.substring(2,4)] = true;
-  //       });
-  //     })
-  //     .then(() => getUnusedIds(usedIdsMap, type));
-  // }
+  const _findAvailableIds = (postcode, villageId, type) => {
+    let usedIdsMap = {};
+
+    //Look up all resources in postcode and village, assign a new id based on resource type
+    return Resource.find({where:{and:[{postcode:postcode}, {villageId:villageId}, {type:type}]}})
+      .then(_resources => {
+        return _resources.forEach(resource => {
+          usedIdsMap[`${resource.id}`.substring(2,4)] = true;
+        });
+      })
+      .then(() => getUnusedIds(usedIdsMap, type));
+  }
 
 
   /**
    * Create a new id if not exists in save
    */
-  // Resource.observe('before save', function(ctx, next) {
-  //   console.log("before save");
-  //
-  //   if (ctx.options && ctx.options.skipUpdateModels) {
-  //     return next();
-  //   }
-  //
-  //   const resource = (typeof ctx.instance === "undefined") ? ctx.currentInstance : ctx.instance;
-  //
-  //   //Assume they have been given/have a valid id already
-  //   if (resource.id) {
-  //     console.log("already have id");
-  //     return next();
-  //   }
-  //
-  //   if (!resource.villageId) {
-  //     return next(new Error("id or villageId is required to create a new resource"));
-  //   }
-  //
-  //   _findAvailableIds(resource.postcode, resource.villageId, resource.type)
-  //   .then(availableIds => {
-  //     if (availableIds.length == 0) {
-  //       return next(new Error(`Error creating a new resouce, all id's are taken for: pincode: ${resource.postcode} villageId:${resource.villageId}, type: ${resource.type}`));
-  //     }
-  //     //Save with one of the new ids - not thread safe!
-  //     resource.id = parseInt(`${resource.villageId}${availableIds[0]}`);
-  //   })
-  //   .then(() => {
-  //     console.log("calling next");
-  //     next(null);
-  //   })
-  //   .catch(next);
-  // });
-
   Resource.observe('before save', function(ctx, next) {
-    console.log("HEY");
-
-    const _findAvailableIds = (postcode, villageId, type) => {
-      let usedIdsMap = {};
-
-      //Look up all resources in postcode and village, assign a new id based on resource type
-      return Resource.find({where:{and:[{postcode:postcode}, {villageId:villageId}, {type:type}]}})
-        .then(_resources => {
-            _resources.forEach(resource => {
-              usedIdsMap[`${resource.id}`.substring(2,4)] = true;
-            });
-            return getUnusedIds(usedIdsMap, type)
-        });
-    }
-
     if (ctx.options && ctx.options.skipUpdateModels) {
-        return next();
-      }
+      return next();
+    }
 
     const resource = (typeof ctx.instance === "undefined") ? ctx.currentInstance : ctx.instance;
 
     //Assume they have been given/have a valid id already
     if (resource.id) {
-      console.log("already have id");
       return next();
     }
 
@@ -135,19 +86,19 @@ module.exports = function(Resource) {
       return next(new Error("id or villageId is required to create a new resource"));
     }
 
-    Promise.resolve(true)
-      .then(() => _findAvailableIds(resource.postcode, resource.villageId, resource.type))
-      .then(availableIds => {
-        console.log("availableIds:", availableIds);
-        resource.id = parseInt(`${resource.villageId}${availableIds[0]}`);
-
-        next();
-      })
-      .catch(err => {
-        next(err);
-      });
+    _findAvailableIds(resource.postcode, resource.villageId, resource.type)
+    .then(availableIds => {
+      if (availableIds.length == 0) {
+        return next(new Error(`Error creating a new resouce, all id's are taken for: pincode: ${resource.postcode} villageId:${resource.villageId}, type: ${resource.type}`));
+      }
+      //Save with one of the new ids - not thread safe!
+      resource.id = parseInt(`${resource.villageId}${availableIds[0]}`);
+    })
+    .then(() => {
+      next();
+    })
+    .catch(next);
   });
-
 
   /**
    * After saving, if the user supplied a mobile number, send them a message
@@ -165,7 +116,9 @@ module.exports = function(Resource) {
       return next();
     }
 
-    //TODO: send message!
+    const message = `Thanks. The details of your ${resource.type} are.\nPostcode:${resource.postcode}\nId:${resource.id}`;
+    MessageUtils.sendSMSMessage(message, resource.mobile)
+
   });
 
   Resource.remoteMethod('findAvailableIds', {

@@ -3,7 +3,16 @@ __Before lunch: download the app__
 Link: https://docs.google.com/forms/d/e/1FAIpQLSfX4VBUaBTV8P4U4RQ6lpcKziorGKLTNkQvJf-JUn-L-DnH6g/viewform?usp=sf_link
 
 
-## Description
+## Overview
+- introduce
+- screenshots
+- upload and real time Demo
+  - example
+- Feedback slide
+- Q&A
+  - come and talk to me
+
+## Description __5_mins__
 - What is MyWell
   - Technology component of MARVI
   - Crowdsources well information from many people
@@ -26,7 +35,7 @@ Link: https://docs.google.com/forms/d/e/1FAIpQLSfX4VBUaBTV8P4U4RQ6lpcKziorGKLTNk
     - Also support excel uploading for desktop...
     - Information Flows:
 
-## Walkthrough
+## Walkthrough & Demo __10_mins__
 
 
 ## Demo
@@ -35,7 +44,7 @@ Link: https://docs.google.com/forms/d/e/1FAIpQLSfX4VBUaBTV8P4U4RQ6lpcKziorGKLTNk
 - settings
 -
 
-## Feedback
+## Feedback __5_mins__
 - Display link
 https://goo.gl/zjxkqu
 -
