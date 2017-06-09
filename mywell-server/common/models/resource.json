@@ -60,6 +60,11 @@
       "type": "string",
       "required": false,
       "description": "The mobile number of the resource owner/person who registered the well"
+    },
+    "email": {
+      "type": "string",
+      "required": false,
+      "description": "The email of the resource owner/person who registered the resource"
     }
   },
   "validations": [],

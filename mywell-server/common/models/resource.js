@@ -101,6 +101,32 @@ module.exports = function(Resource) {
   });
 
   /**
+   * After saving, if the user supplied a village name, update it
+   */
+  Resource.observe('after save', (ctx) => {
+    if (ctx.options && ctx.options.skipUpdateModels) {
+      return next();
+    }
+
+    const resource = (typeof ctx.instance === "undefined") ? ctx.currentInstance : ctx.instance;
+
+    if (!resource.village_name) {
+      return;
+    }
+
+    const newVillage = {
+      id: resource.villageId,
+      name: resource.village_name,
+      postcode: resource.postcode,
+      coordinates: resource.geo
+    };
+
+    return Resource.app.models.Village.findOrCreate(
+      {where:{and:[{id:newVillage.id},{postcode:newVillage.postcode}]}}, newVillage);
+  });
+
+
+  /**
    * After saving, if the user supplied a mobile number, send them a message
    */
   Resource.observe('after save', function updateModels(ctx, next) {
@@ -108,7 +134,6 @@ module.exports = function(Resource) {
       return next();
     }
 
-    //check to see if new reading is more recent  - if so, update the resource table
     const resource = (typeof ctx.instance === "undefined") ? ctx.currentInstance : ctx.instance;
 
     //mobile is optional, skip if we don't have
