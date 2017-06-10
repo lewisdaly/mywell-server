@@ -6,4 +6,8 @@ cd /Users/lewis/developer/mywell/src/mywell-ui/src
 gulp replace --env prod
 gulp babel || exit 1
 
-ionic run android
+if [ "$1" == "emulator" ]; then
+  ionic run ios --emulator
+fi
+
+ionic run ios --device
