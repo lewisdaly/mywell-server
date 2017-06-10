@@ -21,6 +21,7 @@ const getError = function(code, errorMessage) {
 };
 
 module.exports = function(Reading) {
+
   /**
    * Get past readings for display on map
    * returns a list of last 3 * 52 weeks with readings attached
@@ -50,7 +51,6 @@ module.exports = function(Reading) {
       .then(readings => {
         const readingDates = {} //Map with key: monday (string), value: average value
 
-        console.log("Readings", readings);
         if (readings.length === 0) {
           return {
             readings: [],
