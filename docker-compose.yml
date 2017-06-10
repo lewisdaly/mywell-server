@@ -1,6 +1,7 @@
 version: '2'
 services:
   mywell-server:
+    container_name: mywell-server
     build: ./mywell-server/
     ports:
      - "3000:3000"
@@ -19,6 +20,7 @@ services:
     - db:db
 
   mywell-ui:
+    container_name: mywell-ui
     build: ./mywell-ui/
     ports:
      - "8080:80"
@@ -34,8 +36,11 @@ services:
       - ENVIRONMENT
       - ENABLE_LOGS
       - VERSION_NUMBER
+      # If true, will do an npm install, set up envs etc.
+      - REFRESH_UI
 
   db:
+    container_name: mywell-db
     image: mariadb:10.0
     environment:
       - MYSQL_ROOT_PASSWORD=password
