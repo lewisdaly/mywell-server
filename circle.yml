@@ -1,10 +1,13 @@
 machine:
+  node:
+    version: 7.10.0
   services:
     - docker
 
 dependencies:
   pre:
     - docker info
+    - node --version
   override:
     - git submodule update --init
     - ls
