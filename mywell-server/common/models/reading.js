@@ -46,9 +46,17 @@ module.exports = function(Reading) {
 
     const average = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
 
-    return Reading.find({where:{and:[{postcode:postcode},{resourceId}]}, order: "DATE ASC"})
+    return Reading.find({where:{and:[{postcode:postcode},{resourceId: resourceId}]}, order: "DATE ASC"})
       .then(readings => {
         const readingDates = {} //Map with key: monday (string), value: average value
+
+        console.log("Readings", readings);
+        if (readings.length === 0) {
+          return {
+            readings: [],
+            weeks: weeks
+          };
+        }
 
         let currentMonday = getMondayForDate(readings[0].date);
         let currentReadingWeek = []; //array of readings for this week
