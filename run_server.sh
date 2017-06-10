@@ -32,6 +32,7 @@ then
   echo "running server in production mode"
   export VERSION_NUMBER=1.3.1
   export ENVIRONMENT=production
+  export ENABLE_LOGS=false
   export ENABLE_NOTIFICATIONS=true
   export REFRESH_UI=true
   docker-compose up -d
