@@ -7,13 +7,8 @@ echo 'deploying mywell'
 cd ~/mywell-server
 git pull origin master
 cd ~/mywell-server/mywell-ui
+git stash
 git pull origin master
-#
-# echo 'setting up ui'
-# cd ~/mywell-server/mywell-ui/src
-# npm install
-# npm run setup-prod
-# npm run babel
 
 cd ~/mywell-server/
 ./run_server.sh production
