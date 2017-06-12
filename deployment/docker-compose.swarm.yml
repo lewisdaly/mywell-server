@@ -5,35 +5,48 @@ services:
     image: lewisdaly/mywell-server:dev_1.3.1
     ports:
      - "3000:3000"
-    volumes:
-     - ./mywell-server:/usr/src/app
-     - ./mywell-server/node_modules:/usr/src/app/node_modules
     environment:
       - "TERM=xterm-256color"
-      - VIRTUAL_HOST=dev.mywell-server.vesselstech.com
+      - VIRTUAL_HOST=dev.mywell-server.vessels.tech
       - HTTPS_METHOD=redirect
       - VIRTUAL_PORT=3000
-      - LETSENCRYPT_EMAIL=lewis@vesselstech.com
-      - LETSENCRYPT_HOST=dev.mywell-server.vesselstech.com
-      - ENABLE_NOTIFICATIONS
-    links:
-    - mywell-db:db
+      - LETSENCRYPT_EMAIL=lewis@vessels.tech
+      - LETSENCRYPT_HOST=dev.mywell-server.vessels.tech
+      - ENABLE_NOTIFICATIONS-false
+    depends_on:
+      - mywell-db
+    networks:
+      - base-network
+    deploy:
+      labels:
+        - "traefik.port=3000"
+        - "traefik.docker.network=base-network"
+        - "traefik.frontend.rule=Host:dev.mywell-server.vessels.tech"
+        - "traefik.protocol=https"
 
   mywell-ui:
     image: lewisdaly/mywell-ui:dev_1.3.1
     ports:
-     - "8080:80"
+     - "8000:80"
     command: /usr/src/app/entrypoint.sh
     environment:
-      - VIRTUAL_HOST=dev.mywell.vesselstech.com
+      - VIRTUAL_HOST=dev.mywell.vessels.tech
       - HTTPS_METHOD=redirect
       - VIRTUAL_PORT=80
       - LETSENCRYPT_EMAIL=lewis@vesselstech.com
-      - LETSENCRYPT_HOST=dev.mywell.vesselstech.com
-      - SERVER_URL
-      - ENVIRONMENT
-      - ENABLE_LOGS
-      - VERSION_NUMBER
+      - LETSENCRYPT_HOST=dev.mywell.vessels.tech
+      - ENVIRONMENT=development
+      - SERVER_URL=http://dev.mywell-server.vessels.tech
+      - ENABLE_LOGS=true
+      - VERSION_NUMBER=dev_1.3.1
+    networks:
+      - base-network
+    deploy:
+      labels:
+        - "traefik.port=80"
+        - "traefik.docker.network=base-network"
+        - "traefik.frontend.rule=Host:dev.mywell.vessels.tech"
+        - "traefik.protocol=https"
 
   mywell-db:
     image: mariadb:10.0
@@ -44,29 +57,12 @@ services:
       - MYSQL_PASSWORD=password
     volumes:
       - db-data:/docker-entrypoint-initdb.d
-
-  # nginx-proxy:
-  #   image: jwilder/nginx-proxy
-  #   container_name: nginx-proxy
-  #   ports:
-  #       - "80:80"
-  #       - "443:443"
-  #   volumes:
-  #       - /var/run/docker.sock:/tmp/docker.sock:ro
-  #       - /certs:/etc/nginx/certs
-  #       - /etc/nginx/vhost.d
-  #       - /usr/share/nginx/html
-  #
-  # nginx-letsencrypt:
-  #   image: jrcs/letsencrypt-nginx-proxy-companion
-  #   container_name: nginx-letsencrypt
-  #   volumes:
-  #       - /var/run/docker.sock:/tmp/docker.sock:rw
-  #       - /var/run/docker.sock:/var/run/docker.sock:ro
-  #   volumes_from:
-  #       - nginx-proxy
-  #   links:
-  #       - nginx-proxy
+    networks:
+      - base-network
 
 volumes:
   db-data:
+
+networks:
+  base-network:
+    external: true

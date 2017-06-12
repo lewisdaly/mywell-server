@@ -16,6 +16,8 @@ else
   echo -e "${yellow}No .env file found. Creating one. Please fill it out.${endColor}"
   echo -e 'export WAY2MINT_USR=<INSERT_WAY2MINT_USR_HERE>
   export WAY2MINT_PWD=<INSERT_WAY2MINT_PWD_HERE>
+  export MANAGER_NODE_DNS=INSERT_MANAGER_NODE_DNS_HERE>
+  export DEFAULT_DNS_TARGET=INSERT_DEFAULT_DNS_TARGET_HERE>
   ' > $DIR/.env
 fi
 
@@ -27,6 +29,16 @@ fi
 if [ -z $WAY2MINT_PWD ]
 then
   echo -e "${yellow}Warning: WAY2MINT_USR not set. Cannot set default.${endColor}"
+fi
+
+if [ -z $MANAGER_NODE_DNS ]
+then
+  echo -e "${yellow}Warning: MANAGER_NODE_DNS not set. Cannot set default.${endColor}"
+fi
+
+if [ -z $DEFAULT_DNS_TARGET ]
+then
+  echo -e "${yellow}Warning: DEFAULT_DNS_TARGET not set. Cannot set default.${endColor}"
 fi
 
 if [ -z $ENABLE_NOTIFICATIONS ]
@@ -53,6 +65,8 @@ echo -e "${bold}Configured Environment Variables:${endColor}"
 echo "  - VERSION_NUMBER:            $VERSION_NUMBER"
 echo "  - WAY2MINT_USR:              $WAY2MINT_USR"
 echo "  - WAY2MINT_PWD:              $WAY2MINT_PWD"
+echo "  - MANAGER_NODE_DNS:          $MANAGER_NODE_DNS"
+echo "  - DEFAULT_DNS_TARGET:        $DEFAULT_DNS_TARGET"
 echo "  - ENABLE_NOTIFICATIONS:      $ENABLE_NOTIFICATIONS"
 echo "  - ENABLE_LOGS:               $ENABLE_LOGS"
 echo "  - SERVER_URL:                $SERVER_URL"
@@ -60,6 +74,8 @@ echo "  - SERVER_URL:                $SERVER_URL"
 export VERSION_NUMBER
 export WAY2MINT_USR
 export WAY2MINT_PWD
+export MANAGER_NODE_DNS
+export DEFAULT_DNS_TARGET
 export ENABLE_NOTIFICATIONS
 export ENABLE_LOGS
 export SERVER_URL

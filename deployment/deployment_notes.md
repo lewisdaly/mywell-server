@@ -21,11 +21,6 @@ docker service create \
     portainer/portainer \
     -H unix:///var/run/docker.sock
 
-initial pwd:
-lewisdaly
-
-
-
 
 ##Deployment?
 
@@ -62,5 +57,53 @@ docker service create \
 
 
 ### Deploying with docker swarm:
-docker stack deploy --compose-file docker-compose.swarm.yml mywell-test
-docker stack services mywell-test
+docker stack deploy --compose-file docker-compose.swarm.yml mywell-development
+docker stack services mywell-development
+
+
+
+TODO:
+
+- Persist DB
+- HTTPS
+- configure with circle? Or TravisCI?
+- auto refresh?
+- Auth stuff
+- Set up backups with lambda etc.
+
+
+
+### Setting up single lets encrypt and nginx, with multiple stacks - is it possible?
+docker service create \
+  --name=viz \
+  --publish=8081:8080/tcp \
+  --constraint=node.role==manager \
+  --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+  dockersamples/visualizer
+
+docker network create --driver overlay base-network
+docker service create \
+--name traefik \
+--constraint 'node.role==manager' \
+--publish 80:80 --publish 443:443 --publish 8080:8080 \
+--mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock \
+--mount type=bind,source=/var/tmp,target=/etc/traefik/acme \
+--network base-network \
+traefik:camembert \
+--entryPoints='Name:http Address::80 Redirect.EntryPoint:https' \
+--entryPoints='Name:https Address::443 TLS' \
+--defaultEntryPoints=http,https \
+--acme.entryPoint=https \
+--acme.email=lewis@vesselstech.com \
+--acme.storage=/etc/traefik/acme/acme.json \
+--acme.domains=vessels.tech \
+--acme.onHostRule=true \
+--docker \
+--docker.swarmmode \
+--docker.domain=vessels.tech \
+--docker.watch \
+--logLevel=DEBUG \
+--web
+
+
+docker stack deploy --compose-file docker-compose.swarm.yml mywell-development
