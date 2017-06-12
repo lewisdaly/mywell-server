@@ -1,0 +1,8 @@
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+export ENABLE_NOTIFICATIONS=false
+export ENABLE_LOGS=true
+export ENVIRONMENT=development
+export REFRESH_UI=false
+
+source $DIR/env.sh
