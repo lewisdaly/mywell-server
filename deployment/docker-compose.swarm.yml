@@ -52,7 +52,6 @@ services:
 
 volumes:
   db-data:
-     driver: "cloudstor:aws"
 
 networks:
   base-network:

@@ -195,6 +195,14 @@ type=volume,volume-driver=cloudstor:aws,source=sharedvol1,destination=/shareddat
 docker volume create --driver docker4x/cloudstor:aws-v17.03.2-ce-rc1-aws2 --name test-db
 
 ##We can make a service maybe...
-docker service create --replicas 5 --name ping1 \
-  --mount type=volume,volume-driver=cloudstor:aws,source=testvol1,destination=/shareddata \
+docker service create --replicas 1 --name ping1 \
+  --mount type=volume,volume-driver=docker4x/cloudstor:aws-v17.03.2-ce-rc1-aws2,source=testvol1,destination=/shareddata \
   alpine ping docker.com
+
+
+##also doesnt work:
+volumes:
+  db-data:
+     driver: "docker4x/cloudstor:aws-v17.03.2-ce-rc1-aws2"
+
+create mywell-development_db-data: Post http://%2Frun%2Fdocker%2Fplugins%2F671df5b6ed26a7a697fbf1d1ef900398726da9cc9f230ffde53d41cac0e2a620%2Fcloudstor.sock/VolumeDriver.Create: dial unix /run/docker/plugins/671df5b6ed26a7a697fbf1d1ef900398726da9cc9f230ffde53d41cac0e2a620/cloudstor.sock: connect: no such file or directory
