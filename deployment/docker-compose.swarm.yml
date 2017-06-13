@@ -7,12 +7,7 @@ services:
      - "3000:3000"
     environment:
       - "TERM=xterm-256color"
-      - VIRTUAL_HOST=dev.mywell-server.vessels.tech
-      - HTTPS_METHOD=redirect
-      - VIRTUAL_PORT=3000
-      - LETSENCRYPT_EMAIL=lewis@vessels.tech
-      - LETSENCRYPT_HOST=dev.mywell-server.vessels.tech
-      - ENABLE_NOTIFICATIONS-false
+      - ENABLE_NOTIFICATIONS=false
     depends_on:
       - mywell-db
     networks:
@@ -21,8 +16,8 @@ services:
       labels:
         - "traefik.port=3000"
         - "traefik.docker.network=base-network"
-        - "traefik.frontend.rule=Host:dev.mywell-server.vessels.tech"
-        - "traefik.protocol=https"
+        - "traefik.frontend.rule=Host:mywell-server.vessels.tech"
+        - "traefik.protocol=http"
 
   mywell-ui:
     image: lewisdaly/mywell-ui:dev_1.3.1
@@ -30,13 +25,8 @@ services:
      - "8000:80"
     command: /usr/src/app/entrypoint.sh
     environment:
-      - VIRTUAL_HOST=dev.mywell.vessels.tech
-      - HTTPS_METHOD=redirect
-      - VIRTUAL_PORT=80
-      - LETSENCRYPT_EMAIL=lewis@vesselstech.com
-      - LETSENCRYPT_HOST=dev.mywell.vessels.tech
       - ENVIRONMENT=development
-      - SERVER_URL=http://dev.mywell-server.vessels.tech
+      - SERVER_URL=https://mywell-server.vessels.tech
       - ENABLE_LOGS=true
       - VERSION_NUMBER=dev_1.3.1
     networks:
@@ -45,8 +35,8 @@ services:
       labels:
         - "traefik.port=80"
         - "traefik.docker.network=base-network"
-        - "traefik.frontend.rule=Host:dev.mywell.vessels.tech"
-        - "traefik.protocol=https"
+        - "traefik.frontend.rule=Host:mywell.vessels.tech"
+        - "traefik.protocol=http"
 
   mywell-db:
     image: mariadb:10.0
@@ -62,6 +52,7 @@ services:
 
 volumes:
   db-data:
+     driver: "cloudstor:aws"
 
 networks:
   base-network:

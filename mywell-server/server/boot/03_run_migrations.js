@@ -3,16 +3,16 @@
 /* add your migrations here */
 const migrations = [
   require('./migrations/0001_calculate_stats'),
-  require('./migrations/0002_village_coordinates'),
-  require('./migrations/0003_resource_images'),
-  require('./migrations/0004_save_images'),
-  require('./migrations/0005_save_images_2'),
-  require('./migrations/0006_save_images_3'),
-  require('./migrations/0007_register_megraj'),
-  require('./migrations/0008_save_images_4'),
-  require('./migrations/0009_register_village'),
-  require('./migrations/0010_register_udaipur'),
-  require('./migrations/0011_fix_village_latlng')
+  require('./migrations/0002_village_coordinates')
+//   require('./migrations/0003_resource_images'),
+//   require('./migrations/0004_save_images'),
+//   require('./migrations/0005_save_images_2'),
+//   require('./migrations/0006_save_images_3'),
+//   require('./migrations/0007_register_megraj'),
+//   require('./migrations/0008_save_images_4'),
+//   require('./migrations/0009_register_village'),
+//   require('./migrations/0010_register_udaipur'),
+//   require('./migrations/0011_fix_village_latlng')
 ];
 
 module.exports = function(app, next) {

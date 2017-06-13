@@ -105,7 +105,7 @@ module.exports = function(Resource) {
    */
   Resource.observe('after save', (ctx) => {
     if (ctx.options && ctx.options.skipUpdateModels) {
-      return next();
+      return;
     }
 
     const resource = (typeof ctx.instance === "undefined") ? ctx.currentInstance : ctx.instance;
