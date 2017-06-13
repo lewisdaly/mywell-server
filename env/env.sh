@@ -55,13 +55,14 @@ fi
 
 if [ -z $SERVER_URL ]
 then
-  echo -e "${yellow}Warning: ENABLE_LOGS not set. Defaulting to http://docker.local:3000.${endColor}"
+  echo -e "${yellow}Warning: SERVER_URL not set. Defaulting to http://docker.local:3000.${endColor}"
   SERVER_URL=http://docker.local:3000
 fi
 
 VERSION_NUMBER="1.3.1"
 
 echo -e "${bold}Configured Environment Variables:${endColor}"
+echo "  - AWS_PROFILE:               $AWS_PROFILE"
 echo "  - VERSION_NUMBER:            $VERSION_NUMBER"
 echo "  - WAY2MINT_USR:              $WAY2MINT_USR"
 echo "  - WAY2MINT_PWD:              $WAY2MINT_PWD"

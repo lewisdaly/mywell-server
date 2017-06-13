@@ -1,0 +1,18 @@
+version: '3'
+services:
+  mywell-deploy:
+    build: .
+    container_name: mywell-deploy
+    volumes:
+      - "~/.aws:/root/.aws"
+      - ../env:/usr/src/env
+      - ./:/usr/src/deploy
+    environment:
+      - AWS_PROFILE
+      - AWS_REGION
+      - VERSION_NUMBER
+      - MANAGER_NODE_DNS
+      - DEFAULT_DNS_TARGET
+      - STAGE
+    privileged: true
+    command: /usr/src/deploy/tools/entrypoint.sh
