@@ -230,3 +230,7 @@ import codecs
 file = codecs.open('resources.yml', encoding='utf-8')
 contents = file.read()
 contents
+
+#TODO:
+- Add exports from docker stack
+- configure rds security group to allow incoming from swarm security group

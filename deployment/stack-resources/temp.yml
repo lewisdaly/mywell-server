@@ -6,10 +6,7 @@ Resources:
     Type: "AWS::RDS::DBSubnetGroup"
     Properties:
       DBSubnetGroupDescription: "Subnets available for RDS"
-      SubnetIds:
-        - subnet-a9b2e0df
-        - subnet-9ed34bc7
-        - subnet-3c022d58
+      SubnetIds: "subnet-a9b2e0df,subnet-9ed34bc7,subnet-3c022d58"
 
   DbSecurityByEC2SecurityGroup:
    Type: AWS::RDS::DBSecurityGroup
@@ -20,7 +17,6 @@ Resources:
        - EC2SecurityGroupId: sg-18496a7f
 
   MyWellDatabase:
-    DependsOn: DbSecurityByEC2SecurityGroup
     Type: "AWS::RDS::DBInstance"
     Properties:
       AllocatedStorage: "10"
@@ -39,12 +35,10 @@ Resources:
       DBSubnetGroupName:
         Ref: MyWellDBSubnetGroup
       VPCSecurityGroups:
-        - 
-          Ref: DbSecurityByEC2SecurityGroup
+        - Ref: DbSecurityByEC2SecurityGroup
 
 
   MyWellDeployment:
     Type: "AWS::S3::Bucket"
     Properties:
       BucketName: mywell-deployment
-
