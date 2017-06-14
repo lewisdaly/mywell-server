@@ -17,7 +17,20 @@ Resources:
       PubliclyAccessible: false
       StorageEncrypted: false
       Port: 3306
+      DBSecurityGroups:
+        - Ref: DbSecurityByEC2SecurityGroup
+
+ #TODO: make refer to proper outputs from other stack
+  DbSecurityByEC2SecurityGroup:
+    Type: AWS::RDS::DBSecurityGroup
+    Properties:
+      GroupDescription: Ingress for Amazon EC2 security group
+      EC2VpcId:
+        Ref: vpc-8a89e8ee
+      DBSecurityGroupIngress:
+      - EC2SecurityGroupId: sg-18496a7f
+        EC2SecurityGroupOwnerId: "745457803371"
   MyWellDeployment:
     Type: "AWS::S3::Bucket"
     Properties:
-      BucketName: 'mywell-deployment'
+      BucketName: mywell-deployment
