@@ -206,3 +206,27 @@ volumes:
      driver: "docker4x/cloudstor:aws-v17.03.2-ce-rc1-aws2"
 
 create mywell-development_db-data: Post http://%2Frun%2Fdocker%2Fplugins%2F671df5b6ed26a7a697fbf1d1ef900398726da9cc9f230ffde53d41cac0e2a620%2Fcloudstor.sock/VolumeDriver.Create: dial unix /run/docker/plugins/671df5b6ed26a7a697fbf1d1ef900398726da9cc9f230ffde53d41cac0e2a620/cloudstor.sock: connect: no such file or directory
+
+
+
+## From scratch
+- When deploying from scratch, you must first set up the docker swarm cluster using Docker for AWS.
+- This is essentially a cloudformation template, so in the future we could store it locally, and run it ourselves
+- also need to set the MANAGER_NODE_DNS & DEFAULT_DNS_TARGET in the env/.env file
+
+- first time docker swarm setup:
+  - portainer
+  - traefik
+  __TODO__ write scripts for setting up these services for the first time
+
+
+- TODO: figure out how to set up 2 databases (one for each stage) on RDS
+
+
+## see the unseen:
+
+import yaml
+import codecs
+file = codecs.open('resources.yml', encoding='utf-8')
+contents = file.read()
+contents

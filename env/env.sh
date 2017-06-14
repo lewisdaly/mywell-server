@@ -21,6 +21,12 @@ else
   ' > $DIR/.env
 fi
 
+if [ -z $AWS_REGION ]
+then
+  echo -e "${yellow}Warning: AWS_REGION not set. Defaulting to 'ap-southeast-2'.${endColor}"
+  AWS_REGION=ap-southeast-2
+fi
+
 if [ -z $WAY2MINT_USR ]
 then
   echo -e "${yellow}Warning: WAY2MINT_USR not set. Cannot set default.${endColor}"
@@ -63,6 +69,7 @@ VERSION_NUMBER="1.3.1"
 
 echo -e "${bold}Configured Environment Variables:${endColor}"
 echo "  - AWS_PROFILE:               $AWS_PROFILE"
+echo "  - AWS_REGION:                $AWS_REGION"
 echo "  - VERSION_NUMBER:            $VERSION_NUMBER"
 echo "  - WAY2MINT_USR:              $WAY2MINT_USR"
 echo "  - WAY2MINT_PWD:              $WAY2MINT_PWD"
@@ -72,6 +79,7 @@ echo "  - ENABLE_NOTIFICATIONS:      $ENABLE_NOTIFICATIONS"
 echo "  - ENABLE_LOGS:               $ENABLE_LOGS"
 echo "  - SERVER_URL:                $SERVER_URL"
 
+export AWS_REGION
 export VERSION_NUMBER
 export WAY2MINT_USR
 export WAY2MINT_PWD

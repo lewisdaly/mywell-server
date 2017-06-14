@@ -7,6 +7,11 @@ endColor='\033[0m'
 MAJOR=0
 MINOR=0
 
+STACK_DOCKER_SWARM_DIR=$DEPLOYMENT_DIR/stack-docker-swarm
+STACK_RESOURCES_DIR=$DEPLOYMENT_DIR/stack-resources
+
+# TODO: way to do individual steps and stuff
+
 incrementMajor() {
   ((MAJOR++))
   echo -e "\n${bold}################# STEP $MAJOR: $1 #######################${endColor}"
@@ -29,11 +34,34 @@ printStepSeparator() {
 }
 
 
+preDeploySteps() {
+  incrementMajor "pre-deploy-steps"
+
+}
+
+deploySteps() {
+  incrementMajor "deploy-steps"
+
+  incrementMinor "updating-docker-stack"
+  cd $STACK_DOCKER_SWARM_DIR
+  ./_up.sh
+
+  incrementMinor "updating-resources-stack"
+  cd $STACK_RESOURCES_DIR
+  ./_up.sh
+}
+
+postDeploySteps() {
+  incrementMajor "post-deploy-steps"
+
+}
+
 # Display welcome message
-echo -e "${green}Deploying MyWell\n${endColor}"
+printStepSeparator
+echo -e "${green}---Deploying MyWell: "$STAGE"---${endColor}"
+printStepSeparator
 
 
-incrementMajor "updating-docker-stack"
-docker stack deploy --compose-file docker-compose.swarm.yml mywell-development
-
-incrementMajor "updating-resources-stack"
+preDeploySteps
+deploySteps
+postDeploySteps

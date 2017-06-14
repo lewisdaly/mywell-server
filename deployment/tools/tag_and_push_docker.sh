@@ -1,4 +1,10 @@
 #!/bin/bash
+
+if [ "$HOME" == "/root" ]; then
+  echo 'Looks like you might be in a docker container. This script will not work within a docker container. Sorry'
+  exit 1
+fi
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $DIR/../env/env$STAGE.sh
 

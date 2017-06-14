@@ -10,8 +10,17 @@ RUN mkdir -p $ENV_DIR
 
 WORKDIR ${DEPLOYMENT_DIR}
 
-RUN apk update
-RUN apk add bash openssh
+RUN apk -v --update add \
+        bash \
+        openssh \
+        python \
+        py-pip \
+        groff \
+        less \
+        && \
+    pip install --upgrade awscli python-magic && \
+    apk -v --purge del py-pip && \
+    rm /var/cache/apk/*
 
 #shell config
 COPY ./docker/passwd /etc/passwd
