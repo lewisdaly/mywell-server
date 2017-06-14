@@ -1,11 +1,11 @@
 {
   "mysql-corp": {
-    "host": "mywell-db",
-    "port": 3306,
-    "database": "mywell",
-    "password": "password",
     "name": "mysql-corp",
-    "user": "mywell",
+    "host": "${DB_HOST}",
+    "port": 3306,
+    "database": "${DB_NAME}",
+    "password": "${DB_PASSWORD}",
+    "user": "${DB_USER}",
     "connector": "mysql"
   },
   "storage": {

@@ -8,6 +8,10 @@ services:
     environment:
       - "TERM=xterm-256color"
       - ENABLE_NOTIFICATIONS=false
+      - DB_HOST
+      - DB_NAME
+      - DB_PASSWORD
+      - DB_USER
     depends_on:
       - mywell-db
     networks:

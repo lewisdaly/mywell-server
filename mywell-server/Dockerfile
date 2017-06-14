@@ -15,4 +15,10 @@ COPY ./ /usr/src/app/
 
 EXPOSE 3000
 
+ENV DB_HOST mywell-db
+ENV DB_NAME mywell
+ENV DB_PASSWORD password
+ENV DB_USER mywell
+
 CMD [ "nodemon", "-L", "." ]
+# OR run migrator!

@@ -22,11 +22,17 @@ function mywell-ui() {
   docker push lewisdaly/mywell-ui:"$IMAGE_TAG"
 }
 
+function mywell-utils() {
+  docker tag mywell-utils:latest lewisdaly/mywell-utils:latest
+  docker push lewisdaly/mywell-utils:latest
+}
+
 #TODO: add utils, console...
 
 cd $DIR/../
 case $1 in
   all)
+    echo "warning: not building mywell-utils"
     docker-compose build
     mywell-server
     mywell-ui
@@ -39,8 +45,13 @@ case $1 in
     docker-compose build mywell-ui
     mywell-ui
     ;;
+  mywell-utils)
+    cd $DIR/../../mywell-utils
+    docker build . -t mywell-utils
+    mywell-utils
+    ;;
   *)
-    echo "usage: $@ {all, mywell-server, mywell-ui}"
+    echo "usage: $@ {all, mywell-server, mywell-ui, mywell-utils}"
     exit 1
     ;;
 esac

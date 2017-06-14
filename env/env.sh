@@ -65,6 +65,30 @@ then
   SERVER_URL=http://docker.local:3000
 fi
 
+if [ -z $DB_HOST ]
+then
+  echo -e "${yellow}Warning: DB_HOST not set. Defaulting to mywell-db.${endColor}"
+  DB_HOST=mywell-db
+fi
+
+if [ -z $DB_NAME ]
+then
+  echo -e "${yellow}Warning: DB_NAME not set. Defaulting to mywell.${endColor}"
+  DB_NAME=mywell
+fi
+
+if [ -z $DB_PASSWORD ]
+then
+  echo -e "${yellow}Warning: DB_PASSWORD not set. Defaulting to password.${endColor}"
+  DB_PASSWORD=password
+fi
+
+if [ -z $DB_USER ]
+then
+  echo -e "${yellow}Warning: DB_USER not set. Defaulting to mywell.${endColor}"
+  DB_USER=mywell
+fi
+
 VERSION_NUMBER="1.3.1"
 
 echo -e "${bold}Configured Environment Variables:${endColor}"
@@ -78,6 +102,10 @@ echo "  - DEFAULT_DNS_TARGET:        $DEFAULT_DNS_TARGET"
 echo "  - ENABLE_NOTIFICATIONS:      $ENABLE_NOTIFICATIONS"
 echo "  - ENABLE_LOGS:               $ENABLE_LOGS"
 echo "  - SERVER_URL:                $SERVER_URL"
+echo "  - DB_HOST:                   $DB_HOST"
+echo "  - DB_NAME:                   $DB_NAME"
+echo "  - DB_PASSWORD:               $DB_PASSWORD"
+echo "  - DB_USER:                   $DB_USER"
 
 export AWS_REGION
 export VERSION_NUMBER
@@ -88,3 +116,7 @@ export DEFAULT_DNS_TARGET
 export ENABLE_NOTIFICATIONS
 export ENABLE_LOGS
 export SERVER_URL
+export DB_HOST
+export DB_NAME
+export DB_PASSWORD
+export DB_USER

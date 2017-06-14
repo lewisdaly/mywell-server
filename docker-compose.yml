@@ -17,6 +17,10 @@ services:
       - LETSENCRYPT_EMAIL=lewis@vesselstech.com
       - LETSENCRYPT_HOST=mywell-server.marvi.org.in
       - ENABLE_NOTIFICATIONS
+      - DB_HOST
+      - DB_NAME
+      - DB_PASSWORD
+      - DB_USER
     links:
     - db:db
 

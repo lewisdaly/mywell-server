@@ -17,3 +17,7 @@ Resources:
       PubliclyAccessible: false
       StorageEncrypted: false
       Port: 3306
+  MyWellDeployment:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: 'mywell-deployment'

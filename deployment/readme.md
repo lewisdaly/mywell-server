@@ -221,7 +221,7 @@ create mywell-development_db-data: Post http://%2Frun%2Fdocker%2Fplugins%2F671df
 
 
 - TODO: figure out how to set up 2 databases (one for each stage) on RDS
-
+- need to give EC2 execution role s3 access
 
 ## see the unseen:
 
