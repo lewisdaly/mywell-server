@@ -55,13 +55,13 @@ services:
       - base-network
 
   mywell-utils:
-    image: lewisdaly/mywell-utils
+    image: lewisdaly/mywell-utils:latest
     environment:
-      - SEED_FILE_PATH=s3://3://mywell-deployment/mywell_2017-03-070-20-08.sql
-      - DB_HOST=mywelldb.cyftlfi9bxci.ap-southeast-2.rds.amazonaws.com
-      - DB_NAME=dev_mywell
-      - DB_PASSWORD=marvi-mywell
-      - DB_USER=mywell
+      - SEED_FILE_PATH=s3://mywell-deployment/mywell_2017-03-070-20-08.sql
+      - DB_HOST
+      - DB_NAME
+      - DB_PASSWORD
+      - DB_USER
     networks:
       - base-network
 

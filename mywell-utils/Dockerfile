@@ -25,4 +25,4 @@ ENV DB_NAME ""
 ENV DB_PASSWORD ""
 ENV DB_USER ""
 
-CMD [ "entrypoint.sh" ]
+CMD [ "/usr/src/app/entrypoint.sh" ]
