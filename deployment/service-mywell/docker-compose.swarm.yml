@@ -8,10 +8,10 @@ services:
     environment:
       - "TERM=xterm-256color"
       - ENABLE_NOTIFICATIONS=false
-      - DB_HOST
-      - DB_NAME
-      - DB_PASSWORD
-      - DB_USER
+      - DB_HOST=mywelldb.cyftlfi9bxci.ap-southeast-2.rds.amazonaws.com
+      - DB_NAME=dev_mywell
+      - DB_PASSWORD=marvi-mywell
+      - DB_USER=mywell
     depends_on:
       - mywell-db
     networks:
@@ -51,6 +51,17 @@ services:
       - MYSQL_PASSWORD=password
     volumes:
       - db-data:/docker-entrypoint-initdb.d
+    networks:
+      - base-network
+
+  mywell-utils:
+    image: lewisdaly/mywell-utils
+    environment:
+      - SEED_FILE_PATH=s3://3://mywell-deployment/mywell_2017-03-070-20-08.sql
+      - DB_HOST=mywelldb.cyftlfi9bxci.ap-southeast-2.rds.amazonaws.com
+      - DB_NAME=dev_mywell
+      - DB_PASSWORD=marvi-mywell
+      - DB_USER=mywell
     networks:
       - base-network
 

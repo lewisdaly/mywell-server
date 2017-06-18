@@ -19,10 +19,10 @@ RUN apk -v --update add \
 
 COPY ./ ./
 
-ENV SEED_FILE_PATH
-ENV DB_HOST
-ENV DB_NAME
-ENV DB_PASSWORD
-ENV DB_USER
+ENV SEED_FILE_PATH ""
+ENV DB_HOST ""
+ENV DB_NAME ""
+ENV DB_PASSWORD ""
+ENV DB_USER ""
 
 CMD [ "entrypoint.sh" ]

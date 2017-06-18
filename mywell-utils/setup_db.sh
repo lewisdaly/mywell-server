@@ -1,9 +1,9 @@
 #!/bin/bash
 
-
 #get the file from the bucket
-aws s3 cp $SEED_FILE_PATH /tmp/seed_data
+aws s3 cp $SEED_FILE_PATH /tmp/seed_data.sql
 
-
-#Log into database!
-mysql -h mywelldb.cyftlfi9bxci.ap-southeast-2.rds.amazonaws.com -u mywell -pmarvi-mywell
+echo 'clearing db'
+mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD -e "CREATE DATABASE $DB_NAME;"
+echo 'seeding db...'
+mysql -h $DB_HOST $DB_NAME -u $DB_USER -p$DB_PASSWORD < /tmp/seed_data.sql

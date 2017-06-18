@@ -1428,6 +1428,19 @@ Resources:
       Roles:
         - !Ref ProxyRole
     Type: 'AWS::IAM::Policy'
+  ProxyPolicies:
+    DependsOn: ProxyRole
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: 's3:*'
+            Effect: Allow
+            Resource: '*'
+        Version: 2012-10-17
+      PolicyName: s3-full-access
+      Roles:
+        - !Ref ProxyRole
+    Type: 'AWS::IAM::Policy'
   ProxyRole:
     Properties:
       AssumeRolePolicyDocument:

@@ -17,6 +17,7 @@ RUN apk -v --update add \
         py-pip \
         groff \
         less \
+        jq \
         && \
     pip install --upgrade awscli python-magic && \
     apk -v --purge del py-pip && \

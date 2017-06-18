@@ -16,19 +16,6 @@ Resources:
             !Sub "${DockerStack}:PubSubnetAz2"
         - Fn::ImportValue:
             !Sub "${DockerStack}:PubSubnetAz3"
-
-  # DbSecurityByEC2SecurityGroup:
-  #   Type: AWS::RDS::DBSecurityGroup
-  #   Properties:
-  #     GroupDescription: Ingress for Amazon EC2 security group
-  #     EC2VpcId:
-  #       Fn::ImportValue:
-  #         !Sub "${DockerStack}:VPC"
-  #     DBSecurityGroupIngress:
-  #       - EC2SecurityGroupId:
-  #           Fn::ImportValue:
-  #             !Sub "${DockerStack}:SwarmWideSG"
-
   IngressEC2SecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -73,3 +60,11 @@ Resources:
     Type: "AWS::S3::Bucket"
     Properties:
       BucketName: mywell-deployment
+
+Outputs:
+  DatabaseHost:
+    Description: The Hostname of the database
+    Value:
+      Fn::GetAtt: MyWellDatabase.Endpoint.Address
+    Export:
+      Name: !Join [ ":", [ !Ref "AWS::StackName", DatabaseHost ] ]
