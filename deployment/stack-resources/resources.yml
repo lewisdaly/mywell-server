@@ -5,7 +5,6 @@ Parameters:
     Description: The name of the docker stack
     Type: String
 Resources:
-  #TODO: make refer to proper outputs from other stack
   MyWellDBSubnetGroup:
     Type: "AWS::RDS::DBSubnetGroup"
     Properties:
@@ -18,20 +17,37 @@ Resources:
         - Fn::ImportValue:
             !Sub "${DockerStack}:PubSubnetAz3"
 
-  DbSecurityByEC2SecurityGroup:
-   Type: AWS::RDS::DBSecurityGroup
-   Properties:
-     GroupDescription: Ingress for Amazon EC2 security group
-     EC2VpcId:
-      Fn::ImportValue:
-       !Sub "${DockerStack}:VPC"
-     DBSecurityGroupIngress:
-       - EC2SecurityGroupId:
-          Fn::ImportValue:
-            !Sub "${DockerStack}:SwarmWideSG"
+  # DbSecurityByEC2SecurityGroup:
+  #   Type: AWS::RDS::DBSecurityGroup
+  #   Properties:
+  #     GroupDescription: Ingress for Amazon EC2 security group
+  #     EC2VpcId:
+  #       Fn::ImportValue:
+  #         !Sub "${DockerStack}:VPC"
+  #     DBSecurityGroupIngress:
+  #       - EC2SecurityGroupId:
+  #           Fn::ImportValue:
+  #             !Sub "${DockerStack}:SwarmWideSG"
+
+  IngressEC2SecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Ingress for Amazon EC2 security group
+      VpcId:
+        Fn::ImportValue:
+          !Sub "${DockerStack}:VPC"
+      SecurityGroupIngress:
+        - FromPort: '0'
+          IpProtocol: '-1'
+          ToPort: '65535'
+          SourceSecurityGroupId:
+            Fn::ImportValue:
+              !Sub "${DockerStack}:SwarmWideSG"
 
   MyWellDatabase:
-    DependsOn: DbSecurityByEC2SecurityGroup
+    DependsOn:
+      - IngressEC2SecurityGroup
+      - MyWellDBSubnetGroup
     Type: "AWS::RDS::DBInstance"
     Properties:
       AllocatedStorage: "10"
@@ -51,8 +67,7 @@ Resources:
         Ref: MyWellDBSubnetGroup
       VPCSecurityGroups:
         -
-          Ref: DbSecurityByEC2SecurityGroup
-
+          Ref: IngressEC2SecurityGroup
 
   MyWellDeployment:
     Type: "AWS::S3::Bucket"
