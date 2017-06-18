@@ -359,8 +359,32 @@ Outputs:
       - >-
         This region has at least 3 Availability Zones (AZ). This is ideal to
         ensure a fully functional Swarm in case you lose an AZ.
-    DockerVPC:
-      Description: The VPC for this stock
+  VPC:
+    Description: The VPC for this stock
+    Value: !Ref Vpc
+    Export:
+      Name: !Join [ ":", [ !Ref "AWS::StackName", VPC ] ]
+  PubSubnetAz1:
+    Description: The subnets for the vpc (comma separated list)
+    Value: !Ref PubSubnetAz1
+    Export:
+      Name: !Join [ ":", [ !Ref "AWS::StackName", PubSubnetAz1 ] ]
+  PubSubnetAz2:
+    Description: The subnets for the vpc (comma separated list)
+    Value: !Ref PubSubnetAz2
+    Export:
+      Name: !Join [ ":", [ !Ref "AWS::StackName", PubSubnetAz2 ] ]
+  PubSubnetAz3:
+    Description: The subnets for the vpc (comma separated list)
+    Value: !Ref PubSubnetAz3
+    Export:
+      Name: !Join [ ":", [ !Ref "AWS::StackName", PubSubnetAz3 ] ]
+  SwarmWideSG:
+    Description: The swarm-wide security group
+    Value: !Ref SwarmWideSG
+    Export:
+      Name: !Join [ ":", [ !Ref "AWS::StackName", SwarmWideSG ] ]
+
 Parameters:
   ClusterSize:
     Default: '5'

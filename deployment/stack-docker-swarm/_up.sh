@@ -1,3 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+STACK_NAME=mywell-docker
 
-docker stack deploy --compose-file docker-compose.swarm.yml mywell-development
+echo $STAGE
+
+aws cloudformation validate-template --template-body file://./resources.yml --region $AWS_REGION || exit 1

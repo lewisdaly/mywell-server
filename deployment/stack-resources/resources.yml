@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: "2010-09-09"
+WWWAWSTemplateFormatVersion: "2010-09-09"
 Description: MyWell non docker resources stack
 Resources:
   #TODO: make refer to proper outputs from other stack
@@ -39,7 +39,7 @@ Resources:
       DBSubnetGroupName:
         Ref: MyWellDBSubnetGroup
       VPCSecurityGroups:
-        - 
+        -
           Ref: DbSecurityByEC2SecurityGroup
 
 
@@ -47,4 +47,3 @@ Resources:
     Type: "AWS::S3::Bucket"
     Properties:
       BucketName: mywell-deployment
-
