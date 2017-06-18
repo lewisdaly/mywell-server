@@ -1,5 +1,9 @@
-WWWAWSTemplateFormatVersion: "2010-09-09"
+AWSTemplateFormatVersion: "2010-09-09"
 Description: MyWell non docker resources stack
+Parameters:
+  DockerStack:
+    Description: The name of the docker stack
+    Type: String
 Resources:
   #TODO: make refer to proper outputs from other stack
   MyWellDBSubnetGroup:
@@ -7,17 +11,24 @@ Resources:
     Properties:
       DBSubnetGroupDescription: "Subnets available for RDS"
       SubnetIds:
-        - subnet-a9b2e0df
-        - subnet-9ed34bc7
-        - subnet-3c022d58
+        - Fn::ImportValue:
+            !Sub "${DockerStack}:PubSubnetAz1"
+        - Fn::ImportValue:
+            !Sub "${DockerStack}:PubSubnetAz2"
+        - Fn::ImportValue:
+            !Sub "${DockerStack}:PubSubnetAz3"
 
   DbSecurityByEC2SecurityGroup:
    Type: AWS::RDS::DBSecurityGroup
    Properties:
      GroupDescription: Ingress for Amazon EC2 security group
-     EC2VpcId: vpc-8a89e8ee
+     EC2VpcId:
+      Fn::ImportValue:
+       !Sub "${DockerStack}:VPC"
      DBSecurityGroupIngress:
-       - EC2SecurityGroupId: sg-18496a7f
+       - EC2SecurityGroupId:
+          Fn::ImportValue:
+            !Sub "${DockerStack}:SwarmWideSG"
 
   MyWellDatabase:
     DependsOn: DbSecurityByEC2SecurityGroup

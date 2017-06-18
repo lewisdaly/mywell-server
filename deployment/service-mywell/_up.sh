@@ -1,7 +1,4 @@
-#!/bin/bash
-
-# deploy cloudformation
-
+#!/usr/bin/env bash
 
 #deploy the docker services
-# docker stack deploy --compose-file docker-compose.swarm.yml mywell-development
+docker stack deploy --compose-file docker-compose.swarm.yml mywell-development

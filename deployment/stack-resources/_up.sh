@@ -13,6 +13,5 @@ aws cloudformation validate-template --template-body file://./resources.yml --re
 aws cloudformation deploy \
   --template-file ./resources.yml \
   --stack-name "$STACK_NAME" \
-  --region "$AWS_REGION"
-
-  # --parameter-overrides Stage=$STAGE \
+  --region "$AWS_REGION" \
+  --parameter-overrides DockerStack=mywell-docker
