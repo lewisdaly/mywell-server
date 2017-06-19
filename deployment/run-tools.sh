@@ -2,7 +2,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 #set up envs - for
-source $DIR/../env/envlocal.sh
+source $DIR/../env/envdeployment.sh
 export STAGE=development
 
 if [ "$1" == "build" ]

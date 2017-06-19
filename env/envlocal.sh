@@ -4,9 +4,9 @@ export ENABLE_NOTIFICATIONS=false
 export ENABLE_LOGS=true
 export ENVIRONMENT=development
 export REFRESH_UI=false
-export DB_HOST mywell-db
-export DB_NAME mywell
-export DB_PASSWORD password
-export DB_USER mywell
+export DB_HOST=db
+export DB_NAME=mywell
+export DB_PASSWORD=password
+export DB_USER=mywell
 
 source $DIR/env.sh

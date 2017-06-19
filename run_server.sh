@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ./env/env$STAGE.sh
+source ./env/envlocal.sh
 
 if [ "$1" == "build" ]
 then
