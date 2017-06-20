@@ -10,9 +10,9 @@ aws cloudformation deploy \
   --template-file ./resources.yml \
   --parameter-overrides \
     KeyName=mywell-docker \
-    InstanceType=t2.micro \
-    ManagerInstanceType=t2.micro \
-    ClusterSize=0 \
+    InstanceType=t2.small \
+    ManagerInstanceType=t2.small \
+    ClusterSize=1 \
     ManagerSize=1 \
     EnableSystemPrune=yes \
   --capabilities CAPABILITY_IAM

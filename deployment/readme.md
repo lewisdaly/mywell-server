@@ -171,3 +171,16 @@ contents
 #TODO:
 - Add exports from docker stack
 - configure rds security group to allow incoming from swarm security group
+
+
+
+##Rebooting a dead cluster
+```
+#on the master node:
+docker swarm init --force-new-cluster
+#on the worker nodes:
+docker swarm join \
+    --token SWMTKN-1-1xgou2cj2m7lf8vnf2agklcy7ptjopsdwvqob5iol700w4mahk-cjagvui5a4nh69bazuxiwan4g \
+    172.31.39.12:2377
+
+```

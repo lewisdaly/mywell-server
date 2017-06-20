@@ -8,12 +8,10 @@ services:
     environment:
       - "TERM=xterm-256color"
       - ENABLE_NOTIFICATIONS=false
-      - DB_HOST=mywelldb.cyftlfi9bxci.ap-southeast-2.rds.amazonaws.com
-      - DB_NAME=dev_mywell
-      - DB_PASSWORD=marvi-mywell
-      - DB_USER=mywell
-    depends_on:
-      - mywell-db
+      - DB_HOST
+      - DB_NAME
+      - DB_PASSWORD
+      - DB_USER
     networks:
       - base-network
     deploy:
@@ -41,18 +39,6 @@ services:
         - "traefik.docker.network=base-network"
         - "traefik.frontend.rule=Host:mywell.vessels.tech"
         - "traefik.protocol=http"
-
-  mywell-db:
-    image: mariadb:10.0
-    environment:
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_DATABASE=mywell
-      - MYSQL_USER=mywell
-      - MYSQL_PASSWORD=password
-    volumes:
-      - db-data:/docker-entrypoint-initdb.d
-    networks:
-      - base-network
 
   mywell-utils:
     image: lewisdaly/mywell-utils:latest
