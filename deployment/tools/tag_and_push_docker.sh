@@ -35,6 +35,11 @@ function mywell-utils() {
 
 cd $DIR/../
 case $1 in
+  skip-build)
+    echo "warning: not building anything"
+    mywell-server
+    mywell-ui
+    mywell-utils
   all)
     echo "warning: not building mywell-utils"
     docker-compose build
