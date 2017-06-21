@@ -53,8 +53,7 @@ case $1 in
     mywell-ui
     ;;
   mywell-utils)
-    cd $DIR/../../mywell-utils
-    docker build . -t mywell-utils
+    docker-compose build mywell-utils
     mywell-utils
     ;;
   *)

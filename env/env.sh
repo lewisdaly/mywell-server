@@ -89,6 +89,12 @@ then
   DB_USER=mywell
 fi
 
+if [ -z $IMAGE_SUFFIX ]
+then
+  echo -e "${yellow}Warning: IMAGE_SUFFIX not set. Defaulting to development.${endColor}"
+  IMAGE_SUFFIX=development
+fi
+
 VERSION_NUMBER="1.3.1"
 
 echo -e "${bold}Configured Environment Variables:${endColor}"
