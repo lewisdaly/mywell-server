@@ -6,7 +6,7 @@ if [ "$HOME" == "/root" ]; then
 fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $DIR/../env/env$STAGE.sh
+source $DIR/../../env/env$STAGE.sh
 
 echo 'Make sure you are logged in, with docker login'
 
@@ -40,6 +40,7 @@ case $1 in
     mywell-server
     mywell-ui
     mywell-utils
+    ;;
   all)
     echo "warning: not building mywell-utils"
     docker-compose build

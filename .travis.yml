@@ -15,5 +15,5 @@ after_success:
   - if [ "$TRAVIS_BRANCH" == "docker-setup" ]; then
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
     export STAGE=development
-    ./deployment/tools/tag_and_push_docker.sh skip-build;
+    ./deployment/tools/tag_and_push_docker.sh skip-build || exit 1;
     fi
