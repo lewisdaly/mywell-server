@@ -1,5 +1,10 @@
 version: '2'
 services:
+  mywell-utils:
+    container_name: mywell-utils
+    build: ./mywell-utils/
+    image: mywell-utils:local
+
   mywell-server:
     container_name: mywell-server
     build: ./mywell-server/

@@ -28,7 +28,7 @@ function mywell-ui() {
 
 function mywell-utils() {
   docker tag mywell-utils:latest lewisdaly/mywell-utils:latest
-  docker push lewisdaly/mywell-utils:latest
+  docker push lewisdaly/mywell-utils:"$IMAGE_TAG"
 }
 
 #TODO: add utils, console...
@@ -42,10 +42,10 @@ case $1 in
     mywell-utils
     ;;
   all)
-    echo "warning: not building mywell-utils"
     docker-compose build
     mywell-server
     mywell-ui
+    mywell-utils
     ;;
   mywell-server)
     docker-compose build mywell-server
