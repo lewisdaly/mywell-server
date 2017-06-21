@@ -6,6 +6,7 @@ RUN mkdir -p /usr/src/app/storage
 
 WORKDIR /usr/src/app
 
+RUN npm config set silent true
 RUN npm install -g nodemon loopback
 
 COPY package.json /usr/src/app/
