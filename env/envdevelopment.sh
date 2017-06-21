@@ -12,6 +12,7 @@ export DB_HOST="mywelldb.cyftlfi9bxci.ap-southeast-2.rds.amazonaws.com"
 export DB_NAME="development_mywell"
 export DB_PASSWORD="marvi-mywell"
 export DB_USER="mywell"
+export IMAGE_SUFFIX="development"
 
 
 source $DIR/env.sh

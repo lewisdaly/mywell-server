@@ -10,11 +10,8 @@ source $DIR/../../env/env$STAGE.sh
 
 echo 'Make sure you are logged in, with docker login'
 
-if [ -z $TRAVIS_BUILD_NUMBER ]; then
-  TRAVIS_BUILD_NUMBER=1
-fi
-
-IMAGE_TAG="dev_${VERSION_NUMBER}_${TRAVIS_BUILD_NUMBER}"
+# TODO: we could make this more complicated, but for now use the IMAGE_SUFFIX
+IMAGE_TAG="${IMAGE_SUFFIX}"
 
 function mywell-server() {
   docker tag mywell-server:local lewisdaly/mywell-server:"$IMAGE_TAG"
