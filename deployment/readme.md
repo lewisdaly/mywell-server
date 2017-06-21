@@ -106,6 +106,12 @@ traefik:1.3.0 \
 --logLevel=DEBUG \
 --web
 
+docker service create --name shepherd \
+  --replicas 1 \
+  --constraint "node.role==manager" \
+  --mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock,ro \
+  mazzolino/shepherd
+
 
 docker stack deploy --compose-file docker-compose.swarm.yml mywell-development
 

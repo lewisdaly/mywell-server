@@ -384,6 +384,12 @@ Outputs:
     Value: !Ref SwarmWideSG
     Export:
       Name: !Join [ ":", [ !Ref "AWS::StackName", SwarmWideSG ] ]
+  NodeVpcSG:
+    Description: The security group for workers
+    Value: !Ref NodeVpcSG
+    Export:
+      Name: !Join [ ":", [ !Ref "AWS::StackName", NodeVpcSG ] ]
+
 
 Parameters:
   ClusterSize:

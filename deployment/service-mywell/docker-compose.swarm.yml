@@ -18,7 +18,7 @@ services:
       labels:
         - "traefik.port=3000"
         - "traefik.docker.network=base-network"
-        - "traefik.frontend.rule=Host:mywell-server.vessels.tech"
+        - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell-server.vessels.tech"
         - "traefik.protocol=http"
 
   mywell-ui:
@@ -28,7 +28,7 @@ services:
     command: /usr/src/app/entrypoint.sh
     environment:
       - ENVIRONMENT=development
-      - SERVER_URL=https://mywell-server.vessels.tech
+      - SERVER_URL
       - ENABLE_LOGS=true
       - VERSION_NUMBER=dev_1.3.1
     networks:
@@ -37,13 +37,13 @@ services:
       labels:
         - "traefik.port=80"
         - "traefik.docker.network=base-network"
-        - "traefik.frontend.rule=Host:mywell.vessels.tech"
+        - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell.vessels.tech"
         - "traefik.protocol=http"
 
   mywell-utils:
     image: lewisdaly/mywell-utils:latest
     environment:
-      - SEED_FILE_PATH=s3://mywell-deployment/mywell_2017-03-070-20-08.sql
+      - SEED_FILE_PATH=s3://mywell-deployment/restore/mywell_2017-06-143:06:49.sql
       - DB_HOST
       - DB_NAME
       - DB_PASSWORD

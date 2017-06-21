@@ -106,6 +106,7 @@ echo "  - DB_HOST:                   $DB_HOST"
 echo "  - DB_NAME:                   $DB_NAME"
 echo "  - DB_PASSWORD:               $DB_PASSWORD"
 echo "  - DB_USER:                   $DB_USER"
+echo "  - STAGE_PREFIX:              $STAGE_PREFIX"
 
 export AWS_REGION
 export VERSION_NUMBER
@@ -120,3 +121,4 @@ export DB_HOST
 export DB_NAME
 export DB_PASSWORD
 export DB_USER
+export STAGE_PREFIX

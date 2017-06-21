@@ -30,6 +30,12 @@ Resources:
           SourceSecurityGroupId:
             Fn::ImportValue:
               !Sub "${DockerStack}:SwarmWideSG"
+        - FromPort: '0'
+          IpProtocol: '-1'
+          ToPort: '65535'
+          SourceSecurityGroupId:
+            Fn::ImportValue:
+              !Sub "${DockerStack}:NodeVpcSG"
 
   MyWellDatabase:
     DependsOn:
