@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ "$HOME" == "/root" ]; then
   echo 'Looks like you might be in a docker container. This script will not work within a docker container. Sorry'

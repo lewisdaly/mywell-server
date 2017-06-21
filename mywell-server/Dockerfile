@@ -6,10 +6,10 @@ RUN mkdir -p /usr/src/app/storage
 
 WORKDIR /usr/src/app
 
-RUN npm install -g nodemon loopback -q
+RUN npm install -g nodemon loopback -s
 
 COPY package.json /usr/src/app/
-RUN npm install -q
+RUN npm install -s
 
 COPY ./ /usr/src/app/
 
