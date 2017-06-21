@@ -24,7 +24,7 @@ function mywell-ui() {
 }
 
 function mywell-utils() {
-  docker tag mywell-utils:latest lewisdaly/mywell-utils:"$IMAGE_TAG"
+  docker tag mywell-utils:local lewisdaly/mywell-utils:"$IMAGE_TAG"
   docker push lewisdaly/mywell-utils:"$IMAGE_TAG"
 }
 
