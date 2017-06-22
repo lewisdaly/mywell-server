@@ -1,3 +1,3 @@
+#!/usr/bin/env bash
 
-
-echo 'We havent finished making this into a swarm compose file yet...'
+docker stack deploy --compose-file docker-compose.swarm.yml mywell-tools

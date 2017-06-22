@@ -10,12 +10,8 @@ services:
     networks:
       - base-network
     volumes:
-      - type: bind
-        source: /var/run/docker.sock
-        target: /var/run/docker.sock
-      - type: bind
-        source: /var/tmp
-        target: /etc/traefik/acme
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/tmp:/etc/traefik/acme
     deploy:
       placement:
         constraints:
@@ -45,9 +41,7 @@ services:
         constraints:
           - node.role == manager
     volumes:
-      - type: bind
-        source: /var/run/docker.sock
-        target: /var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock
 
   portainer:
     image: portainer/portainer
@@ -58,10 +52,19 @@ services:
         constraints:
           - node.role == manager
     volumes:
-      - type: bind
-        source: /var/run/docker.sock
-        target: /var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock
     command: -H unix:///var/run/docker.sock
+
+  shepherd:
+    image: mazzolino/shepherd
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   base-network:
+    # TODO: make NOT external
+    external: true
