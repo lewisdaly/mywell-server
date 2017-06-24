@@ -29,6 +29,7 @@ services:
       --docker.swarmmode \
       --docker.domain=vessels.tech \
       --docker.watch \
+      --logLevel=ERROR \
       --web
 
   viz:
