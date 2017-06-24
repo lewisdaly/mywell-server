@@ -1,5 +1,6 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+#The env variables needed to get the local environment running.
 export ENABLE_NOTIFICATIONS=false
 export ENABLE_LOGS=true
 export ENVIRONMENT=development

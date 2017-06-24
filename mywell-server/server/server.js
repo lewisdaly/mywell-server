@@ -22,13 +22,6 @@ app.start = function() {
 // Sub-apps like REST API are mounted via boot scripts.
 boot(app, __dirname, function(err) {
   if (err) throw err;
-
-  console.log("----envs----");
-  console.log(`DB_HOST: ${process.env.DB_HOST}`);
-  console.log(`DB_NAME: ${process.env.DB_NAME}`);
-  console.log(`DB_PASSWORD: ${process.env.DB_PASSWORD}`);
-  console.log(`DB_USER: ${process.env.DB_USER}`);
-
   // start the server if `$ node server.js`
   if (require.main === module)
     app.start();

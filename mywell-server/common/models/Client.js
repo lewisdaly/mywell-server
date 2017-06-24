@@ -18,10 +18,6 @@ module.exports = (Client) => {
   });
 
   Client.loginWithCode = (mobile_number, code) => {
-    //lookup code in the database
-    //If we don't have it, or it expired, 403
-    //If we have it, get the username and password from LoginCode
-    //Login with user model
     let app = null;
     let loginCode = null;
 

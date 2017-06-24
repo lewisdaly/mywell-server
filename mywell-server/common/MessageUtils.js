@@ -5,6 +5,10 @@
 const isNullOrUndefined = require('util').isNullOrUndefined;
 const request = require('request-promise-native');
 const moment = require('moment');
+const twilioClient = require('twilio')(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
 
 let ENABLE_NOTIFICATIONS = false;
 if (process.env.ENABLE_NOTIFICATIONS === true || process.env.ENABLE_NOTIFICATIONS === 'true') {
@@ -109,7 +113,13 @@ module.exports.sendSMSMessage = (message, number) => {
     return Promise.resolve(true);
   }
   console.log("TODO: integrate with twilio");
-  return;
+
+  return twilioClient.messages.create({
+    from: process.env.TWILIO_PHONE_NUMBER,
+    to: number,
+    body: message
+  })
+  .then(message => console.log(message.sid));
 }
 
 /**
