@@ -93,10 +93,31 @@ module.exports.convertResourceToMessage = (reading) => {
 }
 
 
-/*
- * Process the POST request to W2M
+module.exports.getSMSCodeMessage = (code) => {
+  //TODO: account for languages somehow!
+  return `Welcome to MyWell. Your login code is: ${code}`;
+}
+
+/**
+ * Send message using Twilio
  */
 module.exports.sendSMSMessage = (message, number) => {
+  console.log("Sending message: \"" + message + "\" to number:" +number);
+
+  if (ENABLE_NOTIFICATIONS === false ) {
+    console.log("Skipping message, as ENABLE_NOTIFICATIONS is false");
+    return Promise.resolve(true);
+  }
+  console.log("TODO: integrate with twilio");
+  return;
+}
+
+/**
+ * Process the POST request to W2M
+ * This is deprecated. Use sendSMSMessage instead
+ */
+module.exports.old_sendSMSMessage = (message, number) => {
+  console.log("WARNING: deprected. This method sends the message via W2M, Indian numbers only");
   console.log("Sending message: \"" + message + "\" to number:" +number);
 
   const url = `http://fastsms.way2mint.com/SendSMS/sendmsg.php?uname=basantm&pass=12345678&send=Way2mint&dest=${number}&msg=${message}&prty=1&vp=30&dlr-url=1`;

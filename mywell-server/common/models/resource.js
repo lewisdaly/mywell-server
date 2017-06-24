@@ -142,7 +142,7 @@ module.exports = function(Resource) {
     }
 
     const message = `Thanks. The details of your ${resource.type} are.\nPostcode:${resource.postcode}\nId:${resource.id}`;
-    MessageUtils.sendSMSMessage(message, resource.mobile)
+    MessageUtils.old_sendSMSMessage(message, resource.mobile)
       .then(() => next());
   });
 

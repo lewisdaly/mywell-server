@@ -13,7 +13,11 @@
       "./mixins"
     ]
   },
-  "User": {
+  "LoginCode": {
+    "dataSource": "mysql-corp",
+    "public": true
+  },
+  "Client": {
     "dataSource": "mysql-corp",
     "public": true
   },
