@@ -9,6 +9,7 @@ const twilioClient = require('twilio')(
   process.env.TWILIO_ACCOUNT_SID,
   process.env.TWILIO_AUTH_TOKEN
 );
+const Utils = require('./Utils');
 
 let ENABLE_NOTIFICATIONS = false;
 if (process.env.ENABLE_NOTIFICATIONS === true || process.env.ENABLE_NOTIFICATIONS === 'true') {
@@ -99,7 +100,7 @@ module.exports.convertResourceToMessage = (reading) => {
 
 module.exports.getSMSCodeMessage = (code) => {
   //TODO: account for languages somehow!
-  return `Welcome to MyWell. Your login code is: ${code}`;
+  return `Welcome to MyWell. Your temporary login code is: ${code}`;
 }
 
 /**
@@ -119,7 +120,11 @@ module.exports.sendSMSMessage = (message, number) => {
     to: number,
     body: message
   })
-  .then(message => console.log(message.sid));
+  .then(message => console.log(message.sid))
+  .catch(err => {
+    console.log(err);
+    return Promise.reject(Utils.getError(500, "Error sending SMS message"));
+  });
 }
 
 /**

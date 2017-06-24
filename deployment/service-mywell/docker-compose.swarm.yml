@@ -12,6 +12,9 @@ services:
       - DB_NAME
       - DB_PASSWORD
       - DB_USER
+      - TWILIO_ACCOUNT_SID
+      - TWILIO_AUTH_TOKEN
+      - TWILIO_PHONE_NUMBER
     networks:
       - base-network
     deploy:
