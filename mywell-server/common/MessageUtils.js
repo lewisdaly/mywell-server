@@ -113,11 +113,10 @@ module.exports.sendSMSMessage = (message, number) => {
     console.log("Skipping message, as ENABLE_NOTIFICATIONS is false");
     return Promise.resolve(true);
   }
-  console.log("TODO: integrate with twilio");
 
   return twilioClient.messages.create({
     from: process.env.TWILIO_PHONE_NUMBER,
-    to: number,
+    to: `+${number}`,
     body: message
   })
   .then(message => console.log(message.sid))
