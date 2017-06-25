@@ -16,6 +16,7 @@ export IMAGE_SUFFIX="development"
 export VERSION_NUMBER="dev_1.3.2"
 export SERVER_PORT=3001
 export UI_PORT=8002
+export DONE_SEEDING_SUFFIX="development_done"
 
 
 
