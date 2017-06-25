@@ -1,6 +1,6 @@
 #!/bin/bash
-export VERSION_NUMBER=1.3.1
-export ENABLE_LOGS=true
+#TODO: fix all the stupid folder refs here
+source ./env/envproduction.sh
 
 cd /Users/lewis/developer/mywell/src/mywell-ui/src
 gulp replace --env prod
