@@ -12,17 +12,17 @@ script:
   # - docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d sms-bot
   # - docker exec -it sms-bot bash -c "/usr/src/app/test/test.sh"
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "docker-setup" ]; then
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    export STAGE=development;
-    export IMAGE_SUFFIX=development;
-    ./deployment/tools/tag_and_push_docker.sh skip-build;
+  - if [ "$TRAVIS_BRANCH" == "development" ]; then
+      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+      export STAGE=development;
+      export IMAGE_SUFFIX=development;
+      ./deployment/tools/tag_and_push_docker.sh skip-build;
     fi
 
   # TODO: remove '-test' once we have deployed properly
   - if [ "$TRAVIS_BRANCH" == "master-test" ]; then
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    export STAGE=production;
-    export IMAGE_SUFFIX=production;
-    ./deployment/tools/tag_and_push_docker.sh skip-build;
+      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+      export STAGE=production;
+      export IMAGE_SUFFIX=production;
+      ./deployment/tools/tag_and_push_docker.sh skip-build;
     fi
