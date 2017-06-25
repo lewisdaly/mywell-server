@@ -23,11 +23,11 @@ services:
       --acme.entryPoint=https \
       --acme.email=lewis@vesselstech.com \
       --acme.storage=/etc/traefik/acme/acme.json \
-      --acme.domains=vessels.tech \
+      --acme.domains=marvi.org.in \
       --acme.onHostRule=true \
       --docker \
       --docker.swarmmode \
-      --docker.domain=vessels.tech \
+      --docker.domain=marvi.org.in \
       --docker.watch \
       --logLevel=ERROR \
       --web
