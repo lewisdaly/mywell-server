@@ -4,7 +4,7 @@ services:
   mywell-server:
     image: lewisdaly/mywell-server:${IMAGE_SUFFIX}
     ports:
-     - "3000:3000"
+     - "${SERVER_PORT}:3000"
     environment:
       - "TERM=xterm-256color"
       - ENABLE_NOTIFICATIONS
@@ -27,7 +27,7 @@ services:
   mywell-ui:
     image: lewisdaly/mywell-ui:${IMAGE_SUFFIX}
     ports:
-     - "8000:80"
+     - "${UI_PORT}:80"
     command: /usr/src/app/entrypoint.sh
     environment:
       - ENVIRONMENT=development
@@ -46,7 +46,7 @@ services:
   mywell-utils:
     image: lewisdaly/mywell-utils:${IMAGE_SUFFIX}
     environment:
-      - SEED_FILE_PATH=s3://mywell-deployment/restore/mywell_2017-06-143:06:49.sql
+      - SEED_FILE_PATH=s3://mywell-deployment/restore/mywell_2017-06-253:12:22.sql
       - DB_HOST
       - DB_NAME
       - DB_PASSWORD

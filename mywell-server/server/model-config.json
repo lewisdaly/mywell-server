@@ -21,6 +21,10 @@
     "dataSource": "mysql-corp",
     "public": true
   },
+  "User": {
+    "dataSource": "mysql-corp",
+    "public": true
+  },
   "AccessToken": {
     "dataSource": "mysql-corp",
     "public": false

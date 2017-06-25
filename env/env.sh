@@ -98,8 +98,6 @@ then
   IMAGE_SUFFIX=development
 fi
 
-VERSION_NUMBER="1.3.1"
-
 echo -e "${bold}Configured Environment Variables:${endColor}"
 echo "  - AWS_PROFILE:               $AWS_PROFILE"
 echo "  - AWS_REGION:                $AWS_REGION"
@@ -120,6 +118,9 @@ echo "  - IMAGE_SUFFIX:              $IMAGE_SUFFIX"
 echo "  - TWILIO_ACCOUNT_SID:        $TWILIO_ACCOUNT_SID"
 echo "  - TWILIO_AUTH_TOKEN:         $TWILIO_AUTH_TOKEN"
 echo "  - TWILIO_PHONE_NUMBER:       $TWILIO_PHONE_NUMBER"
+echo "  - SERVER_PORT:               $SERVER_PORT"
+echo "  - UI_PORT:                   $UI_PORT"
+
 
 export AWS_REGION
 export VERSION_NUMBER
@@ -139,3 +140,5 @@ export IMAGE_SUFFIX
 export TWILIO_ACCOUNT_SID
 export TWILIO_AUTH_TOKEN
 export TWILIO_PHONE_NUMBER
+export SERVER_PORT
+export SERVER_UI

@@ -68,11 +68,11 @@ export AWS_ACCESS_KEY_ID=
 export AWS_SECRET_ACCESS_KEY=
 export AWS_DEFAULT_REGION=ap-south-1
 
-aws s3 ls s3://mywell/backups/mywell_2017-06-143:06:49.sql
-aws s3 cp s3://mywell/backups/mywell_2017-06-143:06:49.sql /tmp/
+aws s3 ls s3://mywell/backups/mywell_2017-06-253:12:22.sql
+aws s3 cp s3://mywell/backups/mywell_2017-06-253:12:22.sql /tmp/
 unset AWS_ACCESS_KEY_ID
 unset AWS_SECRET_ACCESS_KEY
 unset AWS_DEFAULT_REGION
 aws s3 ls
-aws s3 cp /tmp/mywell_2017-06-143:06:49.sql s3://mywell-deployment/restore/
+aws s3 cp /tmp/mywell_2017-06-253:12:22.sql s3://mywell-deployment/restore/
 ```
