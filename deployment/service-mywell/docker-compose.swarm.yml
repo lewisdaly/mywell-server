@@ -51,6 +51,7 @@ services:
       - DB_NAME
       - DB_PASSWORD
       - DB_USER
+      - DONE_SEEDING_SUFFIX
     networks:
       - base-network
 

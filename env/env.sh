@@ -120,7 +120,7 @@ echo "  - TWILIO_AUTH_TOKEN:         $TWILIO_AUTH_TOKEN"
 echo "  - TWILIO_PHONE_NUMBER:       $TWILIO_PHONE_NUMBER"
 echo "  - SERVER_PORT:               $SERVER_PORT"
 echo "  - UI_PORT:                   $UI_PORT"
-
+echo "  - DONE_SEEDING_SUFFIX:       $DONE_SEEDING_SUFFIX"
 
 export AWS_REGION
 export VERSION_NUMBER
@@ -142,3 +142,4 @@ export TWILIO_AUTH_TOKEN
 export TWILIO_PHONE_NUMBER
 export SERVER_PORT
 export SERVER_UI
+export DONE_SEEDING_SUFFIX
