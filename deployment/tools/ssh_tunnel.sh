@@ -11,3 +11,6 @@ ssh -o "StrictHostKeyChecking no" \
     -NL localhost:"$DOCKER_TUNNEL_PORT":/var/run/docker.sock docker@"$MANAGER_NODE_DNS" &
 
 echo "Tunnelling!"
+echo "..."
+sleep 5
+echo "Done. Should be up now."
