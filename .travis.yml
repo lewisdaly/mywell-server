@@ -19,8 +19,7 @@ after_success:
       ./deployment/tools/tag_and_push_docker.sh skip-build;
     fi
 
-  # TODO: remove '-test' once we have deployed properly
-  - if [ "$TRAVIS_BRANCH" == "master-test" ]; then
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
       docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
       export STAGE=production;
       export IMAGE_SUFFIX=production;
