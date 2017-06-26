@@ -112,8 +112,12 @@ module.exports = function(Resource) {
           return Promise.reject(Utils.getError(404, `Could not find resource for id: ${data.id} and postcode: ${data.postcode}`));
         }
 
-        //make sure nobody is sneakily updating the resource
-        if (data.geo) { resource.geo = data.geo; }
+        if (data.geo && data.geo.lat && data.geo.lng) {
+           resource.geo = {
+             lat: data.geo.lat,
+             lng: data.geo.lng
+           };
+         }
         if (data.last_value) { resource.last_value = data.last_value; }
         if (data.well_depth) { resource.well_depth = data.well_depth; }
         if (data.last_date) { resource.last_date = data.last_date; }
