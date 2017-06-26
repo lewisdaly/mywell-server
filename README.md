@@ -57,3 +57,22 @@ docker exec -it mywellserver_db_1 /bin/bash -c "TERM=dumb mysql mywell -u mywell
 
 register.js --file ../scripts/test_resource.csv --type resource
 ./signup_preprocessor.py --input_path ../../data/rainfall_station_registration.csv  --resource_type raingauge --output_path test
+
+
+
+#### Moving backup files to correct bucket
+```
+#From docker swarm, login to mywell-utils
+
+export AWS_ACCESS_KEY_ID=
+export AWS_SECRET_ACCESS_KEY=
+export AWS_DEFAULT_REGION=ap-south-1
+
+aws s3 ls s3://mywell/backups/mywell_2017-06-253:12:22.sql
+aws s3 cp s3://mywell/backups/mywell_2017-06-253:12:22.sql /tmp/
+unset AWS_ACCESS_KEY_ID
+unset AWS_SECRET_ACCESS_KEY
+unset AWS_DEFAULT_REGION
+aws s3 ls
+aws s3 cp /tmp/mywell_2017-06-253:12:22.sql s3://mywell-deployment/restore/
+```

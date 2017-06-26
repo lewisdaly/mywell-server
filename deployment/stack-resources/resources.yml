@@ -1,0 +1,76 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: MyWell non docker resources stack
+Parameters:
+  DockerStack:
+    Description: The name of the docker stack
+    Type: String
+Resources:
+  MyWellDBSubnetGroup:
+    Type: "AWS::RDS::DBSubnetGroup"
+    Properties:
+      DBSubnetGroupDescription: "Subnets available for RDS"
+      SubnetIds:
+        - Fn::ImportValue:
+            !Sub "${DockerStack}:PubSubnetAz1"
+        - Fn::ImportValue:
+            !Sub "${DockerStack}:PubSubnetAz2"
+        - Fn::ImportValue:
+            !Sub "${DockerStack}:PubSubnetAz3"
+  IngressEC2SecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Ingress for Amazon EC2 security group
+      VpcId:
+        Fn::ImportValue:
+          !Sub "${DockerStack}:VPC"
+      SecurityGroupIngress:
+        - FromPort: '0'
+          IpProtocol: '-1'
+          ToPort: '65535'
+          SourceSecurityGroupId:
+            Fn::ImportValue:
+              !Sub "${DockerStack}:SwarmWideSG"
+        - FromPort: '0'
+          IpProtocol: '-1'
+          ToPort: '65535'
+          SourceSecurityGroupId:
+            Fn::ImportValue:
+              !Sub "${DockerStack}:NodeVpcSG"
+
+  MyWellDatabase:
+    DependsOn:
+      - IngressEC2SecurityGroup
+      - MyWellDBSubnetGroup
+    Type: "AWS::RDS::DBInstance"
+    Properties:
+      AllocatedStorage: "10"
+      BackupRetentionPeriod: "7"
+      DBInstanceClass: "db.t2.micro"
+      DBInstanceIdentifier: "mywelldb"
+      Engine: MariaDB
+      EngineVersion: 10.0.24
+      MasterUsername: mywell
+      MasterUserPassword: marvi-mywell
+      MonitoringInterval: 0
+      MultiAZ: false
+      PubliclyAccessible: false
+      StorageEncrypted: false
+      Port: 3306
+      DBSubnetGroupName:
+        Ref: MyWellDBSubnetGroup
+      VPCSecurityGroups:
+        -
+          Ref: IngressEC2SecurityGroup
+
+  MyWellDeployment:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: mywell-deployment
+
+Outputs:
+  DatabaseHost:
+    Description: The Hostname of the database
+    Value:
+      Fn::GetAtt: MyWellDatabase.Endpoint.Address
+    Export:
+      Name: !Join [ ":", [ !Ref "AWS::StackName", DatabaseHost ] ]

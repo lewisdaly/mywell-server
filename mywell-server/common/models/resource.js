@@ -103,7 +103,7 @@ module.exports = function(Resource) {
   /**
    * After saving, if the user supplied a village name, update it
    */
-  Resource.observe('after save', (ctx) => {
+  Resource.observe('after save', (ctx, next) => {
     if (ctx.options && ctx.options.skipUpdateModels) {
       return next();
     }
@@ -111,7 +111,7 @@ module.exports = function(Resource) {
     const resource = (typeof ctx.instance === "undefined") ? ctx.currentInstance : ctx.instance;
 
     if (!resource.village_name) {
-      return;
+      return next();
     }
 
     const newVillage = {
@@ -121,10 +121,15 @@ module.exports = function(Resource) {
       coordinates: resource.geo
     };
 
-    return Resource.app.models.Village.findOrCreate(
-      {where:{and:[{id:newVillage.id},{postcode:newVillage.postcode}]}}, newVillage);
-  });
+    const filter = {where:{and:[{id:newVillage.id},{postcode:newVillage.postcode}]}};
+    Resource.app.models.Village.findOrCreate(filter, newVillage, (err, resource) => {
+      if(err) {
+        return next(err);
+      }
 
+      next();
+    });
+  });
 
   /**
    * After saving, if the user supplied a mobile number, send them a message
@@ -142,8 +147,9 @@ module.exports = function(Resource) {
     }
 
     const message = `Thanks. The details of your ${resource.type} are.\nPostcode:${resource.postcode}\nId:${resource.id}`;
-    MessageUtils.sendSMSMessage(message, resource.mobile)
-      .then(() => next());
+    return MessageUtils.old_sendSMSMessage(message, resource.mobile)
+      .then(() => next())
+      .catch(err => next(err));
   });
 
   Resource.remoteMethod('findAvailableIds', {

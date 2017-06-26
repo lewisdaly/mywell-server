@@ -1,8 +1,14 @@
 version: '2'
 services:
+  mywell-utils:
+    container_name: mywell-utils
+    build: ./mywell-utils/
+    image: mywell-utils:local
+
   mywell-server:
     container_name: mywell-server
     build: ./mywell-server/
+    image: mywell-server:local
     ports:
      - "3000:3000"
     volumes:
@@ -16,12 +22,20 @@ services:
       - LETSENCRYPT_EMAIL=lewis@vesselstech.com
       - LETSENCRYPT_HOST=mywell-server.marvi.org.in
       - ENABLE_NOTIFICATIONS
+      - DB_HOST
+      - DB_NAME
+      - DB_PASSWORD
+      - DB_USER
+      - TWILIO_ACCOUNT_SID
+      - TWILIO_AUTH_TOKEN
+      - TWILIO_PHONE_NUMBER
     links:
     - db:db
 
   mywell-ui:
     container_name: mywell-ui
     build: ./mywell-ui/
+    image: mywell-ui:local
     ports:
      - "8080:80"
     volumes:
@@ -36,8 +50,6 @@ services:
       - ENVIRONMENT
       - ENABLE_LOGS
       - VERSION_NUMBER
-      # If true, will do an npm install, set up envs etc.
-      - REFRESH_UI
 
   db:
     container_name: mywell-db

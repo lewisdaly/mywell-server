@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: MyWell non docker resources stack
+Resources:
+  #TODO: make refer to proper outputs from other stack
+  MyWellDBSubnetGroup:
+    Type: "AWS::RDS::DBSubnetGroup"
+    Properties:
+      DBSubnetGroupDescription: "Subnets available for RDS"
+      SubnetIds: "subnet-a9b2e0df,subnet-9ed34bc7,subnet-3c022d58"
+
+  DbSecurityByEC2SecurityGroup:
+   Type: AWS::RDS::DBSecurityGroup
+   Properties:
+     GroupDescription: Ingress for Amazon EC2 security group
+     EC2VpcId: vpc-8a89e8ee
+     DBSecurityGroupIngress:
+       - EC2SecurityGroupId: sg-18496a7f
+
+  MyWellDatabase:
+    Type: "AWS::RDS::DBInstance"
+    Properties:
+      AllocatedStorage: "10"
+      BackupRetentionPeriod: "7"
+      DBInstanceClass: "db.t2.micro"
+      DBInstanceIdentifier: "mywelldb"
+      Engine: MariaDB
+      EngineVersion: 10.0.24
+      MasterUsername: mywell
+      MasterUserPassword: marvi-mywell
+      MonitoringInterval: 0
+      MultiAZ: false
+      PubliclyAccessible: false
+      StorageEncrypted: false
+      Port: 3306
+      DBSubnetGroupName:
+        Ref: MyWellDBSubnetGroup
+      VPCSecurityGroups:
+        - Ref: DbSecurityByEC2SecurityGroup
+
+
+  MyWellDeployment:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: mywell-deployment

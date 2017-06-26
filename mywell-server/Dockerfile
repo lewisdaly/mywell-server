@@ -4,16 +4,21 @@ FROM node:6
 RUN mkdir -p /usr/src/app
 RUN mkdir -p /usr/src/app/storage
 
-RUN npm install nodemon -g
-RUN npm install loopback -g
-
-# this corresponds to the mounted dir in ../docker-compose.yml
 WORKDIR /usr/src/app
 
-#install dependencies - these will get done manually now as we are mounting /usr/src/app/node_modules
-# ADD package.json /usr/src/app/
-# RUN npm install
+RUN npm install -g nodemon loopback -s
+
+COPY package.json /usr/src/app/
+RUN npm install -s
+
+COPY ./ /usr/src/app/
 
 EXPOSE 3000
 
+ENV DB_HOST mywell-db
+ENV DB_NAME mywell
+ENV DB_PASSWORD password
+ENV DB_USER mywell
+
 CMD [ "nodemon", "-L", "." ]
+# OR run migrator!
