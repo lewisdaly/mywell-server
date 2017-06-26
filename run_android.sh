@@ -1,6 +1,6 @@
 #!/bin/bash
 #TODO: fix all the stupid folder refs here
-source ./env/envdevelopment.sh
+source ./env/envproduction.sh
 
 cd /Users/lewis/developer/mywell/src/mywell-ui/src
 gulp replace --env prod
