@@ -137,7 +137,6 @@ module.exports = function(Resource) {
    * Create a new id if not exists in save
    */
   Resource.observe('before save', function(ctx, next) {
-    console.log("beforesave");
     if (ctx.options && ctx.options.skipUpdateModels) {
       return next();
     }
@@ -171,7 +170,6 @@ module.exports = function(Resource) {
    * After saving, if the user supplied a village name, update it
    */
   Resource.observe('after save', (ctx, next) => {
-    console.log("aftersave1");
     if (ctx.options && ctx.options.skipUpdateModels) {
       return next();
     }
@@ -203,7 +201,6 @@ module.exports = function(Resource) {
    * After saving, if the user supplied a mobile number, send them a message
    */
   Resource.observe('after save', function updateModels(ctx, next) {
-    console.log("aftersave2");
     if (ctx.options && ctx.options.skipUpdateModels) {
       return next();
     }
