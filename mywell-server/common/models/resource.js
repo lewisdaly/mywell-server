@@ -1,10 +1,12 @@
 var moment = require('moment');
 var isNullOrUndefined = require('util').isNullOrUndefined;
+const fs = require('fs');
+
 const Enums = require('../Enums');
 const Utils = require('../Utils');
 const ExcelReader = require('../ExcelReader');
 var MessageUtils = require('../MessageUtils')
-const fs = require('fs');
+
 
 const fileExists = (filePath) => {
   try {
@@ -65,6 +67,66 @@ module.exports = function(Resource) {
       })
       .then(() => getUnusedIds(usedIdsMap, type));
   }
+
+  Resource.remoteMethod('updateResourceByIdAndPostcode', {
+    accepts: [
+      {
+        arg: 'data',
+        type: 'object',
+        required: true,
+        description: '{ resource body }',
+        http: { source: 'body' },
+      }
+    ],
+    description: 'Update a resource given an id & postcode',
+    returns: {arg: 'resource', type: 'resource', root:true},
+    http: {path: '/updateResourceByIdAndPostcode', verb: 'post', status:200}
+  });
+
+  Resource.updateResourceByIdAndPostcode = (data) => {
+    let app = null;
+    let resource = null;
+
+    if (!data) {
+      return Promise.reject(Utils.getError(400, `Data is undefined for request`));
+    }
+
+    if (!data.id || !data.postcode) {
+      return Promise.reject(Utils.getError(400, `Id and postcode is required`));
+    }
+
+    const filter = {
+      where: { and: [
+        {id:data.id},
+        {postcode:data.postcode}
+      ]}
+    };
+
+    return Utils.getApp(Resource)
+      .then(_app => app = _app)
+      .then(() => Resource.findOne(filter))
+      .then(_resource => {
+        resource = _resource;
+
+        if (!resource) {
+          return Promise.reject(Utils.getError(404, `Could not find resource for id: ${data.id} and postcode: ${data.postcode}`));
+        }
+
+        //make sure nobody is sneakily updating the resource
+        if (data.geo) { resource.geo = data.geo; }
+        if (data.last_value) { resource.last_value = data.last_value; }
+        if (data.well_depth) { resource.well_depth = data.well_depth; }
+        if (data.last_date) { resource.last_date = data.last_date; }
+        if (data.owner) {resource.owner = data.owner; }
+        if (data.elevation) {resource.elevation = data.elevation; }
+        if (data.type) {resource.type = data.type; }
+        if (data.image) {resource.image = data.image; }
+        if (data.mobile) {resource.mobile = data.mobile; }
+        if (data.email) {resource.email = data.email; }
+
+        return resource.save();
+      })
+  };
 
 
   /**
