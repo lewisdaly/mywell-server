@@ -5,7 +5,8 @@ node_js:
 services:
 - docker
 script:
-- docker-compose -f docker-compose.yml build
+- echo "Hello"
+# - docker-compose -f docker-compose.yml build
 after_success:
   #TODO: setup proper env
 - export STAGE=development;
