@@ -11,7 +11,7 @@ source $DIR/../../env/env$STAGE.sh
 echo 'Make sure you are logged in, with docker login'
 
 # TODO: we could make this more complicated, but for now use the IMAGE_SUFFIX
-IMAGE_TAG="${IMAGE_SUFFIX}"
+IMAGE_TAG="${VERSION_NUMBER}_${TRAVIS_BUILD_NUMBER}"
 
 function mywell-server() {
   docker tag mywell-server:local lewisdaly/mywell-server:"$IMAGE_TAG"
