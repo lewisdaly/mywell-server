@@ -7,7 +7,7 @@ if [ "$1" == "kill" ]; then
 fi
 
 ssh -o "StrictHostKeyChecking no" \
-    -i ~/.aws/keys/mywell-docker.pem \
+    -i mywell-docker.pem \
     -NL localhost:"$DOCKER_TUNNEL_PORT":/var/run/docker.sock docker@"$MANAGER_NODE_DNS" &
 
 echo "Tunnelling!"
