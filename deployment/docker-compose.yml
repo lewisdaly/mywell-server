@@ -6,6 +6,7 @@ services:
     volumes:
       - ../env:/usr/src/env
       - ./:/usr/src/deploy
+      - "~/.aws:/root/.aws"
     environment:
       - AWS_PROFILE
       - AWS_REGION

@@ -82,6 +82,7 @@ docker service create \
   dockersamples/visualizer
 
 docker network create --driver overlay base-network
+docker network create --driver overlay test-network
 
 docker service create \
 --name traefik \
