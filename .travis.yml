@@ -8,15 +8,13 @@ script:
 - echo "Hello"
 - docker-compose -f docker-compose.yml build
 after_success:
-- docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-- "./deployment/tools/tag_and_push_docker.sh skip-build;"
 - source ./deployment/tools/stage_calculator.sh;
 - source ./env/env$STAGE.sh;
-- unset AWS_PROFILE
+- docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+- "./deployment/tools/tag_and_push_docker.sh skip-build;"
+- export AWS_PROFILE=default
 - cd ./deployment && ./run-tools.sh deploy
 before_install:
-- openssl aes-256-cbc -K $encrypted_5d1e44ff4222_key -iv $encrypted_5d1e44ff4222_iv
-  -in secrets.tar.enc -out secrets.tar -d
 - openssl aes-256-cbc -K $encrypted_5d1e44ff4222_key -iv $encrypted_5d1e44ff4222_iv
   -in secrets.tar.enc -out secrets.tar -d;
 - tar xvf secrets.tar;
