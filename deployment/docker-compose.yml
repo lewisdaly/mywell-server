@@ -4,10 +4,8 @@ services:
     build: .
     container_name: mywell-deploy
     volumes:
-      - "~/.aws:/root/.aws"
       - ../env:/usr/src/env
       - ./:/usr/src/deploy
-      - ../.travis.yml:/usr/src/.travis.yml
     environment:
       - AWS_PROFILE
       - AWS_REGION
@@ -15,5 +13,6 @@ services:
       - MANAGER_NODE_DNS
       - DEFAULT_DNS_TARGET
       - STAGE
+      - TRAVIS_BUILD_NUMBER
     privileged: true
     command: /usr/src/deploy/tools/entrypoint.sh

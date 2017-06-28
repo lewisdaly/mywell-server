@@ -2,7 +2,7 @@ version: '3'
 
 services:
   mywell-server:
-    image: lewisdaly/mywell-server:${IMAGE_SUFFIX}
+    image: lewisdaly/mywell-server:${VERSION_NUMBER}_${TRAVIS_BUILD_NUMBER}
     ports:
      - "${SERVER_PORT}:3000"
     environment:
@@ -25,7 +25,7 @@ services:
         - "traefik.protocol=http"
 
   mywell-ui:
-    image: lewisdaly/mywell-ui:${IMAGE_SUFFIX}
+    image: lewisdaly/mywell-ui:${VERSION_NUMBER}_${TRAVIS_BUILD_NUMBER}
     ports:
      - "${UI_PORT}:80"
     command: /usr/src/app/entrypoint.sh
@@ -44,7 +44,7 @@ services:
         - "traefik.protocol=http"
 
   mywell-utils:
-    image: lewisdaly/mywell-utils:${IMAGE_SUFFIX}
+    image: lewisdaly/mywell-utils:${VERSION_NUMBER}_${TRAVIS_BUILD_NUMBER}
     environment:
       - SEED_FILE_PATH=s3://mywell-deployment/restore/mywell_2017-06-253:12:22.sql
       - DB_HOST
