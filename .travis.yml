@@ -6,22 +6,11 @@ services:
 - docker
 script:
 - echo "Hello"
-# - docker-compose -f docker-compose.yml build
 after_success:
-  #TODO: setup proper env
-- export STAGE=development;
+- source ./deployment/tools/stage_calculator.sh;
 - source ./env/env$STAGE.sh;
-  # - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-  # - ./deployment/tools/tag_and_push_docker.sh skip-build;
-- source ./env/envdeployment.sh;
-- export DEPLOYMENT_DIR="`pwd`/deployment";
-- ./deployment/tools/ssh_tunnel.sh;
-#actually deploy!
-- ./deployment/_up.sh;
-
+- cd ./deployment && ./run-tools.sh deploy
 before_install:
 - openssl aes-256-cbc -K $encrypted_5d1e44ff4222_key -iv $encrypted_5d1e44ff4222_iv
   -in secrets.tar.enc -out secrets.tar -d;
 - tar xvf secrets.tar;
-- mkdir -p ~/.aws/keys;
-- cp mywell-docker.pem ~/.aws/keys/mywell-docker.pem;
