@@ -46,11 +46,11 @@ deployInfrastructure() {
 
   incrementMinor "updating-docker-stack"
   cd $STACK_DOCKER_SWARM_DIR
-  ./_up.sh
+  # ./_up.sh
 
   incrementMinor "updating-resources-stack"
   cd $STACK_RESOURCES_DIR
-  ./_up.sh
+  # ./_up.sh
 }
 
 deployServices() {
@@ -58,7 +58,7 @@ deployServices() {
 
   incrementMinor "updating-service-tools"
   cd $SERVICES_TOOLS_DIR
-  ./_up.sh
+  # ./_up.sh
 
   incrementMinor "updating-service-mywell"
   cd $SERVICES_MYWELL_DIR
