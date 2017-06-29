@@ -13,12 +13,24 @@ WORKDIR ${DEPLOYMENT_DIR}
 RUN apk -v --update add \
         bash \
         openssh \
+        openssl \
         python \
         py-pip \
         groff \
         less \
         jq \
+        ruby \
+        ruby-io-console \
+        ruby-json \
+        git \
+        build-base \
+        ruby-dev \
+        libc-dev \
+        libffi-dev \
+        linux-headers \
         && \
+    apk add --no-cache --virtual build_deps && \
+    gem install travis -v  1.8.2 --no-rdoc --no-ri && \
     pip install --upgrade awscli python-magic && \
     apk -v --purge del py-pip && \
     rm /var/cache/apk/*

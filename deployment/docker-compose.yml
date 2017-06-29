@@ -1,12 +1,12 @@
-version: '3'
+version: '2'
 services:
   mywell-deploy:
     build: .
     container_name: mywell-deploy
     volumes:
-      - "~/.aws:/root/.aws"
       - ../env:/usr/src/env
       - ./:/usr/src/deploy
+      - "~/.aws:/root/.aws"
     environment:
       - AWS_PROFILE
       - AWS_REGION
@@ -14,5 +14,18 @@ services:
       - MANAGER_NODE_DNS
       - DEFAULT_DNS_TARGET
       - STAGE
+      - TRAVIS_BUILD_NUMBER
+      - ENABLE_NOTIFICATIONS
+      - DB_HOST
+      - DB_NAME
+      - DB_PASSWORD
+      - DB_USER
+      - DONE_SEEDING_SUFFIX
+      - TWILIO_ACCOUNT_SID
+      - TWILIO_AUTH_TOKEN
+      - TWILIO_PHONE_NUMBER
+      - SERVER_URL
+      - ENABLE_LOGS
+      - STAGE_PREFIX
     privileged: true
     command: /usr/src/deploy/tools/entrypoint.sh

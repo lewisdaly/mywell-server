@@ -24,5 +24,6 @@ ENV DB_HOST ""
 ENV DB_NAME ""
 ENV DB_PASSWORD ""
 ENV DB_USER ""
+ENV DONE_SEEDING_SUFFIX ""
 
 CMD [ "/usr/src/app/entrypoint.sh" ]
