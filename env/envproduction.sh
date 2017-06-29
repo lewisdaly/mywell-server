@@ -16,6 +16,7 @@ export IMAGE_SUFFIX="production"
 export VERSION_NUMBER="1.3.3"
 export SERVER_PORT=3000
 export UI_PORT=8000
+export DONE_SEEDING_SUFFIX="production_done"
 
 
 source $DIR/env.sh

@@ -94,6 +94,14 @@
         "find",
         "findById"
       ]
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": [
+        "updateResourceByIdAndPostcode"
+      ]
     }
   ],
   "methods": {}

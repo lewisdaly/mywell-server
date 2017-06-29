@@ -76,3 +76,10 @@ unset AWS_DEFAULT_REGION
 aws s3 ls
 aws s3 cp /tmp/mywell_2017-06-253:12:22.sql s3://mywell-deployment/restore/
 ```
+
+
+
+#### run out of space in docker swarm!
+
+##### cleanup images
+docker rmi $(docker images -q --filter "dangling=true")

@@ -24,6 +24,12 @@ else
   ' > $DIR/.env
 fi
 
+if [ -z $AWS_PROFILE ]
+then
+  echo -e "${yellow}Warning: AWS_PROFILE not set. Defaulting to 'default'.${endColor}"
+  AWS_PROFILE=default
+fi
+
 if [ -z $AWS_REGION ]
 then
   echo -e "${yellow}Warning: AWS_REGION not set. Defaulting to 'ap-southeast-2'.${endColor}"
@@ -120,8 +126,10 @@ echo "  - TWILIO_AUTH_TOKEN:         $TWILIO_AUTH_TOKEN"
 echo "  - TWILIO_PHONE_NUMBER:       $TWILIO_PHONE_NUMBER"
 echo "  - SERVER_PORT:               $SERVER_PORT"
 echo "  - UI_PORT:                   $UI_PORT"
+echo "  - DONE_SEEDING_SUFFIX:       $DONE_SEEDING_SUFFIX"
 
 
+export AWS_PROFILE
 export AWS_REGION
 export VERSION_NUMBER
 export WAY2MINT_USR
@@ -142,3 +150,4 @@ export TWILIO_AUTH_TOKEN
 export TWILIO_PHONE_NUMBER
 export SERVER_PORT
 export SERVER_UI
+export DONE_SEEDING_SUFFIX

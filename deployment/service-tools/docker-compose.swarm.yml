@@ -55,14 +55,14 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command: -H unix:///var/run/docker.sock
 
-  shepherd:
-    image: mazzolino/shepherd
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+  # shepherd:
+  #   image: mazzolino/shepherd
+  #   deploy:
+  #     placement:
+  #       constraints:
+  #         - node.role == manager
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   base-network:

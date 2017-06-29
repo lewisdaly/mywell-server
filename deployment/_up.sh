@@ -9,6 +9,8 @@ MINOR=0
 
 STACK_DOCKER_SWARM_DIR=$DEPLOYMENT_DIR/stack-docker-swarm
 STACK_RESOURCES_DIR=$DEPLOYMENT_DIR/stack-resources
+SERVICES_TOOLS_DIR=$DEPLOYMENT_DIR/service-tools
+SERVICES_MYWELL_DIR=$DEPLOYMENT_DIR/service-mywell
 
 # TODO: way to do individual steps and stuff
 
@@ -39,15 +41,27 @@ preDeploySteps() {
 
 }
 
-deploySteps() {
-  incrementMajor "deploy-steps"
+deployInfrastructure() {
+  incrementMajor "deploy-infrastructure"
 
   incrementMinor "updating-docker-stack"
   cd $STACK_DOCKER_SWARM_DIR
-  ./_up.sh
+  # ./_up.sh
 
   incrementMinor "updating-resources-stack"
   cd $STACK_RESOURCES_DIR
+  # ./_up.sh
+}
+
+deployServices() {
+  incrementMajor "deploy-services"
+
+  incrementMinor "updating-service-tools"
+  cd $SERVICES_TOOLS_DIR
+  # ./_up.sh
+
+  incrementMinor "updating-service-mywell"
+  cd $SERVICES_MYWELL_DIR
   ./_up.sh
 }
 
@@ -63,5 +77,6 @@ printStepSeparator
 
 
 preDeploySteps
-deploySteps
+deployInfrastructure
+deployServices
 postDeploySteps
