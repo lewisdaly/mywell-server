@@ -13,7 +13,8 @@ const migrations = [
   require('./migrations/0009_register_village'),
   require('./migrations/0010_register_udaipur'),
   require('./migrations/0011_fix_village_latlng'),
-  require('./migrations/0012_fix_rain_images')
+  require('./migrations/0012_fix_rain_images'),
+  require('./migrations/0013_fix_rain_images_basant'),
 ];
 
 module.exports = function(app, next) {

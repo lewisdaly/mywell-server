@@ -7,6 +7,17 @@ const moment = require('moment');
 module.exports = (Client) => {
   Utils.disableAllMethods(Client, ['login', 'logout']);
 
+  Client.remoteMethod('isLoggedIn', {
+    accepts: [],
+    description: 'Checks if the access token is valid, and the user is logged in',
+    returns: {arg: 'response', type: 'object', root:true},
+    http: {path:'/isLoggedIn', verb: 'get', status:200}
+  });
+
+  Client.isLoggedIn = () => {
+    return Promise.resolve(true);
+  };
+
   Client.remoteMethod('loginWithCode', {
     accepts: [
       {arg: 'mobile_number', required:true, type: 'string', description: 'The mobile number the code was sent to. Including area code.'},
