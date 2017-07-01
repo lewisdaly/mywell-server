@@ -30,14 +30,18 @@ module.exports = function(Reading) {
    accepts: [
      {arg: 'postcode', type: 'number', description: 'The postcode that this resource is in'},
      {arg: 'resourceId', type: 'number', description: 'The resourceId of this resource'},
+     {arg: 'method', type:'string', description: 'The method for accumulating readings per week. Possible values: ["average" | "total"]. Defaults to "average"'}
    ],
    description: 'Gets past readings in 3 * 52 week intervals. Missing readings have a value of null.',
    returns: {arg: 'response', type: 'object', root:true},
    http: {path: '/readingsByWeek', verb: 'get', status: 200}
   });
 
-  Reading.getReadingsByWeek = (postcode, resourceId) => {
+  Reading.getReadingsByWeek = (postcode, resourceId, method) => {
     const weeks = weekStartForWeeksAgo(52 * 3);
+    if (!method) {
+      method = "average";
+    }
 
     //TODO: deal with invalid dates - or is that elsewhere?
     const getMondayForDate = (date) => {
@@ -45,11 +49,21 @@ module.exports = function(Reading) {
       return readingMoment.format("YYYYMMDD");
     }
 
-    const average = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
+    let accumulateFunction = null;
+    switch (method) {
+      case 'average':
+          accumulateFunction = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
+        break;
+      case 'total':
+        accumulateFunction = arr => arr.reduce( ( p, c ) => p + c, 0 );
+        break;
+      default:
+        return Promise.reject(Utils.getError(400, `Unknown method value: ${method}. Allowable values: 'average' or 'total'`));
+    }
 
     return Reading.find({where:{and:[{postcode:postcode},{resourceId: resourceId}]}, order: "DATE ASC"})
       .then(readings => {
-        const readingDates = {} //Map with key: monday (string), value: average value
+        const readingDates = {} //Map with key: monday (string), value: accumulated value
 
         if (readings.length === 0) {
           return {
@@ -71,7 +85,7 @@ module.exports = function(Reading) {
             //keep accumulating!
             currentReadingWeek.push(reading.value);
           } else {
-            readingDates[currentMonday] = average(currentReadingWeek);
+            readingDates[currentMonday] = accumulateFunction(currentReadingWeek);
 
             currentMonday = nextMonday;
             currentReadingWeek = [reading.value];
@@ -79,7 +93,7 @@ module.exports = function(Reading) {
         });
         //Do the final average and add
         if (currentMonday !== 'Invalid date') {
-          readingDates[currentMonday] = average(currentReadingWeek);
+          readingDates[currentMonday] = accumulateFunction(currentReadingWeek);
         }
 
         //Now iterate through the weeks, and assign the reading:
@@ -241,8 +255,54 @@ module.exports = function(Reading) {
 
 
 
-  //TODO: before saving, we can add the village id, implied from the resource id.
+  Reading.remoteMethod('saveOrCreate', {
+    accepts: [
+      {
+        arg: 'data',
+        type: 'Reading',
+        required: true,
+        description: '{ Reading body }',
+        http: { source: 'body' },
+      }
+    ],
+    description: '',
+    returns: {arg: 'response', type: 'object', root:true},
+    http: {path: '/saveOrCreate', verb: 'post', status: 200}
+  });
 
+
+  Reading.saveOrCreate = (data) => {
+    let reading = null;
+    if (!data) {
+      return Promise.reject(Utils.getError(400, 'Missing data'));
+    }
+
+    if (!data.date || !data.value || !data.villageId || !data.postcode || !data.resourceId) {
+      return Promise.reject(Utils.getError(400, 'Fields required: date, value, villageId, postcode, resourceId'));
+    }
+
+    const filter = {
+      "where": {
+        "and":[
+          {"date":data.date},
+          {"postcode":data.postcode},
+          {"resourceId":data.resourceId}
+        ]
+      }
+    };
+
+    return Reading.findOne(filter)
+      .then(_reading => {
+        reading = _reading;
+
+        if (!reading) {
+          return Reading.create(data);
+        }
+
+        reading.value = data.value;
+        return reading.save();
+      });
+  };
 
   /**
    * After saving, validate, and update the correct resource table
@@ -263,10 +323,25 @@ module.exports = function(Reading) {
       }
 
       let resource = resources[0];
-
+      let shouldUpdate = false;
       //check to see if this a new reading, or a reading on the same day
-      const newEntry = moment(reading.date).isSameOrAfter(resource.last_date);
-      if (newEntry) {
+      console.log("resource.last_date", resource.last_date);
+      console.log("reading.date", reading.date);
+
+      const newEntry = moment(reading.date).isSameOrAfter(moment(resource.last_date));
+      console.log("is newEntry", newEntry);
+      if (resource.type === 'raingauge') {
+        //Rain gauge's last reading also must be above 0.
+        if (reading.value > 0 && newEntry) {
+          shouldUpdate = true;
+        }
+      } else {
+        if (newEntry) {
+          shouldUpdate = true;
+        }
+      }
+
+      if (shouldUpdate) {
         resource.last_date = reading.date;
         resource.last_value = reading.value;
 
@@ -276,6 +351,7 @@ module.exports = function(Reading) {
 
       } else {
         let err = new Error("Reading recorded, but resource not updated. A newer reading exists.")
+        console.log("warning: ", err);
         err.statusCode = 206;
         return next(err);
       }
