@@ -102,6 +102,15 @@
       "property": [
         "updateResourceByIdAndPostcode"
       ]
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY",
+      "property": [
+        "updateById",
+        "updateAll"
+      ]
     }
   ],
   "methods": {}

@@ -17,6 +17,22 @@
       "principalId": "$unauthenticated",
       "permission": "ALLOW",
       "property": "*"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY",
+      "property": [
+        "isLoggedIn"
+      ]
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": [
+        "isLoggedIn"
+      ]
     }
   ],
   "methods": {}
