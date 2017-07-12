@@ -4,6 +4,7 @@ services:
     container_name: mywell-utils
     build: ./mywell-utils/
     image: mywell-utils:local
+    command: tail -f /dev/null
 
   mywell-server:
     container_name: mywell-server
@@ -29,6 +30,8 @@ services:
       - TWILIO_ACCOUNT_SID
       - TWILIO_AUTH_TOKEN
       - TWILIO_PHONE_NUMBER
+      - SMS_HORIZON_USER
+      - SMS_HORIZON_KEY
     links:
     - db:db
 

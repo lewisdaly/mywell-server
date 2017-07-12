@@ -15,6 +15,7 @@ const migrations = [
   require('./migrations/0011_fix_village_latlng'),
   require('./migrations/0012_fix_rain_images'),
   require('./migrations/0013_fix_rain_images_basant'),
+  require('./migrations/0014_cleanup_basant'),
 ];
 
 module.exports = function(app, next) {

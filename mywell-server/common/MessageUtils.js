@@ -127,6 +127,31 @@ module.exports.sendSMSMessage = (message, number) => {
 }
 
 /**
+ * Send message using SMSHorizon
+ * This should replace Twilio and way2mint for all Indian numbers
+ */
+module.exports.india_sendSMSMessage = (message, number) => {
+  console.log("india_sendSMSMessage message: \"" + message + "\" to number:" +number);
+
+  const user = process.env.SMS_HORIZON_USER;
+  const key = process.env.SMS_HORIZON_KEY;
+
+  const url = `http://smshorizon.co.in/api/sendsms.php?user=${user}&apikey=${key}&mobile=${number}&message=${message}&senderid=MYWELL&type=txt`
+  if (ENABLE_NOTIFICATIONS === false ) {
+    console.log("Skipping message, as ENABLE_NOTIFICATIONS is false");
+    return Promise.resolve(true);
+  }
+
+  return request({uri: url})
+  .then(response => {
+    console.log('w2m reply', response);
+  })
+  .catch(err => {
+    console.log(err);
+  });
+}
+
+/**
  * Process the POST request to W2M
  * This is deprecated. Use sendSMSMessage instead
  */
