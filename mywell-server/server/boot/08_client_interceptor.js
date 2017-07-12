@@ -1,4 +1,6 @@
 var loopback = require("loopback");
+var LoopBackContext = require('loopback-context');
+
 
 module.exports = function(app) {
   app.use(loopback.context());
@@ -11,8 +13,11 @@ module.exports = function(app) {
       if (!user) return next();
       // if (!user) return next(new Error('No client with this access token was found.'));
       res.locals.currentUser = user;
-      var loopbackContext = loopback.getCurrentContext();
-      if (loopbackContext) loopbackContext.set('currentClient', user);
+      var loopbackContext = LoopBackContext.getCurrentContext();
+      if (loopbackContext) {
+        loopbackContext.set('currentClient', user);
+      }
+
       next();
     });
   });

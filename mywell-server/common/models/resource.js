@@ -1,3 +1,4 @@
+var LoopBackContext = require('loopback-context');
 var moment = require('moment');
 var isNullOrUndefined = require('util').isNullOrUndefined;
 const fs = require('fs');
@@ -145,8 +146,11 @@ module.exports = function(Resource) {
       return next();
     }
 
-    const client = ctx && ctx.get('currentClient');
+    const other_ctx = LoopBackContext.getCurrentContext();
+    const client = other_ctx && other_ctx.get('currentClient');
+
     if (!client) {
+      console.log("WARN: could not find currentClient");
       return next();
     }
 
@@ -156,12 +160,7 @@ module.exports = function(Resource) {
     }
 
     resource.clientId = client.id;
-    resource.save()
-      .then(() => next())
-      .catch(err => {
-        console.log("error adding clientId to resource.", err)
-        return next(err)
-      });
+    return next();
   });
 
 
@@ -244,13 +243,23 @@ module.exports = function(Resource) {
       return next();
     }
 
-    //mobile is optional, skip if we don't have
-    if (!resource.mobile) {
+    //Get the clientId of the resource. Skip if we don't have
+    if (!resource.clientId) {
       return next();
     }
 
-    const message = `Thanks. The details of your ${resource.type} are.\nPostcode:${resource.postcode}\nId:${resource.id}`;
-    return MessageUtils.india_sendSMSMessage(message, resource.mobile)
+    let mobileNumber = null;
+    return Resource.app.models.Client.findById(resource.clientId)
+      .then(_client => mobileNumber = _client && _client.mobile_number)
+      .then(() => {
+        if (!mobileNumber) {
+          console.log("WARN: no client or mobile number found. clientId: " + resource.clientId);
+          return;
+        }
+
+        const message = `Thanks. The details of your ${resource.type} are.\nPostcode:${resource.postcode}\nId:${resource.id}`;
+        return MessageUtils.india_sendSMSMessage(message, mobileNumber)
+      })
       .then(() => next())
       .catch(err => next(err));
   });
