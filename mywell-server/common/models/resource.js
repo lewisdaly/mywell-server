@@ -133,6 +133,37 @@ module.exports = function(Resource) {
       })
   };
 
+  /**
+   * Set the clientId if not exists and already set
+   */
+  Resource.observe('before save', function(ctx, next) {
+    if (ctx.options && ctx.options.skipUpdateModels) {
+      return next();
+    }
+
+    if (!ctx.isNewInstance) {
+      return next();
+    }
+
+    const client = ctx && ctx.get('currentClient');
+    if (!client) {
+      return next();
+    }
+
+    const resource = (typeof ctx.instance === "undefined") ? ctx.currentInstance : ctx.instance;
+    if (!resource || resource.clientId) {
+      return next();
+    }
+
+    resource.clientId = client.id;
+    resource.save()
+      .then(() => next())
+      .catch(err => {
+        console.log("error adding clientId to resource.", err)
+        return next(err)
+      });
+  });
+
 
   /**
    * Create a new id if not exists in save

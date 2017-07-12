@@ -77,6 +77,11 @@
       "type": "belongsTo",
       "model": "village",
       "foreignKey": ["villageId", "postcode"]
+    },
+    "client": {
+      "type": "belongsTo",
+      "model": "client",
+      "foreignKey": ["clientId"]
     }
   },
   "acls": [

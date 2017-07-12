@@ -10,7 +10,12 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "resources": {
+      "type": "hasMany",
+      "model": "resource"
+    }
+  },
   "acls": [
     {
       "principalType": "ROLE",
