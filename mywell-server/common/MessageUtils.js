@@ -136,7 +136,7 @@ module.exports.india_sendSMSMessage = (message, number) => {
   const user = process.env.SMS_HORIZON_USER;
   const key = process.env.SMS_HORIZON_KEY;
 
-  const url = `http://smshorizon.co.in/api/sendsms.php?user=${user}&apikey=${key}&mobile=${number}&message=${message}&senderid=MYWELL&type=txt`
+  const url = `http://smshorizon.co.in/api/sendsms.php?user=${user}&apikey=${key}&mobile=${number}&message=${message}&senderid=MARVII&type=txt`
   if (ENABLE_NOTIFICATIONS === false ) {
     console.log("Skipping message, as ENABLE_NOTIFICATIONS is false");
     return Promise.resolve(true);
