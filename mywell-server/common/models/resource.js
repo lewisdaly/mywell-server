@@ -207,13 +207,18 @@ module.exports = function(Resource) {
 
     const resource = (typeof ctx.instance === "undefined") ? ctx.currentInstance : ctx.instance;
 
+    //Only send when we first create
+    if (!ctx.isNewInstance) {
+      return next();
+    }
+
     //mobile is optional, skip if we don't have
     if (!resource.mobile) {
       return next();
     }
 
     const message = `Thanks. The details of your ${resource.type} are.\nPostcode:${resource.postcode}\nId:${resource.id}`;
-    return MessageUtils.old_sendSMSMessage(message, resource.mobile)
+    return MessageUtils.india_sendSMSMessage(message, resource.mobile)
       .then(() => next())
       .catch(err => next(err));
   });
