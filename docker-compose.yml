@@ -1,5 +1,11 @@
 version: '2'
 services:
+  mywell-utils:
+    container_name: mywell-utils
+    build: ./mywell-utils/
+    image: mywell-utils:local
+    command: tail -f /dev/null
+
   mywell-server:
     container_name: mywell-server
     build: ./mywell-server/
