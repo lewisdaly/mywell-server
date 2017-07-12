@@ -25,7 +25,7 @@ fi
 if [ "$1" == "deploy" ]
 then
   docker-compose up -d
-  docker exec mywell-deploy bash -c "sleep 3 && ./_up.sh"
+  docker exec mywell-deploy bash -c "sleep 3 && ./_up.sh" || exit 1
   exit 0
 fi
 
