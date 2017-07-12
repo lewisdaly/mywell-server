@@ -1,10 +1,5 @@
 version: '2'
 services:
-  mywell-utils:
-    container_name: mywell-utils
-    build: ./mywell-utils/
-    image: mywell-utils:local
-
   mywell-server:
     container_name: mywell-server
     build: ./mywell-server/
@@ -29,6 +24,8 @@ services:
       - TWILIO_ACCOUNT_SID
       - TWILIO_AUTH_TOKEN
       - TWILIO_PHONE_NUMBER
+      - SMS_HORIZON_USER
+      - SMS_HORIZON_KEY
     links:
     - db:db
 

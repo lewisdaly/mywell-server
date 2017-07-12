@@ -21,6 +21,8 @@ else
   export TWILIO_ACCOUNT_SID=<INSERT_HERE>
   export TWILIO_AUTH_TOKEN=<INSERT_HERE>
   export TWILIO_PHONE_NUMBER=<INSERT_HERE>
+  export SMS_HORIZON_USER=<INSERT_HERE>
+  export SMS_HORIZON_KEY=<INSERT_HERE>
   ' > $DIR/.env
 fi
 
@@ -44,6 +46,16 @@ fi
 if [ -z $WAY2MINT_PWD ]
 then
   echo -e "${yellow}Warning: WAY2MINT_USR not set. Cannot set default.${endColor}"
+fi
+
+if [ -z $SMS_HORIZON_USER ]
+then
+  echo -e "${yellow}Warning: SMS_HORIZON_USER not set. Cannot set default.${endColor}"
+fi
+
+if [ -z $SMS_HORIZON_KEY ]
+then
+  echo -e "${yellow}Warning: SMS_HORIZON_KEY not set. Cannot set default.${endColor}"
 fi
 
 if [ -z $MANAGER_NODE_DNS ]
@@ -110,6 +122,8 @@ echo "  - AWS_REGION:                $AWS_REGION"
 echo "  - VERSION_NUMBER:            $VERSION_NUMBER"
 echo "  - WAY2MINT_USR:              $WAY2MINT_USR"
 echo "  - WAY2MINT_PWD:              $WAY2MINT_PWD"
+echo "  - SMS_HORIZON_USER:          $SMS_HORIZON_USER"
+echo "  - SMS_HORIZON_KEY:           $SMS_HORIZON_KEY"
 echo "  - MANAGER_NODE_DNS:          $MANAGER_NODE_DNS"
 echo "  - DEFAULT_DNS_TARGET:        $DEFAULT_DNS_TARGET"
 echo "  - ENABLE_NOTIFICATIONS:      $ENABLE_NOTIFICATIONS"
@@ -134,6 +148,8 @@ export AWS_REGION
 export VERSION_NUMBER
 export WAY2MINT_USR
 export WAY2MINT_PWD
+export SMS_HORIZON_USER
+export SMS_HORIZON_KEY
 export MANAGER_NODE_DNS
 export DEFAULT_DNS_TARGET
 export ENABLE_NOTIFICATIONS

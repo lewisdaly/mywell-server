@@ -1,5 +1,6 @@
 
 const _waitForDataBaseConnection = (db, ttl) => {
+  console.log("wait for database connection");
   return new Promise ((resolve, reject) => {
     db.ping((err) => {
       if (err && err.code === "ECONNREFUSED") {
@@ -11,7 +12,7 @@ const _waitForDataBaseConnection = (db, ttl) => {
         setTimeout(() => {_waitForDataBaseConnection(db, --ttl);}, 10000);
         return;
       }
-      
+
       if (err) return reject(err);
 
       resolve(null, true);

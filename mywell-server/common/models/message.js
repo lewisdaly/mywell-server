@@ -16,10 +16,10 @@ module.exports = function(Message) {
     'sms',
     {
       accepts: [
-        {arg: 'no', type: 'number'},
-        {arg: 'msg', type: 'string'}
+        {arg: 'from', type: 'number'},
+        {arg: 'message', type: 'string'}
       ],
-      'description': 'recieves the SMS from way 2 mint',
+      'description': 'recieves the SMS from sms gateway',
       http: {path: '/sms', verb: 'get', status:200},
       returns: {arg: 'response', type: 'string'}
     }
@@ -27,10 +27,10 @@ module.exports = function(Message) {
 
   /*
   Some examples:
-  SMA 000 POSTCODE DATE WELL_ID DEPTH
-  SMA 999 POSTCODE                        - get the readings for this postcode
-  SMA 999 POSTCODE VILLAGE_ID (2 digit)   - get the readings for this village
-  SMA 999 POSTCODE RESOURCE_ID (4 digits) - get the readings for this village
+  MARVI 000 POSTCODE DATE WELL_ID DEPTH
+  MARVI 999 POSTCODE                        - get the readings for this postcode
+  MARVI 999 POSTCODE VILLAGE_ID (2 digit)   - get the readings for this village
+  MARVI 999 POSTCODE RESOURCE_ID (4 digits) - get the readings for this village
   */
   Message.sms = function(no, msg) {
     const number = no; //The name from w2m is no for some reason.
@@ -39,13 +39,13 @@ module.exports = function(Message) {
 
     return parseMessage(msg)
       .then(response => {
-        MessageUtils.old_sendSMSMessage(response, number);
+        MessageUtils.india_sendSMSMessage(response, number);
         return "message recieved";
       })
       .catch(err => {
         console.error("err: ", err);
-        MessageUtils.old_sendSMSMessage(err.message, number);
-        return "message recieved";
+        MessageUtils.india_sendSMSMessage(err.message, number);
+        return "message recieved with errors: " + err;
       });
   }
 
