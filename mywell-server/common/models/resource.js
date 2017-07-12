@@ -127,6 +127,7 @@ module.exports = function(Resource) {
         if (data.image) {resource.image = data.image; }
         if (data.mobile) {resource.mobile = data.mobile; }
         if (data.email) {resource.email = data.email; }
+        if (data.villageId) {resource.villageId = data.villageId; }
 
         return resource.save();
       })
