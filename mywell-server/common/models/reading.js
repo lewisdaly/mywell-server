@@ -304,6 +304,29 @@ module.exports = function(Reading) {
       });
   };
 
+
+  /**
+   * Disallow future reading dates
+   */
+  Reading.observe('before save', function(ctx, next) {
+    if (ctx.options && ctx.options.skipValidation) {
+      return next();
+    }
+
+    if (!ctx.isNewInstance) {
+      return next();
+    }
+
+    const reading = (typeof ctx.instance === "undefined") ? ctx.currentInstance : ctx.instance;
+
+    //To avoid timezone issues - make sure that the reading is over 1 day ahead
+    if (moment(reading.date).isAfter(moment().add(1, 'days'))) {
+      return next(Utils.getError(400, 'Reading cannot be in the future!'));
+    }
+
+    return next();
+  });
+
   /**
    * After saving, validate, and update the correct resource table
    */
