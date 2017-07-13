@@ -60,7 +60,7 @@ module.exports = function(Resource) {
     let usedIdsMap = {};
 
     //Look up all resources in postcode and village, assign a new id based on resource type
-    return Resource.find({where:{and:[{postcode:postcode}, {villageId:villageId}, {type:type}]}})
+    return Resource.find({where:{and:[{postcode:postcode}]}})
       .then(_resources => {
         return _resources.forEach(resource => {
           usedIdsMap[`${resource.id}`.substring(2,4)] = true;
