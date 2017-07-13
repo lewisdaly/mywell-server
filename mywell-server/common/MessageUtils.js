@@ -104,10 +104,23 @@ module.exports.getSMSCodeMessage = (code) => {
 }
 
 /**
+ * Send a message
+ * numbers starting with 91 will be sent using SMSHorizon, others with Twilio
+ */
+ module.exports.sendSMSMessage = (message, number) => {
+   if (`${number}`.substring(0,2) === '91') {
+     return india_sendSMSMessage(message, number);
+   }
+
+   return twilio_sendSMSMessage(message, number);
+ }
+
+
+/**
  * Send message using Twilio
  */
-module.exports.sendSMSMessage = (message, number) => {
-  console.log("Sending message: \"" + message + "\" to number:" +number);
+const twilio_sendSMSMessage = (message, number) => {
+  console.log("Twilio Sending message: \"" + message + "\" to number:" +number);
 
   if (ENABLE_NOTIFICATIONS === false ) {
     console.log("Skipping message, as ENABLE_NOTIFICATIONS is false");
@@ -130,36 +143,13 @@ module.exports.sendSMSMessage = (message, number) => {
  * Send message using SMSHorizon
  * This should replace Twilio and way2mint for all Indian numbers
  */
-module.exports.india_sendSMSMessage = (message, number) => {
-  console.log("india_sendSMSMessage message: \"" + message + "\" to number:" +number);
+const india_sendSMSMessage = (message, number) => {
+  console.log("SMSHorizon Sending message: \"" + message + "\" to number:" +number);
 
   const user = process.env.SMS_HORIZON_USER;
   const key = process.env.SMS_HORIZON_KEY;
 
   const url = `http://smshorizon.co.in/api/sendsms.php?user=${user}&apikey=${key}&mobile=${number}&message=${message}&senderid=MARVII&type=txt`
-  if (ENABLE_NOTIFICATIONS === false ) {
-    console.log("Skipping message, as ENABLE_NOTIFICATIONS is false");
-    return Promise.resolve(true);
-  }
-
-  return request({uri: url})
-  .then(response => {
-    console.log('w2m reply', response);
-  })
-  .catch(err => {
-    console.log(err);
-  });
-}
-
-/**
- * Process the POST request to W2M
- * This is deprecated. Use sendSMSMessage instead
- */
-module.exports.old_sendSMSMessage = (message, number) => {
-  console.log("WARNING: deprected. This method sends the message via W2M, Indian numbers only");
-  console.log("Sending message: \"" + message + "\" to number:" +number);
-
-  const url = `http://fastsms.way2mint.com/SendSMS/sendmsg.php?uname=basantm&pass=12345678&send=Way2mint&dest=${number}&msg=${message}&prty=1&vp=30&dlr-url=1`;
   if (ENABLE_NOTIFICATIONS === false ) {
     console.log("Skipping message, as ENABLE_NOTIFICATIONS is false");
     return Promise.resolve(true);

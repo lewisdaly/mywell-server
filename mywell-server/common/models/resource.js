@@ -258,7 +258,7 @@ module.exports = function(Resource) {
         }
 
         const message = `Thanks. The details of your ${resource.type} are.\nPostcode:${resource.postcode}\nId:${resource.id}`;
-        return MessageUtils.india_sendSMSMessage(message, mobileNumber)
+        return MessageUtils.sendSMSMessage(message, mobileNumber)
       })
       .then(() => next())
       .catch(err => next(err));

@@ -39,12 +39,12 @@ module.exports = function(Message) {
 
     return parseMessage(msg)
       .then(response => {
-        MessageUtils.india_sendSMSMessage(response, number);
+        MessageUtils.sendSMSMessage(response, number);
         return "message recieved";
       })
       .catch(err => {
         console.error("err: ", err);
-        MessageUtils.india_sendSMSMessage(err.message, number);
+        MessageUtils.sendSMSMessage(err.message, number);
         return "message recieved with errors: " + err;
       });
   }
