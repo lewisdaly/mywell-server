@@ -6,7 +6,9 @@
     "database": "${DB_NAME}",
     "password": "${DB_PASSWORD}",
     "user": "${DB_USER}",
-    "connector": "mysql"
+    "connector": "mysql",
+    "connectTimeout": 30000,
+    "acquireTimeout": 30000
   },
   "storage": {
     "name": "storage",
