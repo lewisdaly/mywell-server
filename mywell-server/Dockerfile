@@ -20,5 +20,5 @@ ENV DB_NAME mywell
 ENV DB_PASSWORD password
 ENV DB_USER mywell
 
-CMD [ "nodemon", "-L", "." ]
+CMD [ "node", "." ]
 # OR run migrator!

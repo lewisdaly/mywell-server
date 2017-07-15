@@ -3,6 +3,61 @@ var isNullOrUndefined = require('util').isNullOrUndefined;
 
 module.exports = function(Village) {
 
+  Village.remoteMethod('updateVillageByVillageIdAndPostcode', {
+    accepts: [
+      {
+        arg: 'data',
+        type: 'object',
+        required: true,
+        description: '{ village body }',
+        http: { source: 'body' },
+      }
+    ],
+    description: 'Update a village given an id & postcode',
+    returns: {arg: 'village', type: 'village', root:true},
+    http: {path: '/updateVillageByVillageIdAndPostcode', verb: 'post', status:200}
+  });
+
+  Village.updateVillageByVillageIdAndPostcode = (data) => {
+    let app = null;
+    let resource = null;
+
+    if (!data) {
+      return Promise.reject(Utils.getError(400, `Data is undefined for request`));
+    }
+
+    if (!data.id || !data.postcode) {
+      return Promise.reject(Utils.getError(400, `Id and postcode is required`));
+    }
+
+    const filter = {
+      where: { and: [
+        {id:data.id},
+        {postcode:data.postcode}
+      ]}
+    };
+
+    return Utils.getApp(Village)
+      .then(_app => app = _app)
+      .then(() => Village.findOne(filter))
+      .then(_village => {
+        village = _village;
+
+        if (!village) {
+          return Promise.reject(Utils.getError(404, `Could not find village for id: ${data.id} and postcode: ${data.postcode}`));
+        }
+
+        if (data.coordinates && data.coordinates.lat && data.coordinates.lng) {
+           village.coordinates = {
+             lat: data.geo.lat,
+             lng: data.geo.lng
+           };
+         }
+        if (data.name) { village.name = data.name; }
+        return village.save();
+      })
+  };
+
 
   Village.remoteMethod(
     'closestVillage',
@@ -71,7 +126,7 @@ module.exports = function(Village) {
         });
 
         resolve(responseObject);
-      }); 
+      });
     });
   }
 };

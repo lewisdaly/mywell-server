@@ -15,6 +15,7 @@ services:
     volumes:
      - ./mywell-server:/usr/src/app
      - ./mywell-server/node_modules:/usr/src/app/node_modules
+    command: "nodemon -L ."
     environment:
       - "TERM=xterm-256color"
       - VIRTUAL_HOST=mywell-server.marvi.org.in
@@ -33,7 +34,7 @@ services:
       - SMS_HORIZON_USER
       - SMS_HORIZON_KEY
     links:
-    - db:db
+      - db:db
 
   mywell-ui:
     container_name: mywell-ui

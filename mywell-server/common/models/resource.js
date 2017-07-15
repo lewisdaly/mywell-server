@@ -1,3 +1,4 @@
+var LoopBackContext = require('loopback-context');
 var moment = require('moment');
 var isNullOrUndefined = require('util').isNullOrUndefined;
 const fs = require('fs');
@@ -59,7 +60,7 @@ module.exports = function(Resource) {
     let usedIdsMap = {};
 
     //Look up all resources in postcode and village, assign a new id based on resource type
-    return Resource.find({where:{and:[{postcode:postcode}, {villageId:villageId}, {type:type}]}})
+    return Resource.find({where:{and:[{postcode:postcode}]}})
       .then(_resources => {
         return _resources.forEach(resource => {
           usedIdsMap[`${resource.id}`.substring(2,4)] = true;
@@ -132,6 +133,35 @@ module.exports = function(Resource) {
         return resource.save();
       })
   };
+
+  /**
+   * Set the clientId if not exists and already set
+   */
+  Resource.observe('before save', function(ctx, next) {
+    if (ctx.options && ctx.options.skipUpdateModels) {
+      return next();
+    }
+
+    if (!ctx.isNewInstance) {
+      return next();
+    }
+
+    const other_ctx = LoopBackContext.getCurrentContext();
+    const client = other_ctx && other_ctx.get('currentClient');
+
+    if (!client) {
+      console.log("WARN: could not find currentClient");
+      return next();
+    }
+
+    const resource = (typeof ctx.instance === "undefined") ? ctx.currentInstance : ctx.instance;
+    if (!resource || resource.clientId) {
+      return next();
+    }
+
+    resource.clientId = client.id;
+    return next();
+  });
 
 
   /**
@@ -213,13 +243,23 @@ module.exports = function(Resource) {
       return next();
     }
 
-    //mobile is optional, skip if we don't have
-    if (!resource.mobile) {
+    //Get the clientId of the resource. Skip if we don't have
+    if (!resource.clientId) {
       return next();
     }
 
-    const message = `Thanks. The details of your ${resource.type} are.\nPostcode:${resource.postcode}\nId:${resource.id}`;
-    return MessageUtils.india_sendSMSMessage(message, resource.mobile)
+    let mobileNumber = null;
+    return Resource.app.models.Client.findById(resource.clientId)
+      .then(_client => mobileNumber = _client && _client.mobile_number)
+      .then(() => {
+        if (!mobileNumber) {
+          console.log("WARN: no client or mobile number found. clientId: " + resource.clientId);
+          return;
+        }
+
+        const message = `Thanks. The details of your ${resource.type} are.\nPostcode:${resource.postcode}\nId:${resource.id}`;
+        return MessageUtils.sendSMSMessage(message, mobileNumber)
+      })
       .then(() => next())
       .catch(err => next(err));
   });

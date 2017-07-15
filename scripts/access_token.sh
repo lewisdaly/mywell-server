@@ -2,7 +2,7 @@
 
 if [ "$1" == local ]; then
   HOST="http://docker.local:3000"
-elif [ "$1" == local ]; then
+elif [ "$1" == dev ]; then
   HOST="https://dev-mywell-server.marvi.org.in"
 else
   HOST="https://mywell-server.marvi.org.in"

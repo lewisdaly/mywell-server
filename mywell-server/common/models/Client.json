@@ -5,12 +5,17 @@
   "options": {},
   "properties": {
     "mobile_number": {
-      "type": "number",
+      "type": "string",
       "required": true
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "resources": {
+      "type": "hasMany",
+      "model": "resource"
+    }
+  },
   "acls": [
     {
       "principalType": "ROLE",
@@ -31,7 +36,8 @@
       "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": [
-        "isLoggedIn"
+        "isLoggedIn",
+        "findById"
       ]
     }
   ],

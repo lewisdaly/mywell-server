@@ -5,7 +5,7 @@ const MessageUtils = require('../MessageUtils');
 const moment = require('moment');
 
 module.exports = (Client) => {
-  Utils.disableAllMethods(Client, ['login', 'logout']);
+  Utils.disableAllMethods(Client, ['findById', 'login', 'logout']);
 
   Client.remoteMethod('isLoggedIn', {
     accepts: [],
