@@ -15,6 +15,7 @@ module.exports = function(app, next) {
   //TODO: setup environment variables
   return app.models.Migration.hasCompleted('0000_seed_db')
   .then(completed => {
+    console.log("check for complete migration: ", completed);
     if (completed === true) {
       console.log("[02_seed_db] db already seeded")
       console.log("[02_seed_db] skipping seed db")
@@ -86,6 +87,7 @@ module.exports = function(app, next) {
   })
   .catch((err) => {
     console.log("[02_seed_db] Error when seeding database", err);
+    app.models.Migration.create({name:'0000_seed_db'});
     next();
   })
 }
