@@ -211,3 +211,9 @@ INSERT INTO reading_new(date, value, villageId, postcode, resourceId)
 RENAME TABLE reading TO old_reading;
 RENAME TABLE reading_new TO reading;
 ```
+
+
+## Daemon logs
+
+./tools/ssh_master.sh
+tail -f /var/log/docker.log
