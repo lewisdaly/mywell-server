@@ -83,3 +83,25 @@ aws s3 cp /tmp/mywell_2017-06-253:12:22.sql s3://mywell-deployment/restore/
 
 ##### cleanup images
 docker rmi $(docker images -q --filter "dangling=true")
+
+
+
+### copy dev db to local:
+
+#### in mywell-utils
+```
+#mysql -h mywelldb.cyftlfi9bxci.ap-southeast-2.rds.amazonaws.com  -u mywell -p<pwd>
+
+mysqldump --host=mywelldb.cyftlfi9bxci.ap-southeast-2.rds.amazonaws.com  \
+          -u mywell \
+          -pmarvi-mywell \
+          development_mywell > /tmp/backup.sql
+
+
+aws s3 cp s3://mywell-deployment/backup/2017-07-19-development-mywell.sql /tmp/
+
+#on local
+docker cp /tmp/2017-07-19-development-mywell.sql mywell-db:/tmp/
+docker exec -it mywell-db bash
+mysql  mywell -u $MYSQL_USER -p$MYSQL_ROOT_PASSWORD < /tmp/2017-07-19-development-mywell.sql
+```

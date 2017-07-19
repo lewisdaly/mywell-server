@@ -15,6 +15,8 @@ services:
       - TWILIO_ACCOUNT_SID
       - TWILIO_AUTH_TOKEN
       - TWILIO_PHONE_NUMBER
+      - SMS_HORIZON_USER
+      - SMS_HORIZON_KEY
     networks:
       - base-network
     deploy:
