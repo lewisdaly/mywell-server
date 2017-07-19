@@ -12,7 +12,7 @@ aws cloudformation deploy \
     KeyName=mywell-docker \
     InstanceType=t2.small \
     ManagerInstanceType=t2.small \
-    ClusterSize=2 \
+    ClusterSize=1 \
     ManagerSize=1 \
     EnableSystemPrune=yes \
   --capabilities CAPABILITY_IAM
