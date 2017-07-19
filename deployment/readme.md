@@ -191,3 +191,23 @@ docker swarm join \
     172.31.39.12:2377
 
 ```
+
+
+
+## removing duplicate readings
+```
+CREATE TEMPORARY TABLE deduplicate_reading AS SELECT * from reading LIMIT 0;
+ALTER TABLE deduplicate_reading DROP COLUMN id;
+
+INSERT INTO deduplicate_reading(date, value, villageId, postcode, resourceId)
+    SELECT DISTINCT date, value, villageId, postcode, resourceId
+    FROM reading;
+
+CREATE table reading_new LIKE reading;
+INSERT INTO reading_new(date, value, villageId, postcode, resourceId)
+  SELECT *
+  FROM deduplicate_reading;
+
+RENAME TABLE reading TO old_reading;
+RENAME TABLE reading_new TO reading;
+```
