@@ -6,7 +6,7 @@
   "properties": {
     "mobile_number": {
       "type": "string",
-      "required": true
+      "required": false
     }
   },
   "validations": [],

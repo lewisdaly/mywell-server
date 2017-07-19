@@ -35,6 +35,10 @@ const getUserForMobile = (mobile_number) => {
   return `user:${mobile_number}`;
 };
 
+const getUserForEmail = (email) => {
+  return `user:${email}`;
+}
+
 const createTempPassword = () => {
   return randomize('*', 15);
 };
@@ -95,6 +99,7 @@ module.exports = {
   sqlQuery: sqlQuery,
   getApp: getApp,
   getUserForMobile: getUserForMobile,
+  getUserForEmail: getUserForEmail,
   createTempPassword: createTempPassword,
   createLoginCode: createLoginCode,
   disableAllMethods: disableAllMethods

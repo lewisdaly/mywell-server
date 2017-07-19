@@ -15,6 +15,8 @@ services:
       - TWILIO_ACCOUNT_SID
       - TWILIO_AUTH_TOKEN
       - TWILIO_PHONE_NUMBER
+      - SMS_HORIZON_USER
+      - SMS_HORIZON_KEY
     networks:
       - base-network
     deploy:
@@ -23,6 +25,11 @@ services:
         - "traefik.docker.network=base-network"
         - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell-server.marvi.org.in"
         - "traefik.protocol=http"
+      resources:
+        limits:
+          memory: 350M
+        reservations:
+          memory: 200M
       # restart_policy:
       #   condition: on-failure
       #   delay: 5s
@@ -47,6 +54,11 @@ services:
         - "traefik.docker.network=base-network"
         - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell.marvi.org.in"
         - "traefik.protocol=http"
+      resources:
+        limits:
+          memory: 350M
+        reservations:
+          memory: 200M
       # restart_policy:
       #   condition: on-failure
       #   delay: 5s
@@ -64,6 +76,12 @@ services:
       - DONE_SEEDING_SUFFIX
     networks:
       - base-network
+    deploy:
+      resources:
+        limits:
+          memory: 50M
+        reservations:
+          memory: 10M
 
 volumes:
   db-data:

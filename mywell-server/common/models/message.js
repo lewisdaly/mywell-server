@@ -9,6 +9,24 @@ const getVillageId = (resourceId) => {
 
 module.exports = function(Message) {
 
+  Message.remoteMethod(
+    'test_sendEmail',
+    {
+      accepts: [
+        {arg: 'email', type: 'string'},
+        {arg: 'message', type: 'string'}
+      ],
+      'description': 'tests email sending',
+      http: {path: '/test_sendEmail', verb: 'get', status:200},
+      returns: {arg: 'response', type: 'string'}
+    }
+  );
+
+  Message.test_sendEmail = function(email, message) {
+
+    return MessageUtils.sendEmailMessage(message, email);
+  }
+
   /*
   * Actual method for processing request
   */
@@ -32,8 +50,9 @@ module.exports = function(Message) {
   MARVI 999 POSTCODE VILLAGE_ID (2 digit)   - get the readings for this village
   MARVI 999 POSTCODE RESOURCE_ID (4 digits) - get the readings for this village
   */
-  Message.sms = function(no, msg) {
-    const number = no; //The name from w2m is no for some reason.
+  Message.sms = function(from, message) {
+    const number = from;
+    const msg = message;
     //eg: http://mywell.marvi.org.in:3000/api/messages/sms?no=61410237238&msg=SMA+999+313603+5
     console.log("Number", number, "message", msg);
 

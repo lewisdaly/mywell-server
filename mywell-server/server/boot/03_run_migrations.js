@@ -55,29 +55,4 @@ module.exports = function(app, next) {
         console.log(`[03_run_migrations] error running: ${migration.name}, ${err}`);
       });
   }, Promise.resolve([]));
-
-
-
 }
-
-
-// module.exports = function(app, next) {
-//   const myapp = app;
-//   console.log('[03_run_migrations] Starting migrations');
-//
-//   app.models.Migration.hasCompleted('0001_calculate_stats')
-//   .then(completed => {
-//     if (completed === true) {
-//       console.log("[0001_calculate_stats] already run");
-//     }
-//     return calculateStats(app)
-//       .then(() => {
-//         return app.models.Migration.create({name:'0001_calculate_stats'});
-//       })
-//   })
-//     .then(() => next())
-//     .catch(err => {
-//       console.log(err);
-//       next(err);
-//     });
-// }
