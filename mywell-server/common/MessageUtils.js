@@ -10,6 +10,9 @@ const twilioClient = require('twilio')(
   process.env.TWILIO_AUTH_TOKEN
 );
 const Utils = require('./Utils');
+const AWS = require('aws-sdk');
+//SES is not available in ap-southeast-2
+const ses = new AWS.SES({region:'ew-west-1'});
 
 let ENABLE_NOTIFICATIONS = false;
 if (process.env.ENABLE_NOTIFICATIONS === true || process.env.ENABLE_NOTIFICATIONS === 'true') {
@@ -158,6 +161,47 @@ const india_sendSMSMessage = (message, number) => {
   return request({uri: url})
   .then(response => {
     console.log('w2m reply', response);
+  })
+  .catch(err => {
+    console.log(err);
+  });
+}
+
+
+/**
+ * Send an email with SES.
+ */
+module.exports.sendEmailMessage = (message, email) => {
+  console.log("Sending Email message: \"" + message + "\" to email:" +email);
+
+ var params = {
+  Destination: {
+   BccAddresses: [],
+   CcAddresses: [],
+   ToAddresses: ["lewisdaly@me.com"]
+  },
+  Message: {
+   Body: {
+    Html: {
+     Charset: "UTF-8",
+     Data: "This message body contains HTML formatting. It can, for example, contain links like this one: <a class=\"ulink\" href=\"http://docs.aws.amazon.com/ses/latest/DeveloperGuide\" target=\"_blank\">Amazon SES Developer Guide</a>."
+    }
+   },
+   Subject: {
+    Charset: "UTF-8",
+    Data: "Test email"
+   }
+  },
+  ReplyToAddresses: [],
+  ReturnPath: "",
+  ReturnPathArn: "",
+  Source: "info@marvi.org.in",
+  SourceArn: ""
+ };
+
+ return ses.sendEmail(params).promise()
+  .then(data => {
+    console.log("data", data);
   })
   .catch(err => {
     console.log(err);

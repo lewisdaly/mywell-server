@@ -9,6 +9,7 @@
     "posttest-skip": "nsp check"
   },
   "dependencies": {
+    "aws-sdk": "^2.86.0",
     "chai": "^3.5.0",
     "compression": "~1.6.2",
     "cors": "^2.5.2",

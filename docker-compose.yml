@@ -15,6 +15,7 @@ services:
     volumes:
      - ./mywell-server:/usr/src/app
      - ./mywell-server/node_modules:/usr/src/app/node_modules
+     - ~/.aws:/root/.aws
     command: "nodemon -L ."
     environment:
       - "TERM=xterm-256color"
@@ -33,6 +34,7 @@ services:
       - TWILIO_PHONE_NUMBER
       - SMS_HORIZON_USER
       - SMS_HORIZON_KEY
+      - AWS_PROFILE=vessels-lewis.daly
     links:
       - db:db
 
