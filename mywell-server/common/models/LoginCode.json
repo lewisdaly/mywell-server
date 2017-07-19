@@ -10,7 +10,11 @@
     },
     "mobile_number": {
       "type": "string",
-      "required": true
+      "required": false
+    },
+    "email": {
+      "type": "string",
+      "required": false
     },
     "code": {
       "type": "number",
