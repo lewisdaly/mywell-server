@@ -24,8 +24,19 @@
     {
       "principalType": "ROLE",
       "principalId": "$unauthenticated",
+      "permission": "DENY",
+      "property": [
+        "test_sendEmail"
+      ]
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
       "permission": "ALLOW",
-      "property": "*"
+      "property": [
+        "sms",
+        "testSms"
+      ]
     }
   ],
   "methods": {}

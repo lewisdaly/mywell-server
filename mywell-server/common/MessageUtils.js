@@ -10,6 +10,9 @@ const twilioClient = require('twilio')(
   process.env.TWILIO_AUTH_TOKEN
 );
 const Utils = require('./Utils');
+const AWS = require('aws-sdk');
+//SES is not available in ap-southeast-2
+const ses = new AWS.SES({region:'eu-west-1'});
 
 let ENABLE_NOTIFICATIONS = false;
 if (process.env.ENABLE_NOTIFICATIONS === true || process.env.ENABLE_NOTIFICATIONS === 'true') {
@@ -161,5 +164,46 @@ const india_sendSMSMessage = (message, number) => {
   })
   .catch(err => {
     console.log(err);
+  });
+}
+
+
+/**
+ * Send an email with SES.
+ */
+module.exports.sendEmailMessage = (message, email) => {
+  console.log("Sending Email message: \"" + message + "\" to email:" +email);
+
+  if (ENABLE_NOTIFICATIONS === false ) {
+    console.log("Skipping message, as ENABLE_NOTIFICATIONS is false");
+    return Promise.resolve(true);
+  }
+
+  const params = {
+    Destination: {
+     ToAddresses: [email]
+    },
+    Message: {
+     Body: {
+      Html: {
+       Charset: "UTF-8",
+       Data: message
+      }
+     },
+     Subject: {
+      Charset: "UTF-8",
+      Data: "Notification from MyWell"
+     }
+    },
+    Source: "info@marvi.org.in",
+  };
+
+ return ses.sendEmail(params).promise()
+  .then(data => {
+    console.log("data", data);
+  })
+  .catch(err => {
+    console.log(err);
+    return Promise.reject(err);
   });
 }

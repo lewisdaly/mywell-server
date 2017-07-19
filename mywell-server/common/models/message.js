@@ -9,6 +9,24 @@ const getVillageId = (resourceId) => {
 
 module.exports = function(Message) {
 
+  Message.remoteMethod(
+    'test_sendEmail',
+    {
+      accepts: [
+        {arg: 'email', type: 'string'},
+        {arg: 'message', type: 'string'}
+      ],
+      'description': 'tests email sending',
+      http: {path: '/test_sendEmail', verb: 'get', status:200},
+      returns: {arg: 'response', type: 'string'}
+    }
+  );
+
+  Message.test_sendEmail = function(email, message) {
+
+    return MessageUtils.sendEmailMessage(message, email);
+  }
+
   /*
   * Actual method for processing request
   */
