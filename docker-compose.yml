@@ -1,5 +1,19 @@
 version: '2'
 services:
+  mywell-gql:
+    container_name: mywell-gql
+    build: ./mywell-gql/
+    image: mywell-gql:local
+    ports:
+      - 3001:3001
+    volumes:
+      - ./mywell-gql/:/usr/src/app/
+    environment:
+      - PORT=3001
+    command: tail -f /dev/null
+
+
+
   mywell-utils:
     container_name: mywell-utils
     build: ./mywell-utils/
