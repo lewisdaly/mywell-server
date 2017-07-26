@@ -6,11 +6,10 @@ ENV PORT 3001
 RUN mkdir -p ${APP_DIR}
 WORKDIR ${APP_DIR}
 
-RUN npm install -g nodemon
-
 COPY package.json ./
 RUN npm install
 
 COPY ./src ./src/
 
-CMD [ "npm", "start" ]
+RUN npm build
+CMD [ "npm", "serve" ]

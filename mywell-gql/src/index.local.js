@@ -1,11 +1,8 @@
+import express from 'express'
+import bodyParser from 'body-parser'
+import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const apolloServerExpress = require('apollo-server-express')
-const graphqlExpress = apolloServerExpress.graphqlExpress;
-const graphiqlExpress = apolloServerExpress.graphiqlExpress;
-
-const schema = require('./schema');
+import schema from './schema';
 
 const PORT = process.env.PORT;
 const app = express();
