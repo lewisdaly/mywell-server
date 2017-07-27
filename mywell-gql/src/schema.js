@@ -1,15 +1,31 @@
+import resolvers from './resolvers';
+
 const makeExecutableSchema = require('graphql-tools').makeExecutableSchema;
 
 const typeDefs = `
-  type Post {
-    description: String!
+  scalar DateTime
+
+  type Resource {
+    id: ID!
+    last_value: Float!
+    owner: String!
+    postcode: Int!
+  }
+
+  type Reading {
     id: ID! @isUnique
-    imageUrl: String!
+    date: DateTime!
+    value: Float!
+    villageId: Int!
+    postcode: Int!
+    resourceId: Int!
   }
 
   type Query {
-    posts: [Post]
+    resource(postcode: Int, resourceId: Int): Resource
+    readings(postcode: Int, resourceId: Int): [Reading]
   }
+
 `;
 
 /* Test data */
@@ -20,12 +36,7 @@ const posts = [
   { id: 4, imageUrl: 3, description: 'Launchpad is Cool'},
 ];
 
-//TODO: we need to set this up with MySQL and/or MyWell Server
-const resolvers = {
-  Query: {
-    posts: () => posts,
-  },
-};
+console.log("resolvers", resolvers);
 
 module.exports = makeExecutableSchema({
   typeDefs,

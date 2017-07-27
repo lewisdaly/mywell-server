@@ -1,11 +1,21 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
+const  mysql = require('mysql2/promise');
 
 import schema from './schema';
 
 const PORT = process.env.PORT;
 const app = express();
+
+//https://medium.com/the-ideal-system/graphql-and-mongodb-a-quick-example-34643e637e49
+const connection = await mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
+});
+
 
 app.get('/', function(req, res) {
   res.send("Hello graphql");
