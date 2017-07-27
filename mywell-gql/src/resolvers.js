@@ -22,7 +22,6 @@ const DateTime = new GraphQLScalarType({
 });
 
 const weeklyReadingsQuery = async(obj, args, context, info) => {
-
   if (!args.sumOrAvg) {
     args.sumOrAvg = 'AVG'
   }
@@ -60,6 +59,48 @@ const weeklyReadingsQuery = async(obj, args, context, info) => {
   return rows;
 }
 
+const cumulativeWeeklyReadingsQuery = async(obj, args, context, info) => {
+  let startDate = null;
+  let endDate = null;
+
+  if (!args.startDate) {
+    startDate = moment().add(-1, 'years').format('Y-MM-DD');
+  } else {
+    startDate = moment(args.startDate).format('Y-MM-DD');
+  }
+
+  if (!args.endDate) {
+    endDate = moment().add().format('Y-MM-DD');
+  } else {
+    endDate = moment(args.endDate).format('Y-MM-DD');
+  }
+
+  const [rows, fields] =  await context.connection.query(`set @cumulative_value := 0; SELECT cumulative_readings.date as week, cumulative_value as value FROM (
+      select * from days WHERE date >= STR_TO_DATE(?, '%Y-%m-%d') AND date <= STR_TO_DATE(?, '%Y-%m-%d')
+    ) as days
+    LEFT OUTER JOIN (
+      SELECT week, date, (@cumulative_value := @cumulative_value + weekly_sum) as cumulative_value
+      FROM (
+        SELECT SUM(value) as weekly_sum, cast(date as DATE) as date, WEEKOFYEAR(date) as week
+        FROM reading
+        WHERE postcode = ?
+          AND resourceId = ?
+          AND date >= STR_TO_DATE(?, '%Y-%m-%d')
+          AND date <= STR_TO_DATE(?, '%Y-%m-%d')
+        GROUP BY YEAR(date), WEEKOFYEAR(date)
+      ) as weekly_readings
+    ) as cumulative_readings
+    ON days.date = cumulative_readings.date
+    WHERE cumulative_readings.date IS NOT NULL
+    GROUP BY YEAR(cumulative_readings.date), WEEKOFYEAR(cumulative_readings.date)
+    ORDER BY cumulative_readings.date`,
+    [startDate, endDate, args.postcode, args.resourceId, startDate, endDate]
+  );
+
+  console.log(rows[1]);
+  return rows[1];
+}
+
 const resolvers = {
   DateTime: DateTime,
 
@@ -72,6 +113,7 @@ const resolvers = {
       return rows;
     },
     weeklyReadings: weeklyReadingsQuery,
+    cumulativeWeeklyReadings: cumulativeWeeklyReadingsQuery
   },
 };
 
