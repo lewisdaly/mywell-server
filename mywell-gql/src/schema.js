@@ -21,9 +21,15 @@ const typeDefs = `
     resourceId: Int!
   }
 
+  type WeeklyReading {
+    week: DateTime!
+    value: Float
+  }
+
   type Query {
     resource(postcode: Int, resourceId: Int): Resource
     readings(postcode: Int, resourceId: Int): [Reading]
+    weeklyReadings(postcode: Int, resourceId: Int, sumOrAvg: String, startDate: DateTime, endDate: DateTime): [WeeklyReading]
   }
 
 `;

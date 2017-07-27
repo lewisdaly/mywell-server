@@ -8,24 +8,32 @@ import schema from './schema';
 const PORT = process.env.PORT;
 const app = express();
 
-//https://medium.com/the-ideal-system/graphql-and-mongodb-a-quick-example-34643e637e49
-const connection = await mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
-});
+export const init = async () => {
+
+  //https://medium.com/the-ideal-system/graphql-and-mongodb-a-quick-example-34643e637e49
+  const connection = await mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
+  });
 
 
-app.get('/', function(req, res) {
-  res.send("Hello graphql");
-});
+  app.get('/', async function(req, res) {
+    const [rows, fields] = await connection.execute('SELECT * FROM `reading` LIMIT 10');
 
-app.use('/graphql', bodyParser.json(), graphqlExpress({ schema: schema }));
-app.use('/graphiql', graphiqlExpress({
-  endpointURL: '/graphql',
-}));
+    res.send("Hello graphql");
+  });
 
-app.listen(PORT, function() {
-  console.log("server listening on port " + PORT);
-});
+  app.use('/graphql', bodyParser.json(), graphqlExpress({ schema: schema, context: {connection:connection}}));
+  app.use('/graphiql', graphiqlExpress({
+    endpointURL: '/graphql',
+  }));
+
+  app.listen(PORT, function() {
+    console.log("server listening on port " + PORT);
+  });
+
+}
+
+init();

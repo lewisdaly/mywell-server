@@ -76,12 +76,12 @@ services:
       - DONE_SEEDING_SUFFIX
     networks:
       - base-network
-    deploy:
-      resources:
-        limits:
-          memory: 50M
-        reservations:
-          memory: 10M
+    # deploy:
+      # resources:
+      #   limits:
+      #     memory: 50M
+      #   reservations:
+      #     memory: 10M
 
 volumes:
   db-data:
