@@ -1,0 +1,167 @@
+---
+references:
+# - id: chin2015
+#   type: article-journal
+#   author:
+#   - family: Chinnasamy
+#     given: Pennan
+#   - family: Maheshwari
+#     given: Basant
+#   - family: Prathapar
+#     given: Sanmugam
+#   issued:
+#   - year: '2015'
+#   title: Understanding Groundwater Storage Changes and Recharge in Rajasthan, India Through Remote Sensing
+#   container-title: Water
+#   publisher: Water
+#   volume: '7.10'
+#   page: '5547-5565'
+#
+# - id: mahesh2014
+#   type: article-journal
+#   author:
+#   - family: Maheshwari
+#     given: Basant
+#   - family: Prathapar
+#     given: Sanmugam
+#   issued:
+#   - year: '2014'
+#   title: The Role of Transdisciplinary Approach and Community Participation in Village Scale Groundwater Management: Insights from Gujarat and Rajasthan, India
+#   container-title: Water
+#   publisher: Water
+#   volume: '6.11'
+#   page: '3386-3408'
+#
+# - id: wb2010
+#   type: article-journal
+#   issued:
+#   - year: '2010'
+#   title: Deep Wells and Prudence
+#   publisher: World Bank
+#   volume: '6'
+
+
+- id: pew2014
+  type: article-journal
+  issued:
+  - year: '2014'
+  title: Emerging Nations Embrace Internet, Mobile Technology
+  container-title: Pew Research Center's Global Attitudes Project
+  publisher: Pew
+#
+# - id: fien2012
+#   type: article-journal
+#   author:
+#   - family: Fienen
+#     given: Michael N.
+#   - family: Lowry
+#     given: Christopher S.
+#   issued:
+#   - year: '2012'
+#   title: Computers & Geosciences
+#   container-title: Computers & Geosciences
+#   volume: '49'
+#   page: '164-169'
+#
+# - id: fien2012_2
+#   type: article-journal
+#   author:
+#   - family: Lowry
+#     given: Christopher S.
+#   - family: Fienen
+#     given: Michael N.
+#   issued:
+#   - year: '2012'
+#   title: Crowdhydrology: Crowdsourcing Hydrologic Data and Engaging Citizen Scientists
+#   publisher: Ground Water
+#   volume: '51.1'
+#   page: '151-156'
+#
+# - id: rath2004
+#   type: article-journal
+#   author:
+#   - family: Rathore
+#     given: M. S.
+#   issued:
+#   - year: '2004'
+#   title: State Level Analysis of Drought Policies and Impacts in Rajasthan, India
+#   publisher: International Water Management Institute
+#   publisher-place: Comobo, Sri Lanka
+#
+# - id: ibm2012
+#   type: article-journal
+#   issued:
+#   - year: '2012'
+#   title: Creek Watch IPhone App Goes Social
+#   container-title: IBM Research
+#
+# - id: rur2015
+#   type: article-journal
+#   issued:
+#   - year: '2015'
+#   title: Rural Coverage: Strategies for Sustainability
+#   container-title: Country Case Studies
+#   publisher: GSMA Intelligence
+#
+# - id: stat2016
+#   type: article-journal
+#   issued:
+#   - year: '2016'
+#   title: Smartphone User Penetration in India 2014-2019
+#   publisher: Statista
+#
+# - id: geo2016
+#   type: article-journal
+#   issued:
+#   - year: '2016'
+#   title: Crowdsourcing Science
+#   publisher: The Geological Society of London
+#
+# - id: aud2015
+#   type: article-journal
+#   issued:
+#   - year: '2015'
+#   title: The History of Audubon
+#   publisher: Audubon
+#
+# - id: aud2016
+#   type: article-journal
+#   author:
+#   - family: Toon
+#     given: John
+#   issued:
+#   - year: '2016'
+#   title: Crowdsourcing Could Lead to Better Water in Rural India
+#   publisher: News.gatech.edu
+#
+# - id: farmers2016
+#   type: press
+#   author:
+#   - family: Singh
+#     given: Tanaya
+#   issued:
+#   - year: '2016'
+#   title: Farmers in Rural Maharashtra Are Fighting Climate Change. With Just a Mobile Phone
+#   publisher: The Better India
+#
+...
+
+
+# - title: One-click science marketing
+#   volume: '11'
+#   URL: http://dx.doi.org/10.1038/nmat3283
+#   DOI: 10.1038/nmat3283
+#   issue: '4'
+#   container-title: Nature Materials
+#   publisher: Nature Publishing Group
+#   author:
+#   - family: Fenner
+#     given: Martin
+#     orcid: 0000-0003-1419-2405
+#   page: 261-263
+#   id: fenner2012a
+#   type: article-journal
+#   issued:
+#     date-parts:
+#       - 2012
+#       - 3
