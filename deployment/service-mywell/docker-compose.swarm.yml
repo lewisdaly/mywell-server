@@ -23,7 +23,7 @@ services:
       labels:
         - "traefik.port=3000"
         - "traefik.docker.network=base-network"
-        - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell-server.marvi.org.in"
+        - "traefik.frontend.rule=${TEMP_SERVER_FRONTEND_RULE}"
         - "traefik.protocol=http"
       resources:
         limits:
