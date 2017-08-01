@@ -13,10 +13,11 @@ export DB_NAME="production_mywell"
 export DB_PASSWORD="marvi-mywell"
 export DB_USER="mywell"
 export IMAGE_SUFFIX="production"
-export VERSION_NUMBER="1.3.4"
+export VERSION_NUMBER="1.3.5"
 export SERVER_PORT=3000
 export UI_PORT=8000
 export DONE_SEEDING_SUFFIX="production_done"
+export TEMP_SERVER_FRONTEND_RULE="Host:${STAGE_PREFIX}mywell-server.marvi.org.in,dev-mywell-server.marvi.org.in"
 
 
 source $DIR/env.sh
