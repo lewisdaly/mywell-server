@@ -17,6 +17,7 @@ export VERSION_NUMBER="dev_1.3.5"
 export SERVER_PORT=3002
 export UI_PORT=8002
 export DONE_SEEDING_SUFFIX="development_done"
+export TEMP_SERVER_FRONTEND_RULE="Host:${STAGE_PREFIX}mywell-server.marvi.org.in"
 
 
 
