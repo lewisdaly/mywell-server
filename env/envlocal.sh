@@ -10,7 +10,7 @@ export DB_NAME=mywell
 export DB_PASSWORD=password
 export DB_USER=mywell
 export SERVER_URL=http://docker.local:3000
-export VERSION_NUMBER="dev_1.3.3"
+export VERSION_NUMBER="dev_1.3.5"
 
 
 source $DIR/env.sh
