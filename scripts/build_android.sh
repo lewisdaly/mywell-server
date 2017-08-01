@@ -14,7 +14,8 @@ cd $DIR/../mywell-ui/src
 
 #update config.xml and AndroidManifest.xml
 echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.vesselstech.mywell" version="'$VERSION_NUMBER'" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' > /tmp/config.xml
+<widget id="com.ionicframework.ionicrainapp175406" version="'$VERSION_NUMBER'" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' > /tmp/config.xml
+# <widget id="com.vesselstech.mywell" version="'$VERSION_NUMBER'" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' > /tmp/config.xml
 tail -n +3 config.xml >> /tmp/config.xml
 mv /tmp/config.xml ./config.xml
 
