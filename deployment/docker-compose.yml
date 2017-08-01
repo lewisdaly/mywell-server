@@ -27,5 +27,7 @@ services:
       - SERVER_URL
       - ENABLE_LOGS
       - STAGE_PREFIX
+      - UI_PORT
+      - TEMP_SERVER_FRONTEND_RULE
     privileged: true
     command: /usr/src/deploy/tools/entrypoint.sh

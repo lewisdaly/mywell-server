@@ -9,6 +9,8 @@ if [ -z "$STAGE" ]; then
   export STAGE=development
 fi
 
+source $DIR/../env/env"$STAGE".sh
+
 if [ "$1" == "build" ]
 then
 	docker-compose build
