@@ -1,9 +1,21 @@
 ---
 references:
+- id: howe2006
+  type: article-journal
+  author:
+    - family: Howe
+      given: Jeff
+  issued:
+    - month: 06
+    - year: 2006
+  title: The Rise of Crowdsourcing
+  container-title: Wired
+  volume: '14.06'
+
 - id: chin2015
   type: article-journal
   author:
-  - family: Chinnaswamy
+  - family: Chinnasamy
     given: Pennan
   - family: Maheshwari
     given: Basant
@@ -26,8 +38,8 @@ references:
     given: Sanmugam
   issued:
   - year: '2014'
-  # title: The Role of Transdisciplinary Approach and Community Participation in Village Scale Groundwater Management: Insights from Gujarat and Rajasthan, India
-  title: The Role of Transdisciplinary Approach and Community Participation in Village ...
+  title: The Role of Transdisciplinary Approach and Community Participation in Village Scale Groundwater Management - Insights from Gujarat and Rajasthan, India
+  # title: The Role of Transdisciplinary Approach and Community Participation in Village ...
   container-title: Water
   publisher: Water
   volume: '6.11'
@@ -38,7 +50,7 @@ references:
   issued:
   - year: '2010'
   title: Deep Wells and Prudence
-  publisher: World Bank
+  container-title: World Bank
   volume: '6'
 
 - id: pew2014
@@ -109,6 +121,7 @@ references:
   issued:
   - year: '2016'
   title: Smartphone User Penetration in India 2014-2019
+  container-title: Statista
   publisher: Statista
 
 - id: geo2016
@@ -124,6 +137,7 @@ references:
   - year: '2015'
   title: The History of Audubon
   publisher: Audubon
+  container-title: Audubon
 
 - id: aud2016
   type: article-journal
@@ -138,15 +152,23 @@ references:
 - id: farmers2016
   type: article-journal
   author:
-  - family: Singh
-    given: Tanaya
+    - family: Singh
+      given: Tanaya
   issued:
-  - year: '2016'
+    - year: '2016'
   title: Farmers in Rural Maharashtra Are Fighting Climate Change. With Just a Mobile Phone
   publisher: The Better India
 
-...
+- id: quinn
+  title: Crowdsourcing Science
+  URL: https://www.geolsoc.org.uk/Geoscientist/Archive/August-2014/Crowdsourcing-science
+  container-title: Geoscientist Online
+  publisher: The Geological Society
+  author:
+    - family: Quinn
+      given: Helen
 
+...
 
 # - title: One-click science marketing
 #   volume: '11'
