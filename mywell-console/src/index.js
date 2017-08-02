@@ -1,12 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import ListPage from './components/ListPage'
-import CreatePage from './components/CreatePage'
-import DetailPage from './components/DetailPage'
-import ThreadPage from './components/ThreadPage'
-import ThreadCreate from './components/ThreadCreate'
-import ThreadDetailPage from './components/ThreadDetailPage'
-import AccountPage from './components/AccountPage'
+// import ListPage from './components/ListPage'
+// import CreatePage from './components/CreatePage'
+// import DetailPage from './components/DetailPage'
+// import ThreadPage from './components/ThreadPage'
+// import ThreadCreate from './components/ThreadCreate'
+// import ThreadDetailPage from './components/ThreadDetailPage'
+// import AccountPage from './components/AccountPage'
+import GraphPage from './components/GraphPage'
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 import {ApolloProvider, createNetworkInterface, ApolloClient} from 'react-apollo'
 import 'tachyons'
@@ -28,10 +29,10 @@ ReactDOM.render(
     <Router>
       <div>
         <Nav/>
-        <Route exact path='/' component={ThreadPage} />
-        <Route path='/create' component={ThreadCreate} />
-        <Route path='/thread/:id' component={ThreadDetailPage} />
-        <Route path='/user/:phone' component={AccountPage}/>
+        {/* <Route exact path='/' component={ThreadPage} /> */}
+        <Route path='/graphs' component={GraphPage} />
+        {/* <Route path='/thread/:id' component={ThreadDetailPage} /> */}
+        {/* <Route path='/user/:phone' component={AccountPage}/> */}
       </div>
     </Router>
   </ApolloProvider>,
