@@ -15,6 +15,8 @@ import './index.css'
 
 import { Nav } from './components/common'
 
+console.log(process.env.REACT_APP_GRAPHQL_ENDPOINT);
+
 const networkInterface = createNetworkInterface({
   uri: process.env.REACT_APP_GRAPHQL_ENDPOINT
 })

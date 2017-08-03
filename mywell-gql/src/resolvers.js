@@ -75,12 +75,12 @@ const cumulativeWeeklyReadingsQuery = async(obj, args, context, info) => {
     endDate = moment(args.endDate).format('Y-MM-DD');
   }
 
-  const [rows, fields] =  await context.connection.query(`set @cumulative_value := 0; SELECT cumulative_readings.date as week, cumulative_value as value FROM (
+  const [rows, fields] =  await context.connection.query(`set @cumulative_value := 0;
+  SELECT date as week, (@cumulative_value := @cumulative_value + IFNULL(weekly_sum, 0)) as value FROM (
+    SELECT days.date as date, sum(weekly_sum) as weekly_sum FROM (
       select * from days WHERE date >= STR_TO_DATE(?, '%Y-%m-%d') AND date <= STR_TO_DATE(?, '%Y-%m-%d')
     ) as days
     LEFT OUTER JOIN (
-      SELECT week, date, (@cumulative_value := @cumulative_value + weekly_sum) as cumulative_value
-      FROM (
         SELECT SUM(value) as weekly_sum, cast(date as DATE) as date, WEEKOFYEAR(date) as week
         FROM reading
         WHERE postcode = ?
@@ -89,11 +89,11 @@ const cumulativeWeeklyReadingsQuery = async(obj, args, context, info) => {
           AND date <= STR_TO_DATE(?, '%Y-%m-%d')
         GROUP BY YEAR(date), WEEKOFYEAR(date)
       ) as weekly_readings
-    ) as cumulative_readings
-    ON days.date = cumulative_readings.date
-    WHERE cumulative_readings.date IS NOT NULL
-    GROUP BY YEAR(cumulative_readings.date), WEEKOFYEAR(cumulative_readings.date)
-    ORDER BY cumulative_readings.date`,
+    ON days.date = weekly_readings.date
+    WHERE days.date IS NOT NULL
+    GROUP BY YEAR(days.date), WEEKOFYEAR(days.date)
+    ORDER BY days.date
+  ) as sum_table;`,
     [startDate, endDate, args.postcode, args.resourceId, startDate, endDate]
   );
 

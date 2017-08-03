@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 
+import CumulativeGraph from './CumulativeGraph'
+
 
 class GraphPage extends Component {
 
@@ -7,7 +9,7 @@ class GraphPage extends Component {
   render() {
     return (
       <div>
-        Hey lewis insert some graphs here!
+        <CumulativeGraph resourceId={1111} postcode={313603}/>
       </div>
     );
   }

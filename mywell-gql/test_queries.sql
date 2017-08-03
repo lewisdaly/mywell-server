@@ -74,7 +74,7 @@ WHERE postcode = 313603
 
 set @cumulative_value := 0;
 SELECT cumulative_readings.date, cumulative_value FROM (
-  select * from days WHERE date >= STR_TO_DATE('2015-12-28', '%Y-%m-%d') AND date <= STR_TO_DATE('2017-01-01', '%Y-%m-%d')
+  select * from days WHERE date >= STR_TO_DATE('2016-01-01', '%Y-%m-%d') AND date <= STR_TO_DATE('2017-01-01', '%Y-%m-%d')
 ) as days
 LEFT OUTER JOIN (
   SELECT week, date, (@cumulative_value := @cumulative_value + weekly_sum) as cumulative_value
@@ -83,7 +83,7 @@ LEFT OUTER JOIN (
     FROM reading
     WHERE postcode = 313603
       AND resourceId = 1111
-      AND date >= STR_TO_DATE('2015-12-28', '%Y-%m-%d')
+      AND date >= STR_TO_DATE('2016-01-01', '%Y-%m-%d')
       AND date <= STR_TO_DATE('2017-01-01', '%Y-%m-%d')
     GROUP BY YEAR(date), WEEKOFYEAR(date)
   ) as weekly_readings
@@ -92,6 +92,29 @@ ON days.date = cumulative_readings.date
 WHERE cumulative_readings.date IS NOT NULL
 GROUP BY YEAR(cumulative_readings.date), WEEKOFYEAR(cumulative_readings.date)
 ORDER BY cumulative_readings.date;
+
+-- Try again - we seem to missing some weeks:
+set @cumulative_value := 0;
+SELECT date, (@cumulative_value := @cumulative_value + IFNULL(weekly_sum, 0)) FROM (
+  SELECT days.date as date, sum(weekly_sum) as weekly_sum FROM (
+    select * from days WHERE date >= STR_TO_DATE('2016-01-01', '%Y-%m-%d') AND date <= STR_TO_DATE('2017-01-01', '%Y-%m-%d')
+  ) as days
+  LEFT OUTER JOIN (
+      SELECT SUM(value) as weekly_sum, cast(date as DATE) as date, WEEKOFYEAR(date) as week
+      FROM reading
+      WHERE postcode = 313603
+        AND resourceId = 1111
+        AND date >= STR_TO_DATE('2016-01-01', '%Y-%m-%d')
+        AND date <= STR_TO_DATE('2017-01-01', '%Y-%m-%d')
+      GROUP BY YEAR(date), WEEKOFYEAR(date)
+    ) as weekly_readings
+  ON days.date = weekly_readings.date
+  WHERE days.date IS NOT NULL
+  GROUP BY YEAR(days.date), WEEKOFYEAR(days.date)
+  ORDER BY days.date
+) as sum_table;
+
+
 
 
 SELECT * FROM (

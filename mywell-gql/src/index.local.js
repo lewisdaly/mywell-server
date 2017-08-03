@@ -21,9 +21,18 @@ export const init = async () => {
 
 
   app.get('/', async function(req, res) {
-    const [rows, fields] = await connection.execute('SELECT * FROM `reading` LIMIT 10');
-
     res.send("Hello graphql");
+  });
+
+  /* middleware to prevent CORS errors */
+  app.use("/graphql", (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+    if (req.method === 'OPTIONS') {
+      res.sendStatus(200);
+    } else {
+      next();
+    }
   });
 
   app.use('/graphql', bodyParser.json(), graphqlExpress({ schema: schema, context: {connection:connection}}));
