@@ -261,7 +261,11 @@ module.exports = function(Resource) {
         return MessageUtils.sendSMSMessage(message, mobileNumber)
       })
       .then(() => next())
-      .catch(err => next(err));
+      .catch(err => {
+        console.log("err sending message: " + err);
+        //Don't forward error - this is non-fatal
+        next();
+      });
   });
 
   Resource.remoteMethod('findAvailableIds', {
