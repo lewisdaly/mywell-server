@@ -15,24 +15,23 @@ class CumulativeGraphLine extends Component {
     const data = this.props.data.cumulativeWeeklyReadings.map((reading, idx) => {
       const date = moment(reading.week).format('D-M-Y');
       return {
-        date,
-        // value: this.props.max/reading.value
-        value: idx * this.props.max
+        x:reading.week,
+        y: reading.value
+        // value: idx * this.props.max
       };
     });
 
-    console.log(data.map(data => data.value));
+    data.forEach(data => console.log(`x:${data.x}, y:${data.y}`));
 
     return (
       <VictoryLine
+        standalone={false}
         style={this.props.style}
         data={data}
-        x="date"
-        y="value"
-        animate={{
-          duration: 2000,
-          onLoad: { duration: 1000 }
-        }}
+        // animate={{
+        //   duration: 2000,
+        //   onLoad: { duration: 1000 }
+        // }}
       />
     )
   }
