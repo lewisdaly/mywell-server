@@ -9,6 +9,14 @@ import CumulativeGraphLine from './CumulativeGraphLine'
 
 class CumulativeGraph extends Component {
 
+  componentWillUpdate(nextProps, nextState) {
+    // this.props.thisYearQuery.refetch()
+    // this.props.lastYearQuery.refetch()
+    // this.props.twoYearQuery.refetch()
+
+    console.log(nextProps.startDates);
+  }
+
   isLoading() {
     if (this.props.thisYearQuery.loading ||
         this.props.lastYearQuery.loading ||
@@ -16,24 +24,13 @@ class CumulativeGraph extends Component {
           return true;
         }
 
-    return false
-  }
+    // if (!this.props.thisYearQuery.cumulativeWeeklyReadings ||
+    //     !this.props.lastYearQuery.cumulativeWeeklyReadings ||
+    //     !this.props.twoYearQuery.cumulativeWeeklyReadings) {
+    //       return true;
+    //     }
 
-  getTestChart() {
-    return (
-      <VictoryChart>
-        <VictoryGroup offset={20}
-          colorScale={"qualitative"}
-        >
-          <VictoryLine
-            data={[{ x: 1, y: 1 }, { x: 2, y: 2 }, { x: 3, y: 5 }]}
-          />
-          <VictoryLine
-            data={[{ x: 1, y: 2 }, { x: 2, y: 1 }, { x: 3, y: 7 }]}
-          />
-        </VictoryGroup>
-      </VictoryChart>
-    );
+    return false
   }
 
   transformGraphData(readings) {
@@ -193,8 +190,8 @@ const CumulativeGraphWithQueries = compose(
       variables: {
         postcode,
         resourceId,
-        startDate: startDates[0],
-        endDate: endDates[0]
+        startDate: startDates[0].getTime(),
+        endDate: endDates[0].getTime()
       }
     })
   }),
@@ -204,8 +201,8 @@ const CumulativeGraphWithQueries = compose(
       variables: {
         postcode,
         resourceId,
-        startDate: startDates[1],
-        endDate: endDates[1]
+        startDate: startDates[1].getTime(),
+        endDate: endDates[1].getTime()
       }
     })
   }),
@@ -215,8 +212,8 @@ const CumulativeGraphWithQueries = compose(
       variables: {
         postcode,
         resourceId,
-        startDate: startDates[2],
-        endDate: endDates[2]
+        startDate: startDates[2].getTime(),
+        endDate: endDates[2].getTime()
       }
     })
   })
