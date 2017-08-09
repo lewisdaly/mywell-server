@@ -66,7 +66,7 @@ class CumulativeGraph extends Component {
       <div>
         <VictoryChart
           domainPadding={{y: 5}}
-          theme={VictoryTheme.material}
+          // theme={VictoryTheme.material}
         >
           <VictoryAxis
             tickValues={xTicks}
