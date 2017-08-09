@@ -1,89 +1,48 @@
-# angularjs-webpack
+ionic-webpack
+=============
 
-[![Dependency Status](https://david-dm.org/preboot/angularjs-webpack/status.svg)](https://david-dm.org/preboot/angular-webpack#info=dependencies) [![devDependency Status](https://david-dm.org/preboot/angularjs-webpack/dev-status.svg)](https://david-dm.org/preboot/angularjs-webpack#info=devDependencies)
+Ionic Webpack Starter
 
-A complete, yet simple, starter for AngularJS using Webpack.
+## Quick Start
 
-This workflow serves as a starting point for building AngularJS (1.x) applications using Webpack 2.x. Should be noted that apart from the pre-installed angular package, this workflow is pretty much generic.
-
-* Heavily commented webpack configuration with reasonable defaults.
-* ES6, and ES7 support with babel.
-* Source maps included in all builds.
-* Development server with live reload.
-* Production builds with cache busting.
-* Testing environment using karma to run tests and jasmine as the framework.
-* Code coverage when tests are run.
-* No gulp and no grunt, just npm scripts.
-
->Warning: Make sure you're using the latest version of Node.js and NPM
-
-### Quick start
-
-> Clone/Download the repo then edit `app.js` inside [`/src/app/app.js`](/src/app/app.js)
+Clone the repository
 
 ```bash
-# clone our repo
-$ git clone https://github.com/preboot/angularjs-webpack.git my-app
+$ git clone https://github.com/cmackay/ionic-webpack.git
+```
 
-# change directory to your app
-$ cd my-app
+Install the dependencies
 
-# install the dependencies with npm
+```bash
 $ npm install
-
-# start the server
-$ npm start
 ```
 
-go to [http://localhost:8080](http://localhost:8080) in your browser.
+Watch Mode (this will run the webpack dev server)
 
-# Table of Contents
-
-* [Getting Started](#getting-started)
-    * [Dependencies](#dependencies)
-    * [Installing](#installing)
-    * [Running the app](#running-the-app)
-    * [Developing](#developing)
-    * [Testing](#testing)
-* [License](#license)
-
-# Getting Started
-
-## Dependencies
-
-What you need to run this app:
-* `node` and `npm` (Use [NVM](https://github.com/creationix/nvm))
-* Ensure you're running Node (`v4.1.x`+) and NPM (`2.14.x`+)
-
-## Installing
-
-* `fork` this repo
-* `clone` your fork
-* `npm install` to install all dependencies
-
-## Running the app
-
-After you have installed all dependencies you can now run the app with:
 ```bash
-npm start
+$ gulp watch
 ```
 
-It will start a local server using `webpack-dev-server` which will watch, build (in-memory), and reload for you. The port will be displayed to you as `http://localhost:8080`.
+Adding Cordova Plugins
 
-## Developing
+```bash
+$ cordova plugins add ionic-plugin-keyboard cordova-plugin-console cordova-plugin-device
+```
 
-### Build files
+Adding Cordova Platforms
 
-* single run: `npm run build`
-* build files and watch: `npm start`
+```bash
+$ cordova platform add ios
+```
 
-## Testing
+Build
 
-#### 1. Unit Tests
+```bash
+$ gulp && cordova build
+```
 
-* single run: `npm test`
-* live mode (TDD style): `npm run test-watch`
+Running in the emulator
 
-# License
-
-[MIT](/LICENSE)
+```bash
+$ cordova emulate ios
+```
