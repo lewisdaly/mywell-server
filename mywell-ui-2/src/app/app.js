@@ -1,4 +1,6 @@
-import angular from 'angular';
+/* Loaded in index.html for now */
+// import angular from 'angular';
+// import ionic from 'ionic';
 
 import '../style/app.css';
 
@@ -18,7 +20,9 @@ class AppCtrl {
 
 const MODULE_NAME = 'app';
 
-angular.module(MODULE_NAME, [])
+angular.module(MODULE_NAME, [
+  'ionic'
+])
   .directive('app', app)
   .controller('AppCtrl', AppCtrl);
 

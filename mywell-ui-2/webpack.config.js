@@ -30,6 +30,27 @@ module.exports = function makeWebpackConfig() {
    * Karma will set this when it's a test build
    */
   config.entry = isTest ? void 0 : {
+    // vendor: [
+    //  './lib/angular/angular.js',
+    // //  'angular-animate',
+    // //  'angular-sanitize',
+    // //  'angular-ui-router',
+    // //  'angular-messages',
+    // //  'angular-validation-match',
+    // //  'angular-gettext',
+    // //  'angular-resource',
+    // //  'angular-cookies',
+    // //  'angular-collection',
+    // //  'ng-material-floating-button',
+    //  './lib/ionic/js/ionic.js',
+    // //  'lodash',
+    // //  'ngCordova',
+    // //  'ionic-service-core',
+    // //  'ionic-service-analytics',
+    // //  'ionic-service-push',
+    // //  'ionic-service-deploy',
+    // //  'ionic-timepicker'
+    // ],
     app: './src/app/app.js'
   };
 
@@ -79,52 +100,95 @@ module.exports = function makeWebpackConfig() {
    */
 
   // Initialize module
-  config.module = {
-    rules: [{
-      // JS LOADER
-      // Reference: https://github.com/babel/babel-loader
-      // Transpile .js files using babel-loader
-      // Compiles ES6 and ES7 into ES5 code
-      test: /\.js$/,
-      loader: 'babel-loader',
-      exclude: /node_modules/
-    }, {
-      // CSS LOADER
-      // Reference: https://github.com/webpack/css-loader
-      // Allow loading css through js
-      //
-      // Reference: https://github.com/postcss/postcss-loader
-      // Postprocess your css with PostCSS plugins
-      test: /\.css$/,
-      // Reference: https://github.com/webpack/extract-text-webpack-plugin
-      // Extract css files in production builds
-      //
-      // Reference: https://github.com/webpack/style-loader
-      // Use style-loader in development.
+  // config.noParse = function(content) {
+  //   return /[\/]ionic\.js$/.test(content);
+  // };
 
-      loader: isTest ? 'null-loader' : ExtractTextPlugin.extract({
-        fallbackLoader: 'style-loader',
-        loader: [
-          {loader: 'css-loader', query: {sourceMap: true}},
-          {loader: 'postcss-loader'}
-        ],
-      })
-    }, {
-      // ASSET LOADER
-      // Reference: https://github.com/webpack/file-loader
-      // Copy png, jpg, jpeg, gif, svg, woff, woff2, ttf, eot files to output
-      // Rename the file using the asset hash
-      // Pass along the updated reference to your code
-      // You can add here any file extension you want to get copied to your output
-      test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
-      loader: 'file-loader'
-    }, {
-      // HTML LOADER
-      // Reference: https://github.com/webpack/raw-loader
-      // Allow loading html through js
-      test: /\.html$/,
-      loader: 'raw-loader'
-    }]
+  config.module = {
+    rules: [
+      // {
+      //   test: /[\/]ionic\.js$/,
+      //   use: [
+      //     'imports-loader?ionic=>window.ionic',
+      //     'script-loader?ionic=>window.ionic'
+      //   ]
+      // },
+
+      // {
+      //   test: /[\/]ionic\.js$/,
+      //   loader: 'imports-loader?ionic=>window.ionic'
+      // },
+
+      // {
+      //   test: /[\/]angular\.js$/,
+      //   loader: 'expose-loader?angular!exports-loader?window.angular'
+      // },
+      // {
+      //   test: /[\/]ionic\.js$/,
+      //   loader: 'script-loader!./lib/ionic/js/ionic.js?ionic=>window.ionic'
+      // },
+      // {
+      //   test: /[\/]ionic.js$/,
+      //   // loader: 'expose-loader?ionic!imports-loader?ionic=>window.ionic'
+      //   // test: require.resolve('ionic'),
+      //   use: [{ loader: 'expose-loader', options: 'ionic' }]
+      // },
+      // {
+      //   test: /\.js$/,
+      //   loader: 'imports-loader?ionic=>window.ionic'
+      // },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        exclude: /lib/
+      },
+      // {
+      //   test   : /[\/]angular\.js$/,
+      //   loader : 'exports-loader?angular'
+      // },
+      // {
+      //   test   : /[\/]ionic\.js$/,
+      //   loader : 'exports-loader?ionic'
+      // },
+      {
+        test: /\.css$/,
+        loader: isTest ? 'null-loader' : ExtractTextPlugin.extract({
+          fallbackLoader: 'style-loader',
+          loader: [
+            {loader: 'css-loader', query: {sourceMap: true}},
+            {loader: 'postcss-loader'}
+          ],
+        })
+      },
+      {
+        // ASSET LOADER
+        // Reference: https://github.com/webpack/file-loader
+        // Copy png, jpg, jpeg, gif, svg, woff, woff2, ttf, eot files to output
+        // Rename the file using the asset hash
+        // Pass along the updated reference to your code
+        // You can add here any file extension you want to get copied to your output
+        test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
+        loader: 'file-loader'
+      },
+      {
+        // HTML LOADER
+        // Reference: https://github.com/webpack/raw-loader
+        // Allow loading html through js
+        test: /\.html$/,
+        loader: 'raw-loader'
+      }
+    ]
+  };
+
+  config.resolve = {
+      modules: [
+        'lib',
+        'node_modules'
+      ],
+      alias: {
+        ionic: "ionic/js/ionic"
+      }
+
   };
 
   // ISTANBUL LOADER
