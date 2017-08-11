@@ -1,6 +1,8 @@
 'use strict';
-angular.module('report.controllers', [])
 
+const MODULE_NAME = 'controller.report';
+
+angular.module(MODULE_NAME, [])
 .controller('ReportController', function($scope, $ionicPopup, $http, apiUrl, $rootScope, LoginService, ApiService, CachingService, Upload) {
 
   /**
@@ -202,4 +204,4 @@ angular.module('report.controllers', [])
     }
   };
 
-})
+});

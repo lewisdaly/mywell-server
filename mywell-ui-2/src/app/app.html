@@ -1,9 +1,14 @@
 <main>
-  <h1 class="title">Hello from Angular !</h1>
-
-  <!-- Images (and assets) are parsed and loaded from within the public directory -->
-  <img src="/img/logo.png">
+  <ion-nav-bar class="bar-stable" ng-controller="AppController">
+    <ion-nav-back-button></ion-nav-back-button>
+    <ion-nav-buttons side="right">
+      <button class="button" ng-click="login()" ng-hide="isLoggedIn">
+        Login
+      </button>
+      <button class="button" ng-click="logout(true)" ng-hide="!isLoggedIn">
+        Logout
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-nav-view scroll="false"></ion-nav-view>
 </main>
-<footer>
-  <a ng-href="{{app.url}}">Webpack Angular Starter</a>
-</footer>

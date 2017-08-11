@@ -1,5 +1,5 @@
 "use strict";
-angular.module('rainapp.utils', [])
+angular.module('module.utils', [])
 
 //localStorage utility
 .factory('$localstorage', ['$window', function($window) {
