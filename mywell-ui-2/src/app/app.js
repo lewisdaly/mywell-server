@@ -2,9 +2,15 @@
 // import angular from 'angular';
 // import ionic from 'ionic';
 
-import ngFileUpload from 'ngFileUpload';
+import ngFileUpload from 'ng-file-upload';
 
-import '../style/app.css'
+require('leaflet/dist/leaflet.css');
+require('leaflet/dist/leaflet.js');
+
+// import '../style/app.css'
+import '../style/style.css' //TODO: rename
+import '../style/ionic.css'
+
 import './utils.js'
 import './constants'
 
