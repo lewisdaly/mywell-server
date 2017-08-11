@@ -11,7 +11,13 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
  * Env
  * Get npm lifecycle event to identify the environment
  */
+var enableSourceMaps = true;
+
+console.log("SERVER_URL: ", process.env.SERVER_URL);
+
+
 var ENV = process.env.npm_lifecycle_event;
+
 var isTest = ENV === 'test' || ENV === 'test-watch';
 var isProd = ENV === 'build';
 
@@ -82,15 +88,15 @@ module.exports = function makeWebpackConfig() {
    * Reference: http://webpack.github.io/docs/configuration.html#devtool
    * Type of sourcemap to use per build type
    */
-  if (isTest) {
+  if (enableSourceMaps) {
     config.devtool = 'inline-source-map';
   }
-  else if (isProd) {
-    config.devtool = 'source-map';
-  }
-  else {
-    config.devtool = 'eval-source-map';
-  }
+  // else if (isProd) {
+  //   config.devtool = 'source-map';
+  // }
+  // else {
+  //   config.devtool = 'eval-source-map';
+  // }
 
   /**
    * Loaders
@@ -231,6 +237,14 @@ module.exports = function makeWebpackConfig() {
           plugins: [autoprefixer]
         }
       }
+    }),
+    // new webpack.DefinePlugin({
+    //   'process.env.SERVER_URL': JSON.stringify(process.env.SERVER_URL || 'localhost:3000'),
+    //   'process.env.VERSION_NUMBER': JSON.stringify(process.env.VERSION_NUMBER || 'version:unknown')
+    // }),
+    // new webpack.EnvironmentPlugin(['SERVER_URL'])
+    new webpack.DefinePlugin({
+      "SERVER_URL": process.env.SERVER_URL
     })
   ];
 

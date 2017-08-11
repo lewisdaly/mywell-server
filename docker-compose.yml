@@ -73,8 +73,8 @@ services:
     container_name: mywell-ui
     build: ./mywell-ui/
     image: mywell-ui:local
-    ports:
-     - "8080:80"
+    # ports:
+    #  - "8080:80"
     volumes:
      - ./mywell-ui:/usr/src/app
     command: /usr/src/app/entrypoint.sh
@@ -87,6 +87,7 @@ services:
       - ENVIRONMENT
       - ENABLE_LOGS
       - VERSION_NUMBER
+    command: tail -f /dev/null
 
   db:
     container_name: mywell-db
