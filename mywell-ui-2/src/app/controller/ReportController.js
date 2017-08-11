@@ -3,7 +3,7 @@
 const MODULE_NAME = 'controller.report';
 
 angular.module(MODULE_NAME, [])
-.controller('ReportController', function($scope, $ionicPopup, $http, apiUrl, $rootScope, LoginService, ApiService, CachingService, Upload) {
+.controller('ReportController', function($scope, $ionicPopup, $http, $rootScope, LoginService, ApiService, CachingService, Upload) {
 
   /**
    * Init
@@ -165,7 +165,7 @@ angular.module(MODULE_NAME, [])
     //show loading indicator manually
     $rootScope.$broadcast('loading:show');
       Upload.upload({
-          url: `${apiUrl}/api/containers/container1/upload`,
+          url: `${SERVER_URL}/api/containers/container1/upload`,
           data: {file: file }
       }).then(function (resp) {
           console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);

@@ -1,6 +1,6 @@
 angular.module('service.signup',[])
 //Influenced by: http://www.bennadel.com/blog/2612-using-the-http-service-in-angularjs-to-make-ajax-requests.htm
-.service("SignupService", function($http, $q, apiUrl) {
+.service("SignupService", function($http, $q) {
 
   //Return public api
   return({
@@ -10,7 +10,7 @@ angular.module('service.signup',[])
   //Public Methods
 
   function signUp(user) {
-    var baseUrl = apiUrl;
+    var baseUrl = SERVER_URL;
     var method = 'post';
 
     if (constants.offline) {
@@ -21,7 +21,7 @@ angular.module('service.signup',[])
     return $http({
       method: method,
       headers: {'Content-Type': 'application/json'},
-      url: baseUrl + "/signup", //TODO: make 
+      url: baseUrl + "/signup", //TODO: make
       data: user
     }).success(function(data) {
       console.log("Success");

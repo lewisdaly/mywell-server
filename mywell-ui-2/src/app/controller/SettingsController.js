@@ -1,8 +1,8 @@
 angular.module('controller.settings', [])
-.controller('SettingsController', function($scope, AuthenticationService, $location, $rootScope, $ionicModal, $ionicPopup, ApiService, CachingService, apiUrl, version_number) {
-  $scope.version_number = version_number;
-  $scope.templateUrl = `${apiUrl}/containers/container1/download/template`;
-  $scope.apiBaseUrl = apiUrl;
+.controller('SettingsController', function($scope, AuthenticationService, $location, $rootScope, $ionicModal, $ionicPopup, ApiService, CachingService) {
+  $scope.version_number = VERSION_NUMBER;
+  $scope.templateUrl = `${SERVER_URL}/containers/container1/download/template`;
+  $scope.apiBaseUrl = SERVER_URL;
   $scope.imageResourceId = null;
 
   $scope.isDesktop = angular.isNullOrUndefined(window.cordova);

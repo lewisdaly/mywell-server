@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('service.api', [])
-.service('ApiService', function($http, $q, $rootScope, apiUrl, AuthenticationService, $localstorage, CachingService) {
+.service('ApiService', function($http, $q, $rootScope, AuthenticationService, $localstorage, CachingService) {
 
   return({
     getResources:getResources,
@@ -29,7 +29,7 @@ angular.module('service.api', [])
     return $http({
       method:'post',
       headers: {'Content-Type':'application/json'},
-      url: `${apiUrl}/api/resources/updateResourceByIdAndPostcode?access_token=${AuthenticationService.getAccessToken()}`,
+      url: `${SERVER_URL}/api/resources/updateResourceByIdAndPostcode?access_token=${AuthenticationService.getAccessToken()}`,
       data: {
         image: data,
         postcode: postcode,
@@ -40,7 +40,7 @@ angular.module('service.api', [])
 
   function getResource(postcode, resourceId) {
     const query = {"where":{"and":[{"postcode":postcode}, {"id":resourceId}]}}
-    const url = `${apiUrl}/api/resources?filter=${encodeURIComponent(JSON.stringify(query))}`;
+    const url = `${SERVER_URL}/api/resources?filter=${encodeURIComponent(JSON.stringify(query))}`;
 
     return $http({
       method:'get',
@@ -53,7 +53,7 @@ angular.module('service.api', [])
     return $http({
       method: 'get',
       headers: {'Content-Type':'application/json'},
-      url: `${apiUrl}/api/readings/readingsByWeek?postcode=${postcode}&resourceId=${resourceId}&method=${method}`
+      url: `${SERVER_URL}/api/readings/readingsByWeek?postcode=${postcode}&resourceId=${resourceId}&method=${method}`
     });
   }
 
@@ -64,7 +64,7 @@ angular.module('service.api', [])
     return $http({
       method: 'get',
       headers: {'Content-Type':'application/json'},
-      url: apiUrl + requestUrl
+      url: SERVER_URL + requestUrl
     });
   }
 
@@ -80,7 +80,7 @@ angular.module('service.api', [])
     return $http({
       method:'get',
       headers: {'Content-Type':'application/json'},
-      url: apiUrl + requestUrl
+      url: SERVER_URL + requestUrl
     });
   }
 
@@ -91,7 +91,7 @@ angular.module('service.api', [])
       return $http({
         method:'get',
         headers: {'Content-Type':'application/json'},
-        url: apiUrl + '/api/villages'
+        url: SERVER_URL + '/api/villages'
       });
     })
     .then(response => {
@@ -110,7 +110,7 @@ angular.module('service.api', [])
     return $http({
       method:'get',
       headers: {'Content-Type':'application/json'},
-      url: apiUrl + '/api/resources?filter=%7B%22fields%22%3A%7B%22image%22%3Afalse%7D%7D'
+      url: SERVER_URL + '/api/resources?filter=%7B%22fields%22%3A%7B%22image%22%3Afalse%7D%7D'
     })
     .then(function(response) {
       //cache the response
@@ -132,7 +132,7 @@ angular.module('service.api', [])
     return $http({
       method:'get',
       headers: {'Content-Type':'application/json'},
-      url: apiUrl + '/api/villages/closestVillage?villageId=' + villageId
+      url: SERVER_URL + '/api/villages/closestVillage?villageId=' + villageId
     });
   }
 
@@ -146,7 +146,7 @@ angular.module('service.api', [])
       .then(() => $http({
           method:'post',
           headers: {'Content-Type':'application/json'},
-          url: apiUrl + '/api/readings/saveOrCreate?access_token=' + AuthenticationService.getAccessToken(),
+          url: SERVER_URL + '/api/readings/saveOrCreate?access_token=' + AuthenticationService.getAccessToken(),
           data:reading,
         })
       )
@@ -164,7 +164,7 @@ angular.module('service.api', [])
     return $http({
       method:'post',
       headers: {'Content-Type':'application/json'},
-      url: apiUrl + '/api/resources?access_token=' + AuthenticationService.getAccessToken(),
+      url: SERVER_URL + '/api/resources?access_token=' + AuthenticationService.getAccessToken(),
       data:resource
     });
   }
@@ -174,7 +174,7 @@ angular.module('service.api', [])
   //   return $http({
   //     method:'get',
   //     headers: {'Content-Type':'application/json'},
-  //     url: apiUrl + '/api/users/login?password=' + password
+  //     url: SERVER_URL + '/api/users/login?password=' + password
   //   });
   // }
 
@@ -182,7 +182,7 @@ angular.module('service.api', [])
     return $http({
       method:'post',
       headers: {'Content-Type':'application/json'},
-      url: apiUrl + '/api/Users/login',
+      url: SERVER_URL + '/api/Users/login',
       data: {username:username, password:password}
     });
   }
@@ -198,7 +198,7 @@ angular.module('service.api', [])
     return $http({
       method: 'get',
       headers: {'Content-Type':'application/json'},
-      url: `${apiUrl}/api/Clients/isLoggedIn?access_token=${optional_token}`
+      url: `${SERVER_URL}/api/Clients/isLoggedIn?access_token=${optional_token}`
     });
   }
 
@@ -208,7 +208,7 @@ angular.module('service.api', [])
     return $http({
       method:'get',
       headers: {'Content-Type':'application/json'},
-      url: `${apiUrl}/api/resource_stats/getCurrentVillageAverage?villageId=${villageId}&postcode=${postcode}`,
+      url: `${SERVER_URL}/api/resource_stats/getCurrentVillageAverage?villageId=${villageId}&postcode=${postcode}`,
     }).catch(err => {
       if (err.status !== 404) return Promise.reject(err);
       console.log("No current village reading");
@@ -233,22 +233,22 @@ angular.module('service.api', [])
       $http({
         method:'get',
         headers: {'Content-Type':'application/json'},
-        url: `${apiUrl}/api/resources/${resourceId}&postcode=${postcode}`,
+        url: `${SERVER_URL}/api/resources/${resourceId}&postcode=${postcode}`,
       }).catch(err => skip404Error(err)),
       $http({
         method:'get',
         headers: {'Content-Type':'application/json'},
-        url: `${apiUrl}/api/resource_stats/getCurrentVillageAverage?villageId=${villageId}&postcode=${postcode}`,
+        url: `${SERVER_URL}/api/resource_stats/getCurrentVillageAverage?villageId=${villageId}&postcode=${postcode}`,
       }).catch(err => skip404Error(err)),
       $http({
         method:'get',
         headers: {'Content-Type':'application/json'},
-        url: `${apiUrl}/api/resource_stats/getHistoricalResourceAverages?resourceId=${resourceId}&postcode=${postcode}`,
+        url: `${SERVER_URL}/api/resource_stats/getHistoricalResourceAverages?resourceId=${resourceId}&postcode=${postcode}`,
       }).catch(err => skip404Error(err)),
       $http({
         method:'get',
         headers: {'Content-Type':'application/json'},
-        url: `${apiUrl}/api/resource_stats/getHistoricalVillageAverages?villageId=${villageId}&postcode=${postcode}`,
+        url: `${SERVER_URL}/api/resource_stats/getHistoricalVillageAverages?villageId=${villageId}&postcode=${postcode}`,
       }).catch(err => skip404Error(err))
     ]);
   }
@@ -261,7 +261,7 @@ angular.module('service.api', [])
       .then(() => $http({
                   method:'get',
                   headers: {'Content-Type':'application/json'},
-                  url: `${apiUrl}/api/readings/processExcelFile?container=${fileResponse.container}&name=${fileResponse.name}&access_token=${AuthenticationService.getAccessToken()}`,
+                  url: `${SERVER_URL}/api/readings/processExcelFile?container=${fileResponse.container}&name=${fileResponse.name}&access_token=${AuthenticationService.getAccessToken()}`,
                   timeout: 1000 * 60 * 10,// * 60 * 6 //6 mins
                   headers: {
                     'timeout': 1000,
@@ -282,7 +282,7 @@ angular.module('service.api', [])
     return $http({
       method:'post',
       headers: {'Content-Type':'application/json'},
-      url: apiUrl + '/api/LoginCodes/sendSMSCode',
+      url: SERVER_URL + '/api/LoginCodes/sendSMSCode',
       data: {mobile_number:mobile_number}
     });
   }
@@ -291,7 +291,7 @@ angular.module('service.api', [])
     return $http({
       method:'post',
       headers: {'Content-Type':'application/json'},
-      url: apiUrl + '/api/LoginCodes/sendEmailCode',
+      url: SERVER_URL + '/api/LoginCodes/sendEmailCode',
       data: {email:email}
     });
   }
@@ -309,7 +309,7 @@ angular.module('service.api', [])
     return $http({
       method:'post',
       headers: {'Content-Type':'application/json'},
-      url: apiUrl + '/api/Clients/loginWithCode',
+      url: SERVER_URL + '/api/Clients/loginWithCode',
       data: data
     });
   }

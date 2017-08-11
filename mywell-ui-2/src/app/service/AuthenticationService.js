@@ -2,7 +2,7 @@
 (function () {
     'use strict';
     angular.module('service.authentication',[])
-    .factory('AuthenticationService', function($http, apiUrl, $rootScope, $timeout, $location, $localstorage, UserService){
+    .factory('AuthenticationService', function($http, $rootScope, $timeout, $location, $localstorage, UserService){
 
         var service = {};
 
@@ -45,7 +45,7 @@
           return $http({
             method: 'get',
             headers: {'Content-Type':'application/json'},
-            url: `${apiUrl}/api/Clients/isLoggedIn?access_token=${lastUser.currentUser.authToken}`
+            url: `${SERVER_URL}/api/Clients/isLoggedIn?access_token=${lastUser.currentUser.authToken}`
           })
           .then(() => {
             SetCredentials(lastUser, lastUser.currentUser.authToken);

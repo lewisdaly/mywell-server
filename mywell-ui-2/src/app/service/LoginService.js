@@ -1,6 +1,6 @@
 angular.module('service.login', [])
 
-.service("LoginService",['$http', '$q', 'apiUrl', 'AuthenticationService', '$rootScope', function($http, $q, apiUrl, AuthenticationService, $rootScope) {
+.service("LoginService",['$http', '$q', 'AuthenticationService', '$rootScope', function($http, $q, AuthenticationService, $rootScope) {
   //TODO: figure out how to save user's login credentials, and auto login
 
   //Return public api
@@ -129,7 +129,7 @@ angular.module('service.login', [])
 }
 
 function logout() {
-  var baseUrl = apiUrl;
+  var baseUrl = SERVER_URL;
   var request = $http({
     method: "post",
     url: baseUrl + "/logout"

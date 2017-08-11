@@ -1,5 +1,5 @@
 angular.module('controller.register', [])
-.controller('RegisterController', ($scope, $location, $rootScope, $ionicModal, $ionicPopup, $ionicHistory, ApiService, CachingService, apiUrl) => {
+.controller('RegisterController', ($scope, $location, $rootScope, $ionicModal, $ionicPopup, $ionicHistory, ApiService, CachingService) => {
 
   let leafletMap = null;
   $scope.resources = [

@@ -1,6 +1,6 @@
 angular.module('controller.map', [])
 
-.controller('MapCtrl', function($scope, apiUrl, $state, $window, $ionicHistory, $ionicModal, $ionicPopup, ApiService, CachingService) {
+.controller('MapCtrl', function($scope, $state, $window, $ionicHistory, $ionicModal, $ionicPopup, ApiService, CachingService) {
 
   $scope.$on('$ionicView.enter', function(e) {
     leafletMap.invalidateSize();

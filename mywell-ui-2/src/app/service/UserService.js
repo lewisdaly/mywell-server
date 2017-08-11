@@ -1,5 +1,5 @@
 angular.module('service.user', [])
-.service('UserService', function($http, $q, $rootScope, apiUrl) {
+.service('UserService', function($http, $q, $rootScope) {
 
 	return({
 		getUser: getUser,
@@ -14,7 +14,7 @@ angular.module('service.user', [])
 		if (!userID || userID === -1){userID = getCurrentUserID();}
 
 
-		var baseUrl = apiUrl;
+		var baseUrl = SERVER_URL;
 
 		return $http({
 			method: "get",
@@ -31,7 +31,7 @@ angular.module('service.user', [])
 
 	//Gets the details for the current logged in user
 	function getUserDetails() {
-		var baseUrl = apiUrl;
+		var baseUrl = SERVER_URL;
 
 		return $http({
 			method: "get",
