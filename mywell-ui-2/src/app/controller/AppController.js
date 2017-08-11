@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['ionic'])
+angular.module('controller.app', ['ionic'])
 .controller('AppController', function($scope, $ionicModal, AuthenticationService, $state, $rootScope, LoginService, ApiService, $localstorage) {
 
   /*

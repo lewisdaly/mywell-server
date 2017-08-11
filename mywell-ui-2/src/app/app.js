@@ -2,26 +2,27 @@
 // import angular from 'angular';
 // import ionic from 'ionic';
 
-import ngFileUpload from 'ng-file-upload';
 
-require('leaflet/dist/leaflet.css');
-require('leaflet/dist/leaflet.js');
+import 'ng-file-upload'
+import 'leaflet/dist/leaflet.css'
+import 'leaflet/dist/leaflet.js'
 
-// import '../style/app.css'
-import '../style/style.css' //TODO: rename
+import '../style/app.css'
 import '../style/ionic.css'
+import '../style/tachyons.min.css'
 
 import './utils.js'
 import './constants'
 
+import './controller/AppController'
 import './controller/LoginController'
 import './controller/MapController'
-// import './controller/MapDetailController';
+import './controller/MapDetailController'
 import './controller/RegisterController'
 import './controller/ReportController'
 import './controller/SettingsController'
 import './controller/SignupController'
-// import './controller/VillageDetailController';
+import './controller/VillageDetailController'
 
 import './service/ApiService'
 import './service/AuthenticationService'
@@ -50,29 +51,29 @@ angular.module(MODULE_NAME, [
   'module.constants',
 
   //Controllers
+  'controller.app',
   'controller.settings',
   'controller.signup',
   'controller.login',
   'controller.map',
   'controller.register',
   'controller.report',
-  // 'controller.map-detail',
-  // 'controller.village-detail',
+  'controller.map-detail',
+  'controller.village-detail',
 
-  //Services:
+  //Services
   'service.authentication',
   'service.login',
   'service.signup',
   'service.user',
   'service.api',
 
-  //libs
+  //Libs
   'ionic',
   'ngFileUpload',
 
 ])
 .directive('app', app)
-.controller('AppController', AppController)
 .run(($ionicPlatform, $rootScope, $ionicLoading, $location, $http, $localstorage) => {
   $ionicPlatform.ready(() => {
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {

@@ -1,5 +1,5 @@
 "use strict";
-angular.module('controller.village-detail', ['nvd3'])
+angular.module('controller.village-detail', [])
 .controller('VillageDetailController', function($scope, $state, ApiService, $stateParams) {
 
   $scope.$on('$ionicView.enter', function(e) {

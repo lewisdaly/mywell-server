@@ -1,5 +1,5 @@
 "use strict";
-angular.module('controller.map-detail', ['nvd3'])
+angular.module('controller.map-detail', [])
 .controller('MapDetailController', function($scope, $state, $rootScope, ApiService, $stateParams, CachingService) {
 
   $scope.$on('$ionicView.enter', function(e) {
