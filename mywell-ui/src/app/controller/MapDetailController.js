@@ -1,4 +1,7 @@
 "use strict";
+
+import 'moment';
+
 angular.module('controller.map-detail', [])
 .controller('MapDetailController', function($scope, $state, $rootScope, ApiService, $stateParams, CachingService) {
 
