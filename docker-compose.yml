@@ -71,12 +71,12 @@ services:
 
   mywell-ui:
     container_name: mywell-ui
-    build: ./mywell-ui-2/
+    build: ./mywell-ui/
     image: mywell-ui:local
     ports:
      - "8080:80"
     volumes:
-     - ./mywell-ui-2:/usr/src/app
+     - ./mywell-ui:/usr/src/app
     command: npm run dev
     environment:
       - VIRTUAL_HOST=mywell.marvi.org.in
@@ -88,7 +88,6 @@ services:
       - ENVIRONMENT
       - ENABLE_LOGS
       - VERSION_NUMBER
-    # command: tail -f /dev/null
 
   db:
     container_name: mywell-db
