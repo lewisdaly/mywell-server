@@ -1,7 +1,0 @@
-{
-  "name": "ionic-webpack",
-  "app_id": "",
-  "gulpStartupTasks": [
-    "watch"
-  ]
-}
