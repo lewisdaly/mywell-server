@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 
 class SelectButton extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
-    this.setState({
-      selectedIndex: this.props.selectedIndex
-    });
+    this.state = {
+      selectedIndex: props.selectedIndex
+    };
   }
 
   onClick(idx, callback) {
@@ -23,25 +23,25 @@ class SelectButton extends Component {
   getButtons() {
     return this.props.buttonConfig.map((buttonConfig, idx) => {
 
-      let className = "f6 link dim br1 ba ph3 pv2 mb2 dib mid-gray";
+      let className = "f5 no-underline white bg-dark-gray bg-animate inline-flex items-center pa3 ba  b--dark-gray border-box";
       if (idx == this.state.selectedIndex) {
-        className="f6 link dim br1 ba ph3 pv2 mb2 dib purple";
+        className="f5 no-underline dark-gray bg-animate inline-flex items-center pa3 ba border-box";
       }
 
       return (
-        <button
+        <a
           className={className}
           key={buttonConfig.name}
-          onClick={this.onClick(idx, buttonConfig.callback)}
+          onClick={() => this.onClick(idx, buttonConfig.callback)}
         >
-          {buttonConfig.name}
-        </button>);
+          <span className="pl2 lr2">{buttonConfig.name}</span>
+        </a>);
     })
   }
 
   render() {
     return (
-      <div>
+      <div className="flex items-center justify-center pa2">
         {this.getButtons()}
       </div>
     );

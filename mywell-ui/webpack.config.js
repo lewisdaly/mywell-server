@@ -47,7 +47,7 @@ module.exports = function makeWebpackConfig() {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        exclude: /lib/
+        exclude: /(node_modules|lib)/
       },
       {
         test: /\.css$/,
