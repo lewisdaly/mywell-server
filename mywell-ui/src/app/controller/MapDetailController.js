@@ -15,6 +15,15 @@ angular.module('controller.map-detail', [])
 
   $scope.resourceId = $stateParams.resourceId;
   $scope.stats = null;
+
+  //Set up props for embedded react:
+  $scope.props = {
+    resourceId: $stateParams.resourceId,
+    postcode: $stateParams.postcode
+  };
+
+  console.log("angular props", $scope.props);
+
   let detailChart = null;
   let allWeeklyReadings = [];
   let splitWeeklyReadings = []; //all weekly readings split per year

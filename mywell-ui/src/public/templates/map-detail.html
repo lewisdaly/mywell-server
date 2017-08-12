@@ -73,9 +73,10 @@
       </div>
     </section>
 
-    <react-component name="TestComponent" props="person" watch-depth="reference"/>
-
-    <div class="graphs padding">
+    <!-- <react-component ng-if="resource.type === 'raingauge'" name="ApolloGraphContainer" props="props" watch-depth="reference"/> -->
+    <!--  Temp for testing only-->
+    <react-component name="ApolloGraphContainer" props="props" watch-depth="reference"/>
+    <div ng-if="resource.type !== 'raingauge'" class="graphs padding">
       <div>
         <canvas id="detailChart" width="400" height="350"></canvas>
       </div>

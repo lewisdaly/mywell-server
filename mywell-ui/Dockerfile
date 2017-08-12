@@ -19,6 +19,7 @@ ENV ENABLE_LOGS false
 ENV VERSION_NUMBER unknown
 ENV SERVER_URL http://localhost:3000
 ENV ENVIRONMENT development
+ENV REACT_APP_GRAPHQL_ENDPOINT http://localhost:3001
 ENV PORT 8080
 
 CMD [ "./build_and_run.sh" ]

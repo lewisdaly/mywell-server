@@ -11,6 +11,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
  */
 console.log('ENV:\n  SERVER_URL:\t', process.env.SERVER_URL);
 console.log('  VERSION_NUMBER:\t', process.env.VERSION_NUMBER);
+console.log('  REACT_APP_GRAPHQL_ENDPOINT:\t', process.env.REACT_APP_GRAPHQL_ENDPOINT);
 
 
 //Settings
@@ -107,7 +108,8 @@ module.exports = function makeWebpackConfig() {
     //Env Variables
     new webpack.DefinePlugin({
       "SERVER_URL": `'${process.env.SERVER_URL}'`,
-      "VERSION_NUMBER": `'${process.env.VERSION_NUMBER}'`
+      "VERSION_NUMBER": `'${process.env.VERSION_NUMBER}'`,
+      "REACT_APP_GRAPHQL_ENDPOINT": `'${process.env.REACT_APP_GRAPHQL_ENDPOINT}'`
     })
   ];
 

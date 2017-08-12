@@ -5,6 +5,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import ngReact from 'ngReact'
+// import { react2angular } from 'react2angular'
 
 import 'ng-file-upload'
 
@@ -34,9 +35,8 @@ import './service/LoginService'
 import './service/SignupService'
 import './service/UserService'
 
-
-import { react2angular } from 'react2angular'
-import TestComponent from './component/TestComponent'
+// import ApolloGraphContainer from './components/ApolloGraphContainer'
+import ApolloGraphContainer from './components/ApolloGraphContainer'
 
 let app = () => {
   return {
@@ -81,7 +81,6 @@ let app2 = angular.module(MODULE_NAME, [
   'ngFileUpload',
   'react',
 ])
-// .component('TestComponent', react2angular(TestComponent, ['fooBar', 'baz']))
 .directive('app', app)
 .run(($ionicPlatform, $rootScope, $ionicLoading, $location, $http, $localstorage) => {
   $ionicPlatform.ready(() => {
@@ -264,43 +263,12 @@ let app2 = angular.module(MODULE_NAME, [
     return stopPropagation;
   };
 })
-.controller('helloController', function($scope) {
-  $scope.person = { fname: 'Clark', lname: 'Kent' };
-});
 
 angular.isNullOrUndefined = (val) => {
   return angular.isUndefined(val) || val === null;
 }
-// angular.module('testComponent', []).component('TestComponent', react2angular(TestComponent, ['fooBar', 'baz']))
 
-//TODO: this is almost working! (React is finally loading)
-//Lewis please look here: https://github.com/ngReact/ngReact/blob/master/examples/hello-controller-as/app.js
-// let reactModule = angular.module('app', ['react']);
+app2.value('ApolloGraphContainer', ApolloGraphContainer);
 
-// var HelloComponent = React.createClass({
-//   propTypes: {
-//     fname : React.PropTypes.string.isRequired,
-//     lname : React.PropTypes.string.isRequired
-//   },
-//   render: function() {
-//     return <span>Hello {this.props.fname} {this.props.lname}</span>;
-//   }
-// })
-app2.value('TestComponent', TestComponent);
-
-// app2.directive( 'hello', function( reactDirective ) {
-//   return reactDirective( HelloComponent );
-// });
-
-// angular
-// .module('testComponent', [])
-// .component('TestComponent', {
-//     bindings: {
-//         comment: '<',
-//     },
-//     controller: function() {
-//         ReactDOM.render(<TestComponent />, $element[0]);
-//     }
-// });
 
 export default MODULE_NAME;
