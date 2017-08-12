@@ -6,6 +6,19 @@ import Chart from 'chart.js';
 angular.module('controller.map-detail', [])
 .controller('MapDetailController', function($scope, $state, $rootScope, ApiService, $stateParams, CachingService) {
 
+  $scope.shouldDisplayCumulative = () => {
+    if (!$scope.resource) {
+      return false;
+    }
+
+    switch ($scope.resource.type) {
+      case 'raingauge':
+        return true;
+      default:
+        return false;
+    }
+  }
+
   $scope.$on('$ionicView.enter', function(e) {
     return init()
       .then(() => {
@@ -42,6 +55,7 @@ angular.module('controller.map-detail', [])
 
   const setupResourceType = () => {
     if (!$scope.resource) {
+      console.log('no resource!');
       return null;
     }
 
