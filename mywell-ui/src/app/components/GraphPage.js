@@ -5,12 +5,9 @@ import moment from 'moment';
 import CumulativeGraph from './CumulativeGraph'
 import { SelectButton } from './common'
 import '../style/App.css'
+import { DateRange } from '../enums'
 
-const DateRange = {
-  ONE_YEAR: 0,
-  THREE_MONTH: 1,
-  ONE_MONTH: 2
-};
+console.log("dateRange", DateRange)
 
 class GraphPage extends Component {
 
@@ -32,7 +29,8 @@ class GraphPage extends Component {
 
     this.state = {
       startDates,
-      endDates
+      endDates,
+      dateRangeEnum: DateRange.ONE_YEAR
     }
   }
 
@@ -70,7 +68,8 @@ class GraphPage extends Component {
     }
 
     this.setState({
-      startDates
+      startDates,
+      dateRangeEnum
     });
   }
 
@@ -88,10 +87,11 @@ class GraphPage extends Component {
           postcode={this.props.postcode}
           startDates={this.state.startDates}
           endDates={this.state.endDates}
+          dateRangeEnum={this.state.dateRangeEnum}
         />
         <SelectButton
           buttonConfig={buttonConfig}
-          selectedIndex={2}
+          selectedIndex={0}
         />
       </div>
     );

@@ -1,10 +1,12 @@
 import React, {Component} from 'react'
 import { compose, gql, graphql } from 'react-apollo'
 import PropTypes from 'prop-types';
-import { VictoryAxis, VictoryLine, VictoryTheme, VictoryChart, VictoryGroup, VictoryBar } from 'victory';
+import { VictoryAxis, VictoryLine, VictoryTheme, VictoryLegend, VictoryChart, VictoryGroup, VictoryBar } from 'victory';
 import moment from 'moment';
 
 import { Loading } from './common'
+import { DateRange } from '../enums'
+
 
 class CumulativeGraph extends Component {
 
@@ -14,12 +16,6 @@ class CumulativeGraph extends Component {
         this.props.twoYearQuery.loading) {
           return true;
         }
-
-    // if (!this.props.thisYearQuery.cumulativeWeeklyReadings ||
-    //     !this.props.lastYearQuery.cumulativeWeeklyReadings ||
-    //     !this.props.twoYearQuery.cumulativeWeeklyReadings) {
-    //       return true;
-    //     }
 
     return false
   }
@@ -35,12 +31,54 @@ class CumulativeGraph extends Component {
   }
 
   getXTicks() {
-    return this.props.thisYearQuery.cumulativeWeeklyReadings.map((reading, idx) => {
-      if (idx % 10) {
-        return null;
-      }
-      return moment(reading.week).format('MMM');
-    });
+    let lastMonth = null;
+    switch(this.props.dateRangeEnum) {
+      case DateRange.ONE_YEAR:
+
+        let monthCount = 1;
+        const ticks = this.props.thisYearQuery.cumulativeWeeklyReadings.map((reading, idx) => {
+          let formatted = moment(reading.week).format('MMM')
+
+          if (!lastMonth) {
+            lastMonth = formatted;
+          } else if (lastMonth !== formatted){
+            lastMonth = formatted;
+            return formatted;
+          }
+          return null;
+        })
+        .map((month,idx) => {
+          if (month !== null) {
+            monthCount += 1
+          }
+
+          if (monthCount % 2) {
+            return month;
+          }
+          return null;
+        });
+
+        return ticks;
+
+      case DateRange.THREE_MONTH:
+
+        return this.props.thisYearQuery.cumulativeWeeklyReadings.map((reading, idx) => {
+          let formatted = moment(reading.week).format('MMM')
+          if (!lastMonth) {
+            lastMonth = formatted;
+          } else if (lastMonth !== formatted){
+            lastMonth = formatted;
+            return formatted;
+          }
+          return null;
+        });
+
+      case DateRange.ONE_MONTH:
+      default:
+      return this.props.thisYearQuery.cumulativeWeeklyReadings.map((reading, idx) => {
+        return moment(reading.week).format('DD-MMM');
+      });
+    }
   }
 
   render() {
@@ -56,19 +94,38 @@ class CumulativeGraph extends Component {
           domainPadding={{y: 5}}
           theme={VictoryTheme.material}
         >
+          <VictoryLegend
+            data={[
+              {name: '2 Years Ago'},
+              {name: '1 Year Ago'},
+              {name: 'This Year'}
+              ]}
+          />
           <VictoryAxis
             tickValues={xTicks}
             tickFormat={xTicks}
+            style={{
+              grid: {
+               fill: "transparent",
+               stroke: "transparent"
+              }
+            }}
           />
           <VictoryAxis
             dependentAxis
+            domain={[0, 10]}
             style={{
               axis: {stroke: "#756f6a"},
               axisLabel: {fontSize: 15, padding: 30},
-              tickLabels: {fontSize: 10, padding: 5}
+              tickLabels: {fontSize: 10, padding: 5},
+              grid: {
+               fill: "transparent",
+               stroke: "transparent"
+              }
             }}
             tickFormat={(y) => (y)}
             label={"Cumulative Rainfall (mm)"}
+            tickCount={10}
           />
           <VictoryGroup
             style={{
@@ -121,6 +178,7 @@ class CumulativeGraph extends Component {
 }
 
 CumulativeGraph.propTypes = {
+  dateaRangeEnum: PropTypes.number,
   resourceId: PropTypes.number,
   postcode: PropTypes.number,
   startDates: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
