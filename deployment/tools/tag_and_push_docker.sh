@@ -31,6 +31,12 @@ function mywell-utils() {
   docker push lewisdaly/mywell-utils:"$IMAGE_TAG"
 }
 
+function mywell-gql() {
+  docker tag mywell-gql:local lewisdaly/mywell-gql:"$IMAGE_TAG"
+  echo "Pushing lewisdaly/mywell-gql:"$IMAGE_TAG""
+  docker push lewisdaly/mywell-gql:"$IMAGE_TAG"
+}
+
 #TODO: add utils, console...
 
 cd $DIR/../
@@ -40,6 +46,7 @@ case $1 in
     mywell-server
     mywell-ui
     mywell-utils
+    mywell-gql
     exit 0
     ;;
   all)
@@ -47,6 +54,7 @@ case $1 in
     mywell-server
     mywell-ui
     mywell-utils
+    mywell-gql
     ;;
   mywell-server)
     docker-compose build mywell-server
@@ -60,8 +68,12 @@ case $1 in
     docker-compose build mywell-utils
     mywell-utils
     ;;
+  mywell-gql)
+    docker-compose build mywell-gql
+    mywell-gql
+    ;;
   *)
-    echo "usage: $@ {all, mywell-server, mywell-ui, mywell-utils}"
+    echo "usage: $@ {all, mywell-server, mywell-ui, mywell-utils, mywell-gql}"
     exit 1
     ;;
 esac

@@ -1,0 +1,22 @@
+version: '2'
+services:
+  mywell-ui:
+    container_name: mywell-ui
+    build: ./mywell-ui/
+    image: mywell-ui:local
+    ports:
+     - "8080:80"
+    volumes:
+     - ./mywell-ui:/usr/src/app
+    command: npm run dev
+    environment:
+      - VIRTUAL_HOST=mywell.marvi.org.in
+      - HTTPS_METHOD=redirect
+      - VIRTUAL_PORT=80
+      - PORT=80
+      - LETSENCRYPT_EMAIL=lewis@vesselstech.com
+      - LETSENCRYPT_HOST=mywell.marvi.org.in
+      - ENVIRONMENT
+      - ENABLE_LOGS
+      - VERSION_NUMBER
+      - REACT_APP_GRAPHQL_ENDPOINT

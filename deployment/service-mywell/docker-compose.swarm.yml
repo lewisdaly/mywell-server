@@ -46,6 +46,8 @@ services:
       - SERVER_URL
       - ENABLE_LOGS
       - VERSION_NUMBER
+      - REACT_APP_GRAPHQL_ENDPOINT
+      - PORT=80
     networks:
       - base-network
     deploy:
@@ -65,6 +67,27 @@ services:
       #   max_attempts: 3
       #   window: 120s
 
+  mywell-gql:
+    image: lewisdaly/mywell-gql:${VERSION_NUMBER}_${TRAVIS_BUILD_NUMBER}
+    environment:
+      - PORT=3001
+      - DB_HOST
+      - DB_NAME
+      - DB_PASSWORD
+      - DB_USER
+    networks:
+      - base-network
+    links:
+      - db:db
+    ports:
+      - 3001:3001
+    deploy:
+      labels:
+        - "traefik.port=3001"
+        - "traefik.docker.network=base-network"
+        - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell-gql.marvi.org.in"
+        - "traefik.protocol=http"
+
   mywell-utils:
     image: lewisdaly/mywell-utils:${VERSION_NUMBER}_${TRAVIS_BUILD_NUMBER}
     environment:
@@ -76,12 +99,12 @@ services:
       - DONE_SEEDING_SUFFIX
     networks:
       - base-network
-    deploy:
-      resources:
-        limits:
-          memory: 50M
-        reservations:
-          memory: 10M
+    # deploy:
+      # resources:
+      #   limits:
+      #     memory: 50M
+      #   reservations:
+      #     memory: 10M
 
 volumes:
   db-data:
