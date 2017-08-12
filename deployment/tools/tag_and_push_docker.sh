@@ -10,6 +10,16 @@ source $DIR/../../env/env$STAGE.sh
 
 echo 'Make sure you are logged in, with docker login'
 
+if [ -z "$VERSION_NUMBER" ]; then
+  VERSION_NUMBER=test
+fi
+
+if [ -z "$TRAVIS_BUILD_NUMBER" ]; then
+  TRAVIS_BUILD_NUMBER=0
+fi
+
+
+
 # TODO: we could make this more complicated, but for now use the IMAGE_SUFFIX
 IMAGE_TAG="${VERSION_NUMBER}_${TRAVIS_BUILD_NUMBER}"
 
