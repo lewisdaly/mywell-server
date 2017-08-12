@@ -6,10 +6,11 @@ ENV PORT 3001
 RUN mkdir -p ${APP_DIR}
 WORKDIR ${APP_DIR}
 
+COPY .babelrc ./
 COPY package.json ./
 RUN npm install
 
 COPY ./src ./src/
 
 RUN npm build
-CMD [ "npm", "serve" ]
+CMD [ "npm", "run", "serve" ]
