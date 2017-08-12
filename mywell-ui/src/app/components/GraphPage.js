@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import CumulativeGraph from './CumulativeGraph'
-import { SelectButton } from './common';
+import { SelectButton } from './common'
+import '../style/App.css'
 
 const DateRange = {
   ONE_YEAR: 0,
@@ -86,7 +87,7 @@ class GraphPage extends Component {
         />
         <SelectButton
           buttonConfig={buttonConfig}
-          selectedIndex={3}
+          selectedIndex={2}
         />
       </div>
     );

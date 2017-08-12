@@ -8,10 +8,6 @@ import { Loading } from './common'
 
 class CumulativeGraph extends Component {
 
-  componentWillUpdate(nextProps, nextState) {
-    console.log(nextProps.startDates);
-  }
-
   isLoading() {
     if (this.props.thisYearQuery.loading ||
         this.props.lastYearQuery.loading ||
@@ -48,20 +44,17 @@ class CumulativeGraph extends Component {
   }
 
   render() {
-    console.log("rendering!");
-
     if (this.isLoading()) {
       return <Loading/>
     }
 
     const xTicks = this.getXTicks();
-    console.log(xTicks.length);
 
     return (
       <div>
         <VictoryChart
           domainPadding={{y: 5}}
-          // theme={VictoryTheme.material}
+          theme={VictoryTheme.material}
         >
           <VictoryAxis
             tickValues={xTicks}
@@ -89,12 +82,6 @@ class CumulativeGraph extends Component {
           >
             <VictoryLine
               data={this.transformGraphData(this.props.twoYearQuery.cumulativeWeeklyReadings)}
-              labels={datum => {
-                if (datum.eventKey === Math.floor((xTicks.length - 10) / 3)) {
-                  return '2 Years Ago';
-                }
-                return '';
-              }}
               style={{
                 parent: {
                   border: "1px solid #ccc"
@@ -106,12 +93,6 @@ class CumulativeGraph extends Component {
             />
             <VictoryLine
               data={this.transformGraphData(this.props.lastYearQuery.cumulativeWeeklyReadings)}
-              labels={datum => {
-                if (datum.eventKey === Math.floor((xTicks.length - 2) / 3) * 2 ) {
-                  return 'Last Year';
-                }
-                return '';
-              }}
               style={{
                 parent: {
                   border: "1px solid #ccc"
@@ -123,12 +104,6 @@ class CumulativeGraph extends Component {
             />
             <VictoryLine
               data={this.transformGraphData(this.props.thisYearQuery.cumulativeWeeklyReadings)}
-              labels={datum => {
-                if (datum.eventKey === Math.floor(xTicks.length - 2)) {
-                  return 'This Year';
-                }
-                return '';
-              }}
               style={{
                 parent: {
                   border: "1px solid #ccc"

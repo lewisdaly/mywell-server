@@ -5,6 +5,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import ngReact from 'ngReact'
+import 'tachyons'
 // import { react2angular } from 'react2angular'
 
 import 'ng-file-upload'
