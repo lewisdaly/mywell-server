@@ -1,6 +1,7 @@
 "use strict";
 
-import 'moment';
+import moment from 'moment';
+import Chart from 'chart.js';
 
 angular.module('controller.map-detail', [])
 .controller('MapDetailController', function($scope, $state, $rootScope, ApiService, $stateParams, CachingService) {
