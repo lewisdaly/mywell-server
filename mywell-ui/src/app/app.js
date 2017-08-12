@@ -4,8 +4,8 @@
 
 import React from 'react'
 import ReactDOM from 'react-dom'
+import ngReact from 'ngReact'
 
-// import 'ngReact'
 import 'ng-file-upload'
 
 import 'leaflet/dist/leaflet.css'
