@@ -277,16 +277,17 @@ angular.isNullOrUndefined = (val) => {
 //Lewis please look here: https://github.com/ngReact/ngReact/blob/master/examples/hello-controller-as/app.js
 // let reactModule = angular.module('app', ['react']);
 
-var HelloComponent = React.createClass({
-  propTypes: {
-    fname : React.PropTypes.string.isRequired,
-    lname : React.PropTypes.string.isRequired
-  },
-  render: function() {
-    return <span>Hello {this.props.fname} {this.props.lname}</span>;
-  }
-})
-app2.value('HelloComponent', HelloComponent);
+// var HelloComponent = React.createClass({
+//   propTypes: {
+//     fname : React.PropTypes.string.isRequired,
+//     lname : React.PropTypes.string.isRequired
+//   },
+//   render: function() {
+//     return <span>Hello {this.props.fname} {this.props.lname}</span>;
+//   }
+// })
+app2.value('TestComponent', TestComponent);
+
 // app2.directive( 'hello', function( reactDirective ) {
 //   return reactDirective( HelloComponent );
 // });
