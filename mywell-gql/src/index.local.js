@@ -19,6 +19,10 @@ export const init = async () => {
     multipleStatements: true
   });
 
+  //Simple keep alive
+  setInterval(function () {
+      connection.query('SELECT 1');
+  }, 5000);
 
   app.get('/', async function(req, res) {
     res.send("Hello graphql");
