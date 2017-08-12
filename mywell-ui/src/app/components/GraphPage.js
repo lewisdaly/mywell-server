@@ -16,18 +16,18 @@ class GraphPage extends Component {
 
   constructor(props) {
     super(props);
-    //TODO: load from today
+    const today = moment().startOf('day');
 
     const startDates = [
-      moment('2016-01-01').toDate(),
-      moment('2015-01-01').toDate(),
-      moment('2014-01-01').toDate(),
+      today.clone().subtract(1, 'years').toDate(),
+      today.clone().subtract(2, 'years').toDate(),
+      today.clone().subtract(3, 'years').toDate(),
     ];
 
     const endDates = [
-      moment('2017-01-01').toDate(),
-      moment('2016-01-01').toDate(),
-      moment('2015-01-01').toDate(),
+      today.toDate(),
+      today.clone().subtract(1, 'years').toDate(),
+      today.clone().subtract(2, 'years').toDate(),
     ];
 
     this.state = {
@@ -38,29 +38,33 @@ class GraphPage extends Component {
 
   changeDates(dateRangeEnum) {
     let startDates = [];
+    const today = moment().startOf('day');
+    const oneYear = today.clone().subtract(1, 'years');
+    const twoYear = today.clone().subtract(2, 'years');
+    const threeYear = today.clone().subtract(3, 'years');
 
     switch (dateRangeEnum) {
       case DateRange.ONE_YEAR:
         startDates = [
-          moment('2016-01-01').toDate(),
-          moment('2015-01-01').toDate(),
-          moment('2014-01-01').toDate(),
+          oneYear.toDate(),
+          twoYear.toDate(),
+          threeYear.toDate()
         ];
         break;
       case DateRange.THREE_MONTH:
         startDates = [
-          moment('2016-10-01').toDate(),
-          moment('2015-10-01').toDate(),
-          moment('2014-10-01').toDate(),
+          today.clone().subtract(3, 'months').toDate(),
+          oneYear.clone().subtract(3, 'months').toDate(),
+          twoYear.clone().subtract(3, 'months').toDate(),
         ];
 
         break;
       case DateRange.ONE_MONTH:
       default:
         startDates = [
-          moment('2016-12-01').toDate(),
-          moment('2015-12-01').toDate(),
-          moment('2014-12-01').toDate(),
+          today.clone().subtract(1, 'months').toDate(),
+          oneYear.clone().subtract(1, 'months').toDate(),
+          twoYear.clone().subtract(1, 'months').toDate(),
         ];
       break;
     }
