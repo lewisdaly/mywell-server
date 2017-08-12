@@ -4,7 +4,7 @@
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import ngReact from 'ngReact'
+import ngReact from 'ngreact'
 import 'tachyons'
 
 import 'ng-file-upload'

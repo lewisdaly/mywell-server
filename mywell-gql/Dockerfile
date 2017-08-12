@@ -10,7 +10,7 @@ COPY .babelrc ./
 COPY package.json ./
 RUN npm install
 
-COPY ./src ./src/
+COPY ./ ./
 
 RUN npm build
 CMD [ "npm", "run", "serve" ]
