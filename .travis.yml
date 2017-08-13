@@ -4,17 +4,45 @@ node_js:
 - 6
 services:
 - docker
-script:
-- echo "Hello"
-- docker-compose -f docker-compose.yml build
-after_success:
-- source ./deployment/tools/stage_calculator.sh;
-- source ./env/env$STAGE.sh;
-- docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-- "./deployment/tools/tag_and_push_docker.sh skip-build;"
-- export AWS_PROFILE=default
-- cd ./deployment && ./run-tools.sh deploy
+
+env:
+  global:
+    - CACHE_DIR=$HOME/.cache/docker
+    - CACHE_UI=$CACHE_DIR/mywell-ui.tar.gz
+    - CACHE_SERVER=$CACHE_DIR/mywell-server.tar.gz
+    - CACHE_GQL=$CACHE_DIR/mywell-gql.tar.gz
+    - CACHE_UTILS=$CACHE_DIR/mywell-utils.tar.gz
+    - CACHE_DEPLOY=$CACHE_DIR/mywell-deploy.tar.gz
+
+cache:
+  directories:
+  - $CACHE_DIR
+
 before_install:
-- openssl aes-256-cbc -K $encrypted_5d1e44ff4222_key -iv $encrypted_5d1e44ff4222_iv
-  -in secrets.tar.enc -out secrets.tar -d;
-- tar xvf secrets.tar;
+  - openssl aes-256-cbc -K $encrypted_5d1e44ff4222_key -iv $encrypted_5d1e44ff4222_iv
+    -in secrets.tar.enc -out secrets.tar -d;
+  - tar xvf secrets.tar;
+  - if [ -f ${CACHE_UI} ]; then gunzip -c ${CACHE_UI} | docker load; fi
+  - if [ -f ${CACHE_SERVER} ]; then gunzip -c ${CACHE_SERVER} | docker load; fi
+  - if [ -f ${CACHE_GQL} ]; then gunzip -c ${CACHE_GQL} | docker load; fi
+  - if [ -f ${CACHE_UTILS} ]; then gunzip -c ${CACHE_UTILS} | docker load; fi
+  - if [ -f ${CACHE_DEPLOY} ]; then gunzip -c ${CACHE_DEPLOY} | docker load; fi
+
+install:
+  - docker-compose -f docker-compose.yml build
+  - cd ./deployment && docker-compose build
+  - mkdir -p $CACHE_DIR
+  #TODO: this will only cache old ones...
+  - if [ ! -f ${CACHE_UI} ]; then docker save mywell-ui:local | gzip > ${CACHE_UI}; fi
+  - if [ ! -f ${CACHE_SERVER} ]; then docker save mywell-server:local | gzip > ${CACHE_SERVER}; fi
+  - if [ ! -f ${CACHE_GQL} ]; then docker save mywell-gql:local | gzip > ${CACHE_GQL}; fi
+  - if [ ! -f ${CACHE_UTILS} ]; then docker save mywell-utils:local | gzip > ${CACHE_UTILS}; fi
+  - if [ ! -f ${CACHE_DEPLOY} ]; then docker save mywell-deploy:latest | gzip > ${CACHE_DEPLOY}; fi
+
+after_success:
+  - source ./deployment/tools/stage_calculator.sh;
+  - source ./env/env$STAGE.sh;
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+  - "./deployment/tools/tag_and_push_docker.sh skip-build;"
+  - export AWS_PROFILE=default
+  - cd ./deployment && ./run-tools.sh deploy

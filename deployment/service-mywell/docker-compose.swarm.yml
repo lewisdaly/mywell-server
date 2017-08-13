@@ -55,11 +55,11 @@ services:
         - "traefik.docker.network=base-network"
         - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell.marvi.org.in"
         - "traefik.protocol=http"
-      resources:
-        limits:
-          memory: 350M
-        reservations:
-          memory: 200M
+      # resources:
+      #   limits:
+      #     memory: 350M
+      #   reservations:
+      #     memory: 200M
       # restart_policy:
       #   condition: on-failure
       #   delay: 5s
