@@ -39,6 +39,11 @@ install:
   - if [ ! -f ${CACHE_UTILS} ]; then docker save mywell-utils:local | gzip > ${CACHE_UTILS}; fi
   - if [ ! -f ${CACHE_DEPLOY} ]; then docker save mywell-deploy:latest | gzip > ${CACHE_DEPLOY}; fi
 
+
+script:
+  #TODO: eventually run tests here
+  - echo 'Hello'
+
 after_success:
   - source ./deployment/tools/stage_calculator.sh;
   - source ./env/env$STAGE.sh;
