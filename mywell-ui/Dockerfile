@@ -22,4 +22,6 @@ ENV ENVIRONMENT development
 ENV REACT_APP_GRAPHQL_ENDPOINT http://localhost:3001
 ENV PORT 8080
 
+#This will get called again when running, but useful to debug Docker before runtime
+RUN npm run build
 CMD [ "./build_and_run.sh" ]
