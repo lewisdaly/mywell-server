@@ -2,7 +2,7 @@ version: '2'
 services:
   mywell-deploy:
     build: .
-    container_name: mywell-deploy:local
+    container_name: mywell-deploy
     volumes:
       - ../env:/usr/src/env
       - ./:/usr/src/deploy
