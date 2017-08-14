@@ -24,6 +24,16 @@ DELIMITER ;
 CALL filldates('2011-01-01','2025-12-31');
 
 
+CREATE PROCEDURE filldates(dateStart DATE, dateEnd DATE)
+BEGIN
+  WHILE dateStart <= dateEnd DO
+    INSERT INTO days (`date`) VALUES (dateStart);
+    SET dateStart = date_add(dateStart, INTERVAL 1 DAY);
+  END WHILE;
+END;
+CALL filldates('2011-01-01','2025-12-31');
+
+
 
 -- Get all readings for a resourceId:
 SELECT * from reading where postcode = 313603 AND resourceId = 1111;

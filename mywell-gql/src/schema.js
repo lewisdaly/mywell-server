@@ -7,9 +7,23 @@ const typeDefs = `
 
   type Resource {
     id: ID!
-    last_value: Float!
+    lastValue: Float
+    wellDepth: Float
+    lastDate: DateTime
     owner: String!
+    elevation: Int!
+    type: String!
     postcode: Int!
+    client: Client
+  }
+
+  type Client {
+    id: ID! @isUnique
+    mobileNumber: String
+    username: String!
+    email: String
+    created: DateTime!
+    lastUpdated: DateTime!
   }
 
   type Reading {
@@ -27,6 +41,8 @@ const typeDefs = `
   }
 
   type Query {
+    resources: [Resource]
+    clients: [Client]
     resource(postcode: Int, resourceId: Int): Resource
     readings(postcode: Int, resourceId: Int): [Reading]
     weeklyReadings(postcode: Int, resourceId: Int, sumOrAvg: String, startDate: DateTime, endDate: DateTime): [WeeklyReading]

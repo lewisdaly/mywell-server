@@ -1,5 +1,6 @@
 import { GraphQLScalarType } from 'graphql';
 import { Kind } from 'graphql/language';
+import graphqlFields from 'graphql-fields';
 import moment from 'moment';
 
 import { ReadingModel } from './models'
@@ -20,6 +21,29 @@ const DateTime = new GraphQLScalarType({
      return null;
    },
 });
+
+const resourcesQuery = async(obj, args, context, info) => {
+  const selectionSet = graphqlFields(info);
+  console.log('selectionSet:', selectionSet);
+
+  //TODO: generate/optimize nicely
+  const sqlQuery = `SELECT resource.id as id, last_value as lastValue, well_depth as wellDepth, last_date as lastDate, owner, elevation, type, postcode, clientId, Client.username
+    FROM resource join Client on resource.clientId = Client.id`;
+  const [rows, fields] = await context.connection.execute(sqlQuery);
+
+  //TODO do we need to take the flattened client out of here now?
+
+  return rows;
+}
+
+const clientsQuery = async(obj, args, context, info) => {
+  const sqlQuery = `SELECT id, mobile_number as mobileNumber, username, email, created, lastUpdated
+    FROM Client`;
+  const [rows, fields] = await context.connection.execute(sqlQuery);
+
+  return rows;
+
+}
 
 const weeklyReadingsQuery = async(obj, args, context, info) => {
   if (!args.sumOrAvg) {
@@ -45,15 +69,15 @@ const weeklyReadingsQuery = async(obj, args, context, info) => {
     endDate = moment(args.endDate).format('Y-MM-DD');
   }
 
-  const [rows, fields] =  await context.connection.execute(`SELECT days.date as week, SUM(weekly_average) as value FROM (
-    select * from days WHERE date >= STR_TO_DATE(?, '%Y-%m-%d') AND date <= STR_TO_DATE(?, '%Y-%m-%d')
-  ) as days
+  const [rows, fields] =  await context.connection.execute(`SELECT Day.date as week, SUM(weekly_average) as value FROM (
+    select * from Day WHERE date >= STR_TO_DATE(?, '%Y-%m-%d') AND date <= STR_TO_DATE(?, '%Y-%m-%d')
+  ) as Day
   LEFT JOIN (
     select ${args.sumOrAvg}(value) as weekly_average, cast(date as DATE) as date FROM reading where postcode = ? AND resourceId = ? GROUP BY YEAR(date), WEEKOFYEAR(date)
   ) as averages
-  ON days.date = averages.date
-  GROUP BY YEAR(days.date), WEEKOFYEAR(days.date)
-  ORDER BY days.date`,
+  ON Day.date = averages.date
+  GROUP BY YEAR(Day.date), WEEKOFYEAR(Day.date)
+  ORDER BY Day.date`,
   [startDate, endDate, args.postcode, args.resourceId]);
 
   return rows;
@@ -77,9 +101,9 @@ const cumulativeWeeklyReadingsQuery = async(obj, args, context, info) => {
 
   const [rows, fields] =  await context.connection.query(`set @cumulative_value := 0;
   SELECT date as week, (@cumulative_value := @cumulative_value + IFNULL(weekly_sum, 0)) as value FROM (
-    SELECT days.date as date, sum(weekly_sum) as weekly_sum FROM (
-      select * from days WHERE date >= STR_TO_DATE(?, '%Y-%m-%d') AND date <= STR_TO_DATE(?, '%Y-%m-%d')
-    ) as days
+    SELECT Day.date as date, sum(weekly_sum) as weekly_sum FROM (
+      select * from Day WHERE date >= STR_TO_DATE(?, '%Y-%m-%d') AND date <= STR_TO_DATE(?, '%Y-%m-%d')
+    ) as Day
     LEFT OUTER JOIN (
         SELECT SUM(value) as weekly_sum, cast(date as DATE) as date, WEEKOFYEAR(date) as week
         FROM reading
@@ -89,15 +113,13 @@ const cumulativeWeeklyReadingsQuery = async(obj, args, context, info) => {
           AND date <= STR_TO_DATE(?, '%Y-%m-%d')
         GROUP BY YEAR(date), WEEKOFYEAR(date)
       ) as weekly_readings
-    ON days.date = weekly_readings.date
-    WHERE days.date IS NOT NULL
-    GROUP BY YEAR(days.date), WEEKOFYEAR(days.date)
-    ORDER BY days.date
+    ON Day.date = weekly_readings.date
+    WHERE Day.date IS NOT NULL
+    GROUP BY YEAR(Day.date), WEEKOFYEAR(Day.date)
+    ORDER BY Day.date
   ) as sum_table;`,
     [startDate, endDate, args.postcode, args.resourceId, startDate, endDate]
   );
-
-  console.log(rows[1]);
   return rows[1];
 }
 
@@ -105,6 +127,7 @@ const resolvers = {
   DateTime: DateTime,
 
   Query: {
+    resources: resourcesQuery,
     resource(root, args) {
       return { id:1, last_value: 10.11, owner: 'Lewis Ji', postcode: 5063 }
     },
