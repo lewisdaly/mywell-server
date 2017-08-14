@@ -249,6 +249,7 @@ module.exports = function(Resource) {
     }
 
     let mobileNumber = null;
+    let email = null;
     return Resource.app.models.Client.findById(resource.clientId)
       .then(_client => mobileNumber = _client && _client.mobile_number)
       .then(() => {
