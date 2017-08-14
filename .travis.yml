@@ -26,6 +26,7 @@ before_install:
   - if [ -f ${CACHE_SERVER} ]; then gunzip -c ${CACHE_SERVER} | docker load; fi
   - if [ -f ${CACHE_GQL} ]; then gunzip -c ${CACHE_GQL} | docker load; fi
   - if [ -f ${CACHE_UTILS} ]; then gunzip -c ${CACHE_UTILS} | docker load; fi
+  - docker images
   # - if [ -f ${CACHE_DEPLOY} ]; then gunzip -c ${CACHE_DEPLOY} | docker load; fi
 
 install:
