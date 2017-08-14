@@ -250,19 +250,64 @@ module.exports = function(Resource) {
 
     let mobileNumber = null;
     let email = null;
+
+    const sendEmail = (message, email) => {
+      return MessageUtils.sendEmailMessage(message, email)
+        .catch(err => console.log(`Err sending email: ${err}`));
+    }
+
+    const sendSMS = (message, mobile) => {
+      return MessageUtils.sendSMSMessage(message, mobileNumber)
+        .catch(err => console.log(`Err sending sms: ${err}`));
+    }
+
     return Resource.app.models.Client.findById(resource.clientId)
-      .then(_client => mobileNumber = _client && _client.mobile_number)
+      .then(_client => {
+        console.log("_client:", _client);
+
+        mobileNumber = _client && _client.mobile_number;
+        email = _client && _client.email;
+      })
       .then(() => {
-        if (!mobileNumber) {
-          console.log("WARN: no client or mobile number found. clientId: " + resource.clientId);
-          return;
+        const message = `Thanks. The details of your ${resource.type} are.\nPostcode:${resource.postcode}\nId:${resource.id}`;
+        if (mobileNumber) {
+          //Prioritise SMS
+          return sendSMS(message, mobileNumber);
         }
 
-        const message = `Thanks. The details of your ${resource.type} are.\nPostcode:${resource.postcode}\nId:${resource.id}`;
-        return MessageUtils.sendSMSMessage(message, mobileNumber)
+        if (email) {
+          return sendEmail(message, email);
+        }
+
+        console.log("WARN: no client mobile number or email found. clientId: " + resource.clientId);
+        return;
+      })
+      .then(() => {
+        //Send an email to admin@marvi.org.in:
+        let getInTouch = null;
+        if (mobileNumber && email) {
+          getInTouch = `Get in touch with the user at: ${mobileNumber} or ${email}.`;
+        }
+        if (mobileNumber && !email) {
+          getInTouch = `Get in touch with the user at: ${mobileNumber}.`
+        }
+        if (email && !mobileNumber) {
+          getInTouch = `Get in touch with the user at: ${email}.`;
+        }
+        if (!email && !mobileNumber) {
+          getInTouch = `Error: we couldn't determine the user's phone number.`;
+        }
+
+        const message = `A new ${resource.type} was registered by ${resource.owner} in ${resource.postcode}, with id: ${resource.id}.\n${getInTouch}`;
+
+        return sendEmail(message, 'admin@marvi.org.in');
       })
       .then(() => next())
-      .catch(err => next(err));
+      .catch(err => {
+        //non fatal error - don't forward to user
+        console.log('ERROR: ' + err);
+        next()
+      });
   });
 
   Resource.remoteMethod('findAvailableIds', {
