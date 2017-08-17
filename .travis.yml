@@ -7,6 +7,7 @@ services:
 
 env:
   global:
+    - DOCKER_COMPOSE_VERSION=1.14.0
     - CACHE_DIR=$HOME/.cache/docker
     - CACHE_UI=$CACHE_DIR/mywell-ui.tar.gz
     - CACHE_SERVER=$CACHE_DIR/mywell-server.tar.gz
@@ -19,9 +20,21 @@ cache:
   - $CACHE_DIR
 
 before_install:
+  #install latest docker-compose
+  - sudo apt-get update
+  - sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-engine
+  - docker-compose --version
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - docker-compose --version
+
+  # Unencrypt secrets
   - openssl aes-256-cbc -K $encrypted_5d1e44ff4222_key -iv $encrypted_5d1e44ff4222_iv
     -in secrets.tar.enc -out secrets.tar -d;
   - tar xvf secrets.tar;
+  # Caching
   - if [ -f ${CACHE_UI} ]; then gunzip -c ${CACHE_UI} | docker load; fi
   - if [ -f ${CACHE_SERVER} ]; then gunzip -c ${CACHE_SERVER} | docker load; fi
   - if [ -f ${CACHE_GQL} ]; then gunzip -c ${CACHE_GQL} | docker load; fi
