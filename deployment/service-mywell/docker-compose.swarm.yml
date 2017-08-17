@@ -46,6 +46,7 @@ services:
       - ENABLE_LOGS
       - VERSION_NUMBER
       - REACT_APP_GRAPHQL_ENDPOINT
+      - GQL_URL=${REACT_APP_GRAPHQL_ENDPOINT}
       - PORT=80
     networks:
       - base-network

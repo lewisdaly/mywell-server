@@ -43,6 +43,11 @@ before_install:
   # - if [ -f ${CACHE_DEPLOY} ]; then gunzip -c ${CACHE_DEPLOY} | docker load; fi
 
 install:
+  # temp - test if we can actually get caching to work
+  - cd mywell-ui
+  - docker build -t docker-ui:local --cache-from docker-ui:local .
+  - cd ..
+
   - docker-compose -f docker-compose.yml build
   # - cd ./deployment && docker-compose build
   - mkdir -p $CACHE_DIR
