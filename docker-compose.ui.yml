@@ -5,7 +5,7 @@ services:
     build: ./mywell-ui/
     image: mywell-ui:local
     ports:
-     - "8080:80"
+     - "8088:80"
     volumes:
      - ./mywell-ui:/usr/src/app
     command: npm run dev

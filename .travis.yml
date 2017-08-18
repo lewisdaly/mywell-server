@@ -45,7 +45,7 @@ before_install:
 install:
   - docker-compose -f docker-compose.yml build
   # - cd ./deployment && docker-compose build
-  - mkdir -p $CACHE_DIR
+  # - mkdir -p $CACHE_DIR
   #TODO: this will only cache old ones...
   # - if [ ! -f ${CACHE_UI} ]; then docker save mywell-ui:local | gzip > ${CACHE_UI}; fi
   # - if [ ! -f ${CACHE_SERVER} ]; then docker save mywell-server:local | gzip > ${CACHE_SERVER}; fi
