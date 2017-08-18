@@ -10,14 +10,15 @@ RUN npm install nodemon -g -s
 
 #install dependencies
 COPY package.json /usr/src/app/
-
-#install node_modules in different dir that won't be masked by docker volume mounting
-RUN mkdir -p /usr/src/lib
-RUN ln -s /usr/src/app/package.json /usr/src/lib/.
-WORKDIR /usr/src/lib
 RUN npm install
-ENV NODE_PATH /usr/src/lib/node_modules/
-WORKDIR /usr/src/app
+
+#install node_modules in different dir that won't be masked by docker volume mounting - doesn't work easily...
+# RUN mkdir -p /usr/src/lib
+# RUN ln -s /usr/src/app/package.json /usr/src/lib/.
+# WORKDIR /usr/src/lib
+# RUN npm install
+# ENV NODE_PATH /usr/src/lib/node_modules/
+# WORKDIR /usr/src/app
 
 COPY ./ /usr/src/app/
 

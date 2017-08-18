@@ -9,7 +9,7 @@ services:
     volumes:
      - ./mywell-ui:/usr/src/app
     command: npm run dev
-    # command: tail -f
+    # command: tail -f /dev/null
     environment:
       - VIRTUAL_HOST=mywell.marvi.org.in
       - HTTPS_METHOD=redirect

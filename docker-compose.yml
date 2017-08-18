@@ -2,10 +2,7 @@ version: '2'
 services:
   mywell-console:
     container_name: mywell-console
-    build:
-      context: ./mywell-console/
-      cache_from:
-        - mywell-console:local
+    build: ./mywell-console/
     image: mywell-console:local
     ports:
       - 3002:3000
@@ -18,10 +15,7 @@ services:
 
   mywell-gql:
     container_name: mywell-gql
-    build:
-      context: ./mywell-gql/
-      cache_from:
-        - mywell-gql:local
+    build: ./mywell-gql/
     image: mywell-gql:local
     ports:
       - 3001:3001
@@ -39,19 +33,13 @@ services:
 
   mywell-utils:
     container_name: mywell-utils
-    build:
-      context: ./mywell-utils/
-      cache_from:
-        - mywell-utils:local
+    build: ./mywell-utils/
     image: mywell-utils:local
     command: tail -f /dev/null
 
   mywell-server:
     container_name: mywell-server
-    build:
-      context: ./mywell-server/
-      cache_from:
-        - mywell-server:local
+    build: ./mywell-server/
     image: mywell-server:local
     ports:
      - "3000:3000"
@@ -83,10 +71,7 @@ services:
 
   mywell-ui:
     container_name: mywell-ui
-    build:
-      context: ./mywell-ui/
-      cache_from:
-        - mywell-ui:local
+    build: ./mywell-ui/
     image: mywell-ui:local
     ports:
      - "8080:80"
