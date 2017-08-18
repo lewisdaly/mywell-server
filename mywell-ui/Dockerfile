@@ -28,6 +28,4 @@ ENV SERVER_URL http://localhost:3000
 ENV ENVIRONMENT development
 ENV PORT 8080
 
-#This will get called again when running, but useful to debug Docker before runtime
-RUN npm run build
 CMD [ "./build_and_run.sh" ]
