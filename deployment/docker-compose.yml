@@ -29,5 +29,6 @@ services:
       - STAGE_PREFIX
       - UI_PORT
       - TEMP_SERVER_FRONTEND_RULE
+      - REACT_APP_GRAPHQL_ENDPOINT
     privileged: true
     command: /usr/src/deploy/tools/entrypoint.sh

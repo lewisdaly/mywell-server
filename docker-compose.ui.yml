@@ -6,9 +6,9 @@ services:
     image: mywell-ui:local
     ports:
      - "8080:80"
-    # volumes:
-    #  - ./mywell-ui:/usr/src/app
-    # command: npm run dev
+    volumes:
+     - ./mywell-ui:/usr/src/app
+    command: npm run dev
     # command: tail -f
     environment:
       - VIRTUAL_HOST=mywell.marvi.org.in

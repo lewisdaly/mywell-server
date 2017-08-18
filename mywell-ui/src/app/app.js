@@ -11,6 +11,10 @@ import 'ng-file-upload'
 
 import 'leaflet/dist/leaflet.css'
 import 'leaflet/dist/leaflet.js'
+import 'intlpnIonic/css/intlpn.css'
+import 'intlpnIonic/js/intlpnIonic.js'
+import 'intlpnIonic/js/data.js'
+import 'intlpnIonic/lib/libphonenumber/build/utils.js'
 
 import '../style/app.css'
 import '../style/ionic.css'
@@ -35,7 +39,6 @@ import './service/LoginService'
 import './service/SignupService'
 import './service/UserService'
 
-// import ApolloGraphContainer from './components/ApolloGraphContainer'
 import ApolloGraphContainer from './components/ApolloGraphContainer'
 
 let app = () => {
@@ -80,6 +83,7 @@ let app2 = angular.module(MODULE_NAME, [
   'ionic',
   'ngFileUpload',
   'react',
+  'intlpnIonic'
 ])
 .directive('app', app)
 .run(($ionicPlatform, $rootScope, $ionicLoading, $location, $http, $localstorage) => {
