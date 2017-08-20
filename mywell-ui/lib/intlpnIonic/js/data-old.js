@@ -1238,5 +1238,3 @@ for (var i = 0; i < allCountries.length; i++) {
     areaCodes: c[4] || null
   };
 }
-
-export default allCountries;
