@@ -169,7 +169,6 @@ angular.module('controller.app', ['ionic'])
       email = null;
     }
 
-    console.log("Performing login", mobile_number, email, code);
     return ApiService.loginWithCode(mobile_number, email, code)
       .then(response => {
         console.log(response);

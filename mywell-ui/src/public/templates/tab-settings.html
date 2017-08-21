@@ -10,14 +10,6 @@
 </br>
 </div>
 
-<div>
-  <!-- <div class="">
-    <p ng-if="isUserNotLoggedIn" class="verify-text">Log in access settings</p>
-  </div> -->
-  <!-- <div class="center-text" ng-if="isUserNotVerified"> -->
-    <!-- <p class="vefify-text">Your account is not verified. Please wait for an admin to verifiy your account</p> -->
-    <!-- <button class="button button-clear button-outline button-assertive" ng-click="refreshUser()">Refresh Status</button> -->
-  <!-- </div> -->
 
   </br>
   <h4>Settings</h4>
@@ -26,7 +18,8 @@
   </div>
   <div ng-if="isUserLoggedInAndVerified">
   	<a class="button button-outline button-block button-clear button-positive" ng-show="isVerified" href="#/tab/settings/register">Register a New Well Rain Gauge or Checkdam</a>
-	   <button class="button button-outline button-block button-clear button-positive" ng-show="isVerified" ng-if="!isDesktop" ng-click="showGetImagePopup()">Change an image</a>
+	  <a class="button button-outline button-block button-clear button-positive" ng-show="isVerified" ng-if="!isDesktop" ng-click="showGetImagePopup()">Change an image</a>
+	  <a class="button button-outline button-block button-clear button-assertive" ng-show="isVerified" ng-click="clearLogin()">Logout and Forget Me</a>
   </div>
   </br>
   <h4>Tools</h4>

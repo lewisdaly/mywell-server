@@ -24,9 +24,20 @@ COPY ./ /usr/src/app/
 
 #Default envs
 ENV ENABLE_LOGS false
-ENV VERSION_NUMBER unknown
-ENV SERVER_URL http://localhost:3000
 ENV ENVIRONMENT development
 ENV PORT 8080
+#These env variables will first get replaced by webpack in the 'build step'
+#then by gulp when actually running
+ENV VERSION_NUMBER __VERSION_NUMBER__
+ENV SERVER_URL __SERVER_URL__
+ENV REACT_APP_GRAPHQL_ENDPOINT __REACT_APP_GRAPHQL_ENDPOINT__
+
+#prebuild - this does most of the work
+RUN npm run build
+
+#remove dev dependencies - make our docker image super small
+RUN npm prune --production
+RUN rm -rf platforms plugins resources src
+#TODO: we can also remove just about everything else, lib, almost all node_modules, plugins, src
 
 CMD [ "./build_and_run.sh" ]

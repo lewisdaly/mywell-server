@@ -22,6 +22,15 @@ angular.module('controller.settings', [])
 		$scope.unverifiedUsers = [];
 	}
 
+  $scope.clearLogin = () => {
+    console.log("Clearing login!!");
+    AuthenticationService.ClearCredentials();
+    AuthenticationService.clearLastUser();
+		$rootScope.$broadcast('login-state-changed');
+		$scope.isVerified = false;
+		$scope.unverifiedUsers = [];
+  }
+
   //if the user is an admin, load the list of requesting users!
 	function checkUserStatus() {
 		$scope.unverifiedUsers = [];

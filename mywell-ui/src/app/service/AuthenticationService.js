@@ -13,6 +13,7 @@
         service.getAccessToken = getAccessToken;
         service.Logout = Logout;
         service.tryLastTokenLogin = tryLastTokenLogin;
+        service.clearLastUser = clearLastUser;
 
         return service;
 
@@ -76,8 +77,6 @@
         }
 
         function ClearCredentials() {
-            console.log("Clearing Credentials");
-
             //Save the user to try and login again if possible
             const globals = $localstorage.getObject('globals', null);
             if (globals && globals.currentUser && globals.currentUser.authToken) {
@@ -88,6 +87,12 @@
             $localstorage.delete('globals');
             $http.defaults.headers.common.Authorization = 'Basic';
         }
+
+        function clearLastUser() {
+          $localstorage.delete('globals');
+          $localstorage.delete('last_user');
+        }
+
     })
 
 // Base64 encoding service used by AuthenticationService
