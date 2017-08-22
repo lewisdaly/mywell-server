@@ -1,5 +1,6 @@
 FROM mhart/alpine-node:8
 
+ENV NPM_CONFIG_LOGLEVEL error
 ENV APP_DIR "/usr/src/app"
 RUN mkdir -p "APP_DIR"
 WORKDIR "$APP_DIR"

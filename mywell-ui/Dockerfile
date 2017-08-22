@@ -1,6 +1,6 @@
 FROM node:7
 
-ENV NPM_CONFIG_LOGLEVEL warn
+ENV NPM_CONFIG_LOGLEVEL error
 
 #Create app directory
 RUN mkdir -p /usr/src/app
@@ -32,10 +32,6 @@ ENV PORT 8080
 ENV VERSION_NUMBER __VERSION_NUMBER__
 ENV SERVER_URL __SERVER_URL__
 ENV REACT_APP_GRAPHQL_ENDPOINT __REACT_APP_GRAPHQL_ENDPOINT__
-
-#prebuild - this does most of the work
-# the only way this would work is if we did it all on the same line as npm install...
-RUN npm run build
 
 #remove dev dependencies - make our docker image super small
 # RUN npm prune --production
