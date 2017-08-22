@@ -21,7 +21,6 @@ env:
 
 before_install:
   # - pip install --user awscli
-  - echo -e '[profile default]\nregion = ap-southeast-2' > /tmp/config
   # - export PATH=$PATH:$HOME/.local/bin
   #install latest docker-compose
   # - sudo apt-get update
@@ -37,6 +36,8 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_5d1e44ff4222_key -iv $encrypted_5d1e44ff4222_iv
     -in secrets.tar.enc -out secrets.tar -d;
   - tar xvf secrets.tar;
+  - echo -e '[profile default]\nregion = ap-southeast-2' > ~/.aws/config
+
   # Caching
   # - if [ -f ${CACHE_UI} ]; then gunzip -c ${CACHE_UI} | docker load; fi
   # - if [ -f ${CACHE_SERVER} ]; then gunzip -c ${CACHE_SERVER} | docker load; fi
