@@ -2,7 +2,7 @@
 
 source ./env/envlocal.sh
 
-COMPOSE_FILE=docker-compose.ui.yml
+COMPOSE_FILE=docker-compose.yml
 
 
 #just a little util to bring up part of the system to make development a bit faster
@@ -13,4 +13,4 @@ then
   docker-compose -f "$COMPOSE_FILE" build
 fi
 
-docker-compose -f "$COMPOSE_FILE" up
+docker-compose -f "$COMPOSE_FILE" up mywell-ui

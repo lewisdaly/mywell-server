@@ -8,17 +8,4 @@ services:
      - "8088:80"
     volumes:
      - ./mywell-ui:/usr/src/app
-    # command: npm run dev
-    # command: tail -f /dev/null
-    environment:
-      - VIRTUAL_HOST=mywell.marvi.org.in
-      - HTTPS_METHOD=redirect
-      - VIRTUAL_PORT=80
-      - PORT=80
-      - LETSENCRYPT_EMAIL=lewis@vesselstech.com
-      - LETSENCRYPT_HOST=mywell.marvi.org.in
-      - ENVIRONMENT
-      - ENABLE_LOGS
-      - VERSION_NUMBER
-      - REACT_APP_GRAPHQL_ENDPOINT
-      - SERVER_URL
+    command: "npm run build"

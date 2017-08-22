@@ -8,11 +8,16 @@ if [ -z "$STAGE" ]; then
 fi
 
 source $DIR/../env/env$STAGE.sh
+#sourcing seems to change the dir.
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-#build
-docker-compose up -d mywell-ui
 
-docker cp mywell-ui:/usr/src/app/www /tmp/
+#build - use the overide file to ensure we build webpack
+docker-compose -f "$DIR"/../docker-compose.yml -f "$DIR"/../docker-compose.ui.yml up mywell-ui
+
+# docker cp mywell-ui:/usr/src/app/www /tmp/
+#this gets copied to local as we mount the dir
+cp -R "$DIR"/www /tmp/www
 aws s3 sync /tmp/www s3://"$UI_BUCKET_NAME"
 
 exit 0

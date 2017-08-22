@@ -42,4 +42,4 @@ RUN npm run build
 # RUN rm -rf platforms plugins resources src
 #TODO: we can also remove just about everything else, lib, almost all node_modules, plugins, src
 
-CMD [ "./build_and_run.sh" ]
+CMD [ "npm", "run", "build" ]

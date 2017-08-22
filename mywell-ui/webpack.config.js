@@ -16,6 +16,9 @@ console.log('  REACT_APP_GRAPHQL_ENDPOINT:\t', process.env.REACT_APP_GRAPHQL_END
 
 //Settings
 const enableSourceMaps = true;
+//TODO: load from env variable
+const shouldMinify = true;
+const isProduction = true;
 
 var ENV = process.env.npm_lifecycle_event;
 
@@ -96,6 +99,8 @@ module.exports = function makeWebpackConfig() {
     })
   }
 
+
+
   config.plugins = [
     new webpack.LoaderOptionsPlugin({
       test: /\.scss$/i,
@@ -113,6 +118,16 @@ module.exports = function makeWebpackConfig() {
     })
   ];
 
+  if (isProduction) {
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        'process.env': {
+          'NODE_ENV': JSON.stringify('production')
+        }
+      })
+    );
+  }
+
   if (!isTest) {
     config.plugins.push(
       new HtmlWebpackPlugin({
@@ -123,16 +138,20 @@ module.exports = function makeWebpackConfig() {
     )
   }
 
-  // if (isProd) {
+  if (shouldMinify) {
     config.plugins.push(
       // new webpack.NoErrorsPlugin(),
       // new webpack.optimize.DedupePlugin(),
-      // new webpack.optimize.UglifyJsPlugin(),
+      new webpack.optimize.UglifyJsPlugin({
+        compress: true,
+        sourceMap: true,
+        mangle: false
+      }),
       new CopyWebpackPlugin([{
         from: __dirname + '/src/public'
       }])
     );
-  // }
+  }
 
   config.devServer = {
     contentBase: './src/public',
