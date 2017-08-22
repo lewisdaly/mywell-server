@@ -36,7 +36,9 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_5d1e44ff4222_key -iv $encrypted_5d1e44ff4222_iv
     -in secrets.tar.enc -out secrets.tar -d;
   - tar xvf secrets.tar;
+  - ls -la ~/.aws/
   - echo -e '[profile default]\nregion = ap-southeast-2' > ~/.aws/config
+  - aws s3 ls
 
   # Caching
   # - if [ -f ${CACHE_UI} ]; then gunzip -c ${CACHE_UI} | docker load; fi
