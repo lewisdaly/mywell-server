@@ -20,8 +20,8 @@ env:
   # - $CACHE_DIR
 
 before_install:
-  # - pip install --user awscli
-  # - export PATH=$PATH:$HOME/.local/bin
+  - pip install --user awscli
+  - export PATH=$PATH:$HOME/.local/bin
   #install latest docker-compose
   # - sudo apt-get update
   # - sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-engine
