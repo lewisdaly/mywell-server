@@ -91,6 +91,7 @@ services:
       - VERSION_NUMBER
       - SERVER_URL
       - REACT_APP_GRAPHQL_ENDPOINT
+      - UI_BUCKET_NAME
 
   db:
     container_name: mywell-db

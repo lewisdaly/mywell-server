@@ -36,36 +36,28 @@ services:
       #   max_attempts: 3
       #   window: 120s
 
-  mywell-ui:
-    image: lewisdaly/mywell-ui:${VERSION_NUMBER}_${TRAVIS_BUILD_NUMBER}
-    ports:
-     - "${UI_PORT}:80"
-    environment:
-      - ENVIRONMENT=${STAGE}
-      - SERVER_URL
-      - ENABLE_LOGS
-      - VERSION_NUMBER
-      - REACT_APP_GRAPHQL_ENDPOINT
-      - GQL_URL=${REACT_APP_GRAPHQL_ENDPOINT}
-      - PORT=80
-    networks:
-      - base-network
-    deploy:
-      labels:
-        - "traefik.port=80"
-        - "traefik.docker.network=base-network"
-        - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell.marvi.org.in"
-        - "traefik.protocol=http"
-      # resources:
-      #   limits:
-      #     memory: 350M
-      #   reservations:
-      #     memory: 200M
-      # restart_policy:
-      #   condition: on-failure
-      #   delay: 5s
-      #   max_attempts: 3
-      #   window: 120s
+  #No longer using - using static website hosting instead!
+  # mywell-ui:
+  #   image: lewisdaly/mywell-ui:${VERSION_NUMBER}_${TRAVIS_BUILD_NUMBER}
+  #   ports:
+  #    - "${UI_PORT}:80"
+  #   environment:
+  #     - ENVIRONMENT=${STAGE}
+  #     - SERVER_URL
+  #     - ENABLE_LOGS
+  #     - VERSION_NUMBER
+  #     - REACT_APP_GRAPHQL_ENDPOINT
+  #     - GQL_URL=${REACT_APP_GRAPHQL_ENDPOINT}
+  #     - PORT=80
+  #   networks:
+  #     - base-network
+  #   deploy:
+  #     labels:
+  #       - "traefik.port=80"
+  #       - "traefik.docker.network=base-network"
+  #       - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell.marvi.org.in"
+  #       - "traefik.protocol=http"
+
 
   mywell-gql:
     image: lewisdaly/mywell-gql:${VERSION_NUMBER}_${TRAVIS_BUILD_NUMBER}

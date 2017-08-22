@@ -6,6 +6,7 @@ ENV NPM_CONFIG_LOGLEVEL warn
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
+
 RUN npm install nodemon -g -s
 
 #install dependencies
@@ -33,11 +34,12 @@ ENV SERVER_URL __SERVER_URL__
 ENV REACT_APP_GRAPHQL_ENDPOINT __REACT_APP_GRAPHQL_ENDPOINT__
 
 #prebuild - this does most of the work
+# the only way this would work is if we did it all on the same line as npm install...
 RUN npm run build
 
 #remove dev dependencies - make our docker image super small
-RUN npm prune --production
-RUN rm -rf platforms plugins resources src
+# RUN npm prune --production
+# RUN rm -rf platforms plugins resources src
 #TODO: we can also remove just about everything else, lib, almost all node_modules, plugins, src
 
 CMD [ "./build_and_run.sh" ]

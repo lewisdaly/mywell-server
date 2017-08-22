@@ -61,6 +61,9 @@ script:
 after_success:
   - source ./deployment/tools/stage_calculator.sh;
   - source ./env/env$STAGE.sh;
+  #update static resources
+  - cd ./mywell-ui && post_build_deploy.sh && cd ..
+  #update other services
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
   - "./deployment/tools/tag_and_push_docker.sh skip-build;"
   - export AWS_PROFILE=default
