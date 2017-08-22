@@ -26,7 +26,7 @@ docker run --rm \
   --name "$BUILD_IMAGE_NAME" mywell-ui:local
 
 docker rm -f "$BUILD_IMAGE_NAME"
-docker run --rm -d --name "$BUILD_IMAGE_NAME" mywell-ui:local bash -c "tail -f /dev/null"
+docker run -d --name "$BUILD_IMAGE_NAME" mywell-ui:local bash -c "tail -f /dev/null"
 docker cp "$BUILD_IMAGE_NAME":/usr/src/app/www /tmp/
 
 #this gets copied to local as we mount the dir
