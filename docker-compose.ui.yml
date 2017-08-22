@@ -6,6 +6,4 @@ services:
     image: mywell-ui:local
     ports:
      - "8088:80"
-    volumes:
-     - ./mywell-ui:/usr/src/app
     command: "npm run build"

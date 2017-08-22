@@ -2,6 +2,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 #Run the mywell-ui container to finish the build step, and save to s3
+BUILD_IMAGE_NAME="mywell-ui-build"
 
 if [ -z "$STAGE" ]; then
   STAGE=local
@@ -13,11 +14,16 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
 #build - use the overide file to ensure we build webpack
+# rm -rf /tmp/www && mkdir /tmp/www
 docker-compose -f "$DIR"/../docker-compose.yml -f "$DIR"/../docker-compose.ui.yml up mywell-ui
 
-# docker cp mywell-ui:/usr/src/app/www /tmp/
+#run again to get the www folder
+docker rm -f "$BUILD_IMAGE_NAME"
+docker run -d --name "$BUILD_IMAGE_NAME" mywell-ui:local bash -c "tail -f /dev/null"
+docker cp "$BUILD_IMAGE_NAME":/usr/src/app/www /tmp/
+
 #this gets copied to local as we mount the dir
-cp -R "$DIR"/www /tmp/www
+# cp -R "$DIR"/www /tmp/www
 aws s3 sync /tmp/www s3://"$UI_BUCKET_NAME"
 
 exit 0

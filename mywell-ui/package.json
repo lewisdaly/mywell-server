@@ -3,7 +3,7 @@
   "version": "1.1.0",
   "description": "A workflow for Angular made with Webpack",
   "scripts": {
-    "build": "rm -rf www && webpack --bail --progress --profile",
+    "build": "webpack --bail --progress",
     "postProcess": "./node_modules/.bin/gulp postProcess",
     "server": "./node_modules/nodemon/bin/nodemon.js server.js",
     "dev": "webpack-dev-server --history-api-fallback --inline --progress",
