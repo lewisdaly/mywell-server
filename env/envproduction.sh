@@ -19,8 +19,7 @@ export UI_PORT=8000
 export DONE_SEEDING_SUFFIX="production_done"
 export TEMP_SERVER_FRONTEND_RULE="Host:${STAGE_PREFIX}mywell-server.marvi.org.in,dev-mywell-server.marvi.org.in"
 export REACT_APP_GRAPHQL_ENDPOINT="https://mywell-gql.marvi.org.in/graphql"
-export UI_BUCKET_NAME="mywell.vessels.tech"
-
+export UI_BUCKET_NAME="test-mywell.marvi.org.in"
 
 
 source $DIR/env.sh

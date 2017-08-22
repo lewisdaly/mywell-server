@@ -16,7 +16,7 @@ aws cloudformation deploy \
   --region "$AWS_REGION" \
   --parameter-overrides \
     DockerStack=mywell-docker \
-    HostedZoneName=vessels.tech. \
-    RootDomainName=mywell.vessels.tech \
-    DevRootDomainName=dev2-mywell.vessels.tech \
-    AcmCertificateArn=arn:aws:acm:us-east-1:745457803371:certificate/844bae3b-5832-402b-93aa-6566de7f3561
+    HostedZoneName=marvi.org.in. \
+    RootDomainName=test-mywell.marvi.org.in \
+    DevRootDomainName=dev2-mywell.marvi.org.in \
+    AcmCertificateArn=arn:aws:acm:us-east-1:745457803371:certificate/d4e8435e-e2dc-4e77-a7a8-688b25a21279
