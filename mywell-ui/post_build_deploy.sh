@@ -24,7 +24,7 @@ docker run --rm \
   -e SERVER_URL \
   -e VERSION_NUMBER \
   -e REACT_APP_GRAPHQL_ENDPOINT \
-  -v /tmp/www:/usr/src/app/www
+  -v /tmp/www:/usr/src/app/www \
   --name "$BUILD_IMAGE_NAME" mywell-ui:local
 
 ls -la /tmp/www
