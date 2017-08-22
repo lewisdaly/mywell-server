@@ -18,16 +18,19 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # docker-compose -f "$DIR"/../docker-compose.ui.yml up mywell-ui || exit 1
 
 #we can't use docker-compose as we don't want to mount the volumes
+mkdir -p /tmp/www
 docker rm -f "$BUILD_IMAGE_NAME"
 docker run --rm \
   -e SERVER_URL \
   -e VERSION_NUMBER \
   -e REACT_APP_GRAPHQL_ENDPOINT \
+  -v /tmp/www:/usr/src/app/www
   --name "$BUILD_IMAGE_NAME" mywell-ui:local
 
-docker rm -f "$BUILD_IMAGE_NAME"
-docker run -d --name "$BUILD_IMAGE_NAME" mywell-ui:local bash -c "tail -f /dev/null"
-docker cp "$BUILD_IMAGE_NAME":/usr/src/app/www /tmp/
+ls -la /tmp/www
+# docker rm -f "$BUILD_IMAGE_NAME"
+# docker run -d --name "$BUILD_IMAGE_NAME" mywell-ui:local bash -c "tail -f /dev/null"
+# docker cp "$BUILD_IMAGE_NAME":/usr/src/app/www /tmp/
 
 #this gets copied to local as we mount the dir
 # cp -R "$DIR"/www /tmp/www
