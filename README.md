@@ -95,13 +95,14 @@ docker rmi $(docker images -q --filter "dangling=true")
 mysqldump --host=mywelldb.cyftlfi9bxci.ap-southeast-2.rds.amazonaws.com  \
           -u mywell \
           -pmarvi-mywell \
-          development_mywell > /tmp/backup.sql
+          production_mywell > /tmp/backup.sql
 
+aws s3 cp /tmp/backup.sql s3://mywell-deployment/backup/2017-07-27-production-mywell.sql
 
-aws s3 cp s3://mywell-deployment/backup/2017-07-19-development-mywell.sql /tmp/
+aws s3 cp s3://mywell-deployment/backup/2017-07-27-production-mywell.sql /tmp/
 
 #on local
-docker cp /tmp/2017-07-19-development-mywell.sql mywell-db:/tmp/
+docker cp /tmp/2017-07-27-production-mywell.sql mywell-db:/tmp/
 docker exec -it mywell-db bash
-mysql  mywell -u $MYSQL_USER -p$MYSQL_ROOT_PASSWORD < /tmp/2017-07-19-development-mywell.sql
+mysql  mywell -u $MYSQL_USER -p$MYSQL_ROOT_PASSWORD < /tmp/2017-07-27-production-mywell.sql
 ```

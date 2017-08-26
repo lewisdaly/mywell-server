@@ -47,10 +47,8 @@ const createLoginCode = () => {
   return randomize('0', 6);
 };
 
-const disableAllMethods = function disableAllMethods(model, methodsToExpose)
-{
-    if(model && model.sharedClass)
-    {
+const disableAllMethods = function disableAllMethods(model, methodsToExpose) {
+    if(model && model.sharedClass) {
         methodsToExpose = methodsToExpose || [];
 
         var modelName = model.sharedClass.name;
@@ -58,8 +56,7 @@ const disableAllMethods = function disableAllMethods(model, methodsToExpose)
         var relationMethods = [];
         var hiddenMethods = [];
 
-        try
-        {
+        try {
             Object.keys(model.definition.settings.relations).forEach(function(relation)
             {
                 relationMethods.push({ name: '__findById__' + relation, isStatic: false });
@@ -77,8 +74,7 @@ const disableAllMethods = function disableAllMethods(model, methodsToExpose)
             });
         } catch(err) {}
 
-        methods.concat(relationMethods).forEach(function(method)
-        {
+        methods.concat(relationMethods).forEach(function(method) {
             var methodName = method.name;
             if(methodsToExpose.indexOf(methodName) < 0)
             {
@@ -87,9 +83,8 @@ const disableAllMethods = function disableAllMethods(model, methodsToExpose)
             }
         });
 
-        if(hiddenMethods.length > 0)
-        {
-            console.log('\nRemote mehtods hidden for', modelName, ':', hiddenMethods.join(', '), '\n');
+        if(hiddenMethods.length > 0) {
+            console.log('\nRemote methods hidden for', modelName, ':', hiddenMethods.join(', '), '\n');
         }
     }
 };

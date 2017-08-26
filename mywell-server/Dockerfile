@@ -1,5 +1,7 @@
 FROM node:6
 
+ENV NPM_CONFIG_LOGLEVEL error
+
 #Create app directory
 RUN mkdir -p /usr/src/app
 RUN mkdir -p /usr/src/app/storage

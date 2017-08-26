@@ -14,4 +14,9 @@ aws cloudformation deploy \
   --template-file ./resources.yml \
   --stack-name "$STACK_NAME" \
   --region "$AWS_REGION" \
-  --parameter-overrides DockerStack=mywell-docker
+  --parameter-overrides \
+    DockerStack=mywell-docker \
+    HostedZoneName=vessels.tech. \
+    RootDomainName=test-mywell.vessels.tech \
+    DevRootDomainName=dev2-mywell.vessels.tech \
+    AcmCertificateArn=arn:aws:acm:us-east-1:745457803371:certificate/844bae3b-5832-402b-93aa-6566de7f3561

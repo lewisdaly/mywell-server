@@ -36,34 +36,63 @@ services:
       #   max_attempts: 3
       #   window: 120s
 
-  mywell-ui:
-    image: lewisdaly/mywell-ui:${VERSION_NUMBER}_${TRAVIS_BUILD_NUMBER}
-    ports:
-     - "${UI_PORT}:80"
-    command: /usr/src/app/entrypoint.sh
+  #Redirect mywell.marvi.org.in to mywell.vessels.tech
+  nginxredirect:
+    image: schmunk42/nginx-redirect
     environment:
-      - ENVIRONMENT=${STAGE}
-      - SERVER_URL
-      - ENABLE_LOGS
-      - VERSION_NUMBER
+    - SERVER_REDIRECT=${STAGE_PREFIX}mywell.vessels.tech
     networks:
       - base-network
     deploy:
       labels:
-        - "traefik.port=80"
+      - "traefik.port=80"
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell.marvi.org.in"
+      - "traefik.docker.network=base-network"
+
+  #No longer using - using static website hosting instead!
+  # mywell-ui:
+  #   image: lewisdaly/mywell-ui:${VERSION_NUMBER}_${TRAVIS_BUILD_NUMBER}
+  #   ports:
+  #    - "${UI_PORT}:80"
+  #   environment:
+  #     - ENVIRONMENT=${STAGE}
+  #     - SERVER_URL
+  #     - ENABLE_LOGS
+  #     - VERSION_NUMBER
+  #     - REACT_APP_GRAPHQL_ENDPOINT
+  #     - GQL_URL=${REACT_APP_GRAPHQL_ENDPOINT}
+  #     - PORT=80
+  #   networks:
+  #     - base-network
+  #   deploy:
+  #     labels:
+  #       - "traefik.port=80"
+  #       - "traefik.docker.network=base-network"
+  #       - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell.marvi.org.in"
+  #       - "traefik.protocol=http"
+
+
+  mywell-gql:
+    image: lewisdaly/mywell-gql:${VERSION_NUMBER}_${TRAVIS_BUILD_NUMBER}
+    environment:
+      - PORT=3001
+      - DB_HOST
+      - DB_NAME
+      - DB_PASSWORD
+      - DB_USER
+    networks:
+      - base-network
+    links:
+      - db:db
+    ports:
+      - 3001:3001
+    deploy:
+      labels:
+        - "traefik.port=3001"
         - "traefik.docker.network=base-network"
-        - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell.marvi.org.in"
+        - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell-gql.vessels.tech"
         - "traefik.protocol=http"
-      resources:
-        limits:
-          memory: 350M
-        reservations:
-          memory: 200M
-      # restart_policy:
-      #   condition: on-failure
-      #   delay: 5s
-      #   max_attempts: 3
-      #   window: 120s
 
   mywell-utils:
     image: lewisdaly/mywell-utils:${VERSION_NUMBER}_${TRAVIS_BUILD_NUMBER}
@@ -76,12 +105,12 @@ services:
       - DONE_SEEDING_SUFFIX
     networks:
       - base-network
-    deploy:
-      resources:
-        limits:
-          memory: 50M
-        reservations:
-          memory: 10M
+    # deploy:
+      # resources:
+      #   limits:
+      #     memory: 50M
+      #   reservations:
+      #     memory: 10M
 
 volumes:
   db-data:

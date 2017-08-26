@@ -7,6 +7,8 @@ services:
       - ../env:/usr/src/env
       - ./:/usr/src/deploy
       - "~/.aws:/root/.aws"
+      #static resources go here
+      - /tmp/www:/tmp/www
     environment:
       - AWS_PROFILE
       - AWS_REGION
@@ -29,5 +31,7 @@ services:
       - STAGE_PREFIX
       - UI_PORT
       - TEMP_SERVER_FRONTEND_RULE
+      - REACT_APP_GRAPHQL_ENDPOINT
+      - UI_BUCKET_NAME
     privileged: true
     command: /usr/src/deploy/tools/entrypoint.sh

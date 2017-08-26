@@ -16,6 +16,7 @@ const migrations = [
   require('./migrations/0012_fix_rain_images'),
   require('./migrations/0013_fix_rain_images_basant'),
   require('./migrations/0014_cleanup_basant'),
+  require('./migrations/0015_days_table'),
 ];
 
 module.exports = function(app, next) {

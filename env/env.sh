@@ -117,32 +117,33 @@ then
 fi
 
 echo -e "${bold}Configured Environment Variables:${endColor}"
-echo "  - AWS_PROFILE:               $AWS_PROFILE"
-echo "  - AWS_REGION:                $AWS_REGION"
-echo "  - VERSION_NUMBER:            $VERSION_NUMBER"
-echo "  - WAY2MINT_USR:              $WAY2MINT_USR"
-echo "  - WAY2MINT_PWD:              $WAY2MINT_PWD"
-echo "  - SMS_HORIZON_USER:          $SMS_HORIZON_USER"
-echo "  - SMS_HORIZON_KEY:           $SMS_HORIZON_KEY"
-echo "  - MANAGER_NODE_DNS:          $MANAGER_NODE_DNS"
-echo "  - DEFAULT_DNS_TARGET:        $DEFAULT_DNS_TARGET"
-echo "  - ENABLE_NOTIFICATIONS:      $ENABLE_NOTIFICATIONS"
-echo "  - ENABLE_LOGS:               $ENABLE_LOGS"
-echo "  - SERVER_URL:                $SERVER_URL"
-echo "  - DB_HOST:                   $DB_HOST"
-echo "  - DB_NAME:                   $DB_NAME"
-echo "  - DB_PASSWORD:               $DB_PASSWORD"
-echo "  - DB_USER:                   $DB_USER"
-echo "  - STAGE_PREFIX:              $STAGE_PREFIX"
-echo "  - IMAGE_SUFFIX:              $IMAGE_SUFFIX"
-echo "  - TWILIO_ACCOUNT_SID:        $TWILIO_ACCOUNT_SID"
-echo "  - TWILIO_AUTH_TOKEN:         $TWILIO_AUTH_TOKEN"
-echo "  - TWILIO_PHONE_NUMBER:       $TWILIO_PHONE_NUMBER"
-echo "  - SERVER_PORT:               $SERVER_PORT"
-echo "  - UI_PORT:                   $UI_PORT"
-echo "  - DONE_SEEDING_SUFFIX:       $DONE_SEEDING_SUFFIX"
-echo "  - TEMP_SERVER_FRONTEND_RULE: $TEMP_SERVER_FRONTEND_RULE"
-
+echo "  - AWS_PROFILE:                 $AWS_PROFILE"
+echo "  - AWS_REGION:                  $AWS_REGION"
+echo "  - VERSION_NUMBER:              $VERSION_NUMBER"
+echo "  - WAY2MINT_USR:                $WAY2MINT_USR"
+echo "  - WAY2MINT_PWD:                $WAY2MINT_PWD"
+echo "  - SMS_HORIZON_USER:            $SMS_HORIZON_USER"
+echo "  - SMS_HORIZON_KEY:             $SMS_HORIZON_KEY"
+echo "  - MANAGER_NODE_DNS:            $MANAGER_NODE_DNS"
+echo "  - DEFAULT_DNS_TARGET:          $DEFAULT_DNS_TARGET"
+echo "  - ENABLE_NOTIFICATIONS:        $ENABLE_NOTIFICATIONS"
+echo "  - ENABLE_LOGS:                 $ENABLE_LOGS"
+echo "  - SERVER_URL:                  $SERVER_URL"
+echo "  - DB_HOST:                     $DB_HOST"
+echo "  - DB_NAME:                     $DB_NAME"
+echo "  - DB_PASSWORD:                 $DB_PASSWORD"
+echo "  - DB_USER:                     $DB_USER"
+echo "  - STAGE_PREFIX:                $STAGE_PREFIX"
+echo "  - IMAGE_SUFFIX:                $IMAGE_SUFFIX"
+echo "  - TWILIO_ACCOUNT_SID:          $TWILIO_ACCOUNT_SID"
+echo "  - TWILIO_AUTH_TOKEN:           $TWILIO_AUTH_TOKEN"
+echo "  - TWILIO_PHONE_NUMBER:         $TWILIO_PHONE_NUMBER"
+echo "  - SERVER_PORT:                 $SERVER_PORT"
+echo "  - UI_PORT:                     $UI_PORT"
+echo "  - DONE_SEEDING_SUFFIX:         $DONE_SEEDING_SUFFIX"
+echo "  - TEMP_SERVER_FRONTEND_RULE:   $TEMP_SERVER_FRONTEND_RULE"
+echo "  - REACT_APP_GRAPHQL_ENDPOINT:  $REACT_APP_GRAPHQL_ENDPOINT"
+echo "  - UI_BUCKET_NAME:              $UI_BUCKET_NAME"
 
 export AWS_PROFILE
 export AWS_REGION
@@ -169,3 +170,5 @@ export SERVER_PORT
 export SERVER_UI
 export DONE_SEEDING_SUFFIX
 export TEMP_SERVER_FRONTEND_RULE
+export REACT_APP_GRAPHQL_ENDPOINT
+export UI_BUCKET_NAME

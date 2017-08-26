@@ -1,0 +1,9 @@
+version: '2'
+services:
+  mywell-ui:
+    container_name: mywell-ui
+    build: ./mywell-ui/
+    image: mywell-ui:local
+    ports:
+     - "8088:80"
+    command: "npm run build"

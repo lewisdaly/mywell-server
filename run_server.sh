@@ -31,4 +31,4 @@ then
   exit 0
 fi
 
-docker-compose up
+docker-compose up mywell-server db

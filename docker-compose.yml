@@ -1,5 +1,36 @@
 version: '2'
 services:
+  mywell-console:
+    container_name: mywell-console
+    build: ./mywell-console/
+    image: mywell-console:local
+    ports:
+      - 3002:3000
+    volumes:
+      - ./mywell-console:/usr/src/app
+      - ./mywell-console/node_modules:/usr/src/app/node_modules
+    environment:
+      - REACT_APP_GRAPHQL_ENDPOINT
+    # command: tail -f /dev/null
+
+  mywell-gql:
+    container_name: mywell-gql
+    build: ./mywell-gql/
+    image: mywell-gql:local
+    ports:
+      - 3001:3001
+    volumes:
+      - ./mywell-gql/:/usr/src/app/
+    environment:
+      - PORT=3001
+      - DB_HOST
+      - DB_NAME
+      - DB_PASSWORD
+      - DB_USER
+    links:
+      - db:db
+    command: "npm run local"
+
   mywell-utils:
     container_name: mywell-utils
     build: ./mywell-utils/
@@ -46,16 +77,22 @@ services:
      - "8080:80"
     volumes:
      - ./mywell-ui:/usr/src/app
-    command: /usr/src/app/entrypoint.sh
+    # command: npm run dev
+    command: "./build_and_run.sh"
     environment:
       - VIRTUAL_HOST=mywell.marvi.org.in
       - HTTPS_METHOD=redirect
       - VIRTUAL_PORT=80
+      #Tells nodemon server which port we are looking for
+      - PORT=80
       - LETSENCRYPT_EMAIL=lewis@vesselstech.com
       - LETSENCRYPT_HOST=mywell.marvi.org.in
       - ENVIRONMENT
       - ENABLE_LOGS
       - VERSION_NUMBER
+      - SERVER_URL
+      - REACT_APP_GRAPHQL_ENDPOINT
+      - UI_BUCKET_NAME
 
   db:
     container_name: mywell-db

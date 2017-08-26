@@ -72,5 +72,9 @@
   "Migration": {
     "dataSource": "mysql-corp",
     "public": true
+  },
+  "Day": {
+    "dataSource": "mysql-corp",
+    "public": true
   }
 }
