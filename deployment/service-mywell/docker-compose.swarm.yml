@@ -86,7 +86,7 @@ services:
     links:
       - db:db
     ports:
-      - 3001:3001
+      - "${GQL_PORT}:3001"
     deploy:
       labels:
         - "traefik.port=3001"

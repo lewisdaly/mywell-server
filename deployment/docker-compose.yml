@@ -30,6 +30,7 @@ services:
       - ENABLE_LOGS
       - STAGE_PREFIX
       - UI_PORT
+      - GQL_PORT
       - TEMP_SERVER_FRONTEND_RULE
       - REACT_APP_GRAPHQL_ENDPOINT
       - UI_BUCKET_NAME
