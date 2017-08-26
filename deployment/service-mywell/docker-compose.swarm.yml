@@ -91,7 +91,7 @@ services:
       labels:
         - "traefik.port=3001"
         - "traefik.docker.network=base-network"
-        - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell-gql.marvi.org.in"
+        - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell-gql.vessels.tech"
         - "traefik.protocol=http"
 
   mywell-utils:

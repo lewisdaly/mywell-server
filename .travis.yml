@@ -50,7 +50,7 @@ before_install:
   # - if [ -f ${CACHE_DEPLOY} ]; then gunzip -c ${CACHE_DEPLOY} | docker load; fi
 
 install:
-  - docker-compose -f docker-compose.yml build mywell-ui
+  - docker-compose -f docker-compose.yml build
   # - cd ./deployment && docker-compose build
   # - mkdir -p $CACHE_DIR
   #TODO: this will only cache old ones...

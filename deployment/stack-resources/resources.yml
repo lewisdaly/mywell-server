@@ -146,40 +146,40 @@ Resources:
           HostedZoneId: !FindInMap [ RegionMap, !Ref 'AWS::Region', S3hostedzoneID]
           DNSName: !FindInMap [ RegionMap, !Ref 'AWS::Region', websiteendpoint]
 
-  MyWellCloudfront:
-    Type: AWS::CloudFront::Distribution
-    DependsOn:
-    - PublicBucket
-    Properties:
-      DistributionConfig:
-        Comment: Cloudfront Distribution pointing to public bucket
-        Origins:
-        - DomainName: !Join [., [!Ref 'RootDomainName', !FindInMap [RegionMap, !Ref 'AWS::Region', websiteendpoint]]]
-          Id: S3Origin
-          CustomOriginConfig:
-            HTTPPort: '80'
-            HTTPSPort: '443'
-            OriginProtocolPolicy: http-only
-        Enabled: true
-        HttpVersion: 'http2'
-        DefaultRootObject: index.html
-        Aliases:
-          - !Ref 'RootDomainName'
-        DefaultCacheBehavior:
-          AllowedMethods:
-            - GET
-            - HEAD
-          Compress: true
-          TargetOriginId: S3Origin
-          ForwardedValues:
-            QueryString: true
-            Cookies:
-              Forward: none
-          ViewerProtocolPolicy: redirect-to-https
-        PriceClass: PriceClass_All
-        ViewerCertificate:
-          AcmCertificateArn: !Ref AcmCertificateArn
-          SslSupportMethod: sni-only
+  # MyWellCloudfront:
+  #   Type: AWS::CloudFront::Distribution
+  #   DependsOn:
+  #   - PublicBucket
+  #   Properties:
+  #     DistributionConfig:
+  #       Comment: Cloudfront Distribution pointing to public bucket
+  #       Origins:
+  #       - DomainName: !Join [., [!Ref 'RootDomainName', !FindInMap [RegionMap, !Ref 'AWS::Region', websiteendpoint]]]
+  #         Id: S3Origin
+  #         CustomOriginConfig:
+  #           HTTPPort: '80'
+  #           HTTPSPort: '443'
+  #           OriginProtocolPolicy: http-only
+  #       Enabled: true
+  #       HttpVersion: 'http2'
+  #       DefaultRootObject: index.html
+  #       Aliases:
+  #         - !Ref 'RootDomainName'
+  #       DefaultCacheBehavior:
+  #         AllowedMethods:
+  #           - GET
+  #           - HEAD
+  #         Compress: true
+  #         TargetOriginId: S3Origin
+  #         ForwardedValues:
+  #           QueryString: true
+  #           Cookies:
+  #             Forward: none
+  #         ViewerProtocolPolicy: redirect-to-https
+  #       PriceClass: PriceClass_All
+  #       ViewerCertificate:
+  #         AcmCertificateArn: !Ref AcmCertificateArn
+  #         SslSupportMethod: sni-only
 
   DevPublicBucket:
     Type: "AWS::S3::Bucket"
@@ -221,40 +221,40 @@ Resources:
           HostedZoneId: !FindInMap [ RegionMap, !Ref 'AWS::Region', S3hostedzoneID]
           DNSName: !FindInMap [ RegionMap, !Ref 'AWS::Region', websiteendpoint]
 
-  DevMyWellCloudfront:
-    Type: AWS::CloudFront::Distribution
-    DependsOn:
-    - PublicBucket
-    Properties:
-      DistributionConfig:
-        Comment: Cloudfront Distribution pointing to public bucket
-        Origins:
-        - DomainName: !Join [., [!Ref 'DevRootDomainName', !FindInMap [RegionMap, !Ref 'AWS::Region', websiteendpoint]]]
-          Id: S3Origin
-          CustomOriginConfig:
-            HTTPPort: '80'
-            HTTPSPort: '443'
-            OriginProtocolPolicy: http-only
-        Enabled: true
-        HttpVersion: 'http2'
-        DefaultRootObject: index.html
-        Aliases:
-          - !Ref 'DevRootDomainName'
-        DefaultCacheBehavior:
-          AllowedMethods:
-            - GET
-            - HEAD
-          Compress: true
-          TargetOriginId: S3Origin
-          ForwardedValues:
-            QueryString: true
-            Cookies:
-              Forward: none
-          ViewerProtocolPolicy: redirect-to-https
-        PriceClass: PriceClass_All
-        ViewerCertificate:
-          AcmCertificateArn: !Ref AcmCertificateArn
-          SslSupportMethod: sni-only
+  # DevMyWellCloudfront:
+  #   Type: AWS::CloudFront::Distribution
+  #   DependsOn:
+  #   - PublicBucket
+  #   Properties:
+  #     DistributionConfig:
+  #       Comment: Cloudfront Distribution pointing to public bucket
+  #       Origins:
+  #       - DomainName: !Join [., [!Ref 'DevRootDomainName', !FindInMap [RegionMap, !Ref 'AWS::Region', websiteendpoint]]]
+  #         Id: S3Origin
+  #         CustomOriginConfig:
+  #           HTTPPort: '80'
+  #           HTTPSPort: '443'
+  #           OriginProtocolPolicy: http-only
+  #       Enabled: true
+  #       HttpVersion: 'http2'
+  #       DefaultRootObject: index.html
+  #       Aliases:
+  #         - !Ref 'DevRootDomainName'
+  #       DefaultCacheBehavior:
+  #         AllowedMethods:
+  #           - GET
+  #           - HEAD
+  #         Compress: true
+  #         TargetOriginId: S3Origin
+  #         ForwardedValues:
+  #           QueryString: true
+  #           Cookies:
+  #             Forward: none
+  #         ViewerProtocolPolicy: redirect-to-https
+  #       PriceClass: PriceClass_All
+  #       ViewerCertificate:
+  #         AcmCertificateArn: !Ref AcmCertificateArn
+  #         SslSupportMethod: sni-only
 
 Outputs:
   DatabaseHost:
