@@ -17,6 +17,6 @@ aws cloudformation deploy \
   --parameter-overrides \
     DockerStack=mywell-docker \
     HostedZoneName=vessels.tech. \
-    RootDomainName=test-mywell.vessels.tech \
+    RootDomainName=mywell.vessels.tech \
     DevRootDomainName=dev2-mywell.vessels.tech \
     AcmCertificateArn=arn:aws:acm:us-east-1:745457803371:certificate/844bae3b-5832-402b-93aa-6566de7f3561

@@ -16,6 +16,7 @@ export IMAGE_SUFFIX="development"
 export VERSION_NUMBER="dev_1.3.6"
 export SERVER_PORT=3002
 export UI_PORT=8002
+export GQL_PORT=3001
 export DONE_SEEDING_SUFFIX="development_done"
 export TEMP_SERVER_FRONTEND_RULE="Host:${STAGE_PREFIX}mywell-server.vessels.tech,${STAGE_PREFIX}mywell-server.marvi.org.in"
 export REACT_APP_GRAPHQL_ENDPOINT="https://dev2-mywell-gql.vessels.tech/graphql"
