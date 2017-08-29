@@ -4,9 +4,11 @@ const makeExecutableSchema = require('graphql-tools').makeExecutableSchema;
 
 const typeDefs = `
   scalar DateTime
+  scalar Geo
 
   type Resource {
     id: ID!
+    resourceId: Int!
     lastValue: Float
     wellDepth: Float
     lastDate: DateTime
@@ -14,7 +16,9 @@ const typeDefs = `
     elevation: Int!
     type: String!
     postcode: Int!
-    client: Client
+    lat: Float!
+    lng: Float!
+    clientId: Int
   }
 
   type Client {
@@ -48,18 +52,7 @@ const typeDefs = `
     weeklyReadings(postcode: Int, resourceId: Int, sumOrAvg: String, startDate: DateTime, endDate: DateTime): [WeeklyReading]
     cumulativeWeeklyReadings(postcode: Int, resourceId: Int, startDate: DateTime, endDate: DateTime): [WeeklyReading]
   }
-
 `;
-
-/* Test data */
-const posts = [
-  { id: 1, imageUrl: 1, description: 'MyWel!'},
-  { id: 2, imageUrl: 2, description: 'Welcome to Meteor'},
-  { id: 3, imageUrl: 2, description: 'Advanced GraphQL'},
-  { id: 4, imageUrl: 3, description: 'Launchpad is Cool'},
-];
-
-console.log("resolvers", resolvers);
 
 module.exports = makeExecutableSchema({
   typeDefs,

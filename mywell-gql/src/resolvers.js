@@ -24,14 +24,14 @@ const DateTime = new GraphQLScalarType({
 
 const resourcesQuery = async(obj, args, context, info) => {
   const selectionSet = graphqlFields(info);
-  console.log('selectionSet:', selectionSet);
 
   //TODO: generate/optimize nicely
-  const sqlQuery = `SELECT resource.id as id, last_value as lastValue, well_depth as wellDepth, last_date as lastDate, owner, elevation, type, postcode, clientId, Client.username
-    FROM resource join Client on resource.clientId = Client.id`;
-  const [rows, fields] = await context.connection.execute(sqlQuery);
 
-  //TODO do we need to take the flattened client out of here now?
+  //We concat id and postcode into a unique Id, as Apollo is having trouble handling composite keys
+  //This is probably also best practices, and we can work towards moving our model this direction anyway
+  const sqlQuery = `SELECT concat(resource.id,resource.postcode) as id, id as resourceId, ST_X(geo) as lat, ST_Y(geo) as lng,  last_value as lastValue, well_depth as wellDepth, last_date as lastDate, owner, elevation, type, postcode, clientId
+    FROM resource`;
+  const [rows, fields] = await context.connection.execute(sqlQuery);
 
   return rows;
 }
