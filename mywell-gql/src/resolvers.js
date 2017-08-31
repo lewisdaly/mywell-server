@@ -22,6 +22,17 @@ const DateTime = new GraphQLScalarType({
    },
 });
 
+
+//TODO: we should probably talk to loopback here...
+//TODO: or we could just use LB for auth, and then do everything in SQL (good idea)
+const resourceQuery = async(obj, args, context, info) => {
+  const sqlQuery = `SELECT concat(resource.id,resource.postcode) as id, id as resourceId, ST_X(geo) as lat, ST_Y(geo) as lng,  last_value as lastValue, well_depth as wellDepth, last_date as lastDate, owner, elevation, type, postcode, clientId
+    FROM resource WHERE postcode = ? AND id = ? limit 1`;
+  const [rows, fields] = await context.connection.execute(sqlQuery, [args.postcode, args.resourceId]);
+
+  return rows[0];
+}
+
 const resourcesQuery = async(obj, args, context, info) => {
   const selectionSet = graphqlFields(info);
 
@@ -128,9 +139,7 @@ const resolvers = {
 
   Query: {
     resources: resourcesQuery,
-    resource(root, args) {
-      return { id:1, last_value: 10.11, owner: 'Lewis Ji', postcode: 5063 }
-    },
+    resource: resourceQuery,
     readings: async (obj, {postcode, resourceId}, context, info) => {
       const [rows, fields] =  await context.connection.execute('SELECT * FROM `reading` WHERE `postcode` = ? AND `resourceId` = ?', [postcode, resourceId]);
       return rows;

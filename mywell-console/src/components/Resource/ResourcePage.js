@@ -4,10 +4,10 @@ import PropTypes from 'prop-types'
 import { throttle } from 'throttle-debounce';
 
 import ResourceList from './ResourceList'
-import { Loading } from './common'
+import { Loading } from '../common'
 
 
-class ResourcesPage extends Component {
+class ResourcePage extends Component {
 
   constructor(props) {
     super(props);
@@ -84,8 +84,7 @@ const AllResourceQuery = gql`
   }
 `
 
-const ResourcesPageWithAllResourceQuery = graphql(AllResourceQuery, {
-  options: { fetchPolicy: 'network-only' },
-})(ResourcesPage);
+const ResourcePageWithAllResourceQuery = graphql(AllResourceQuery, {
+})(ResourcePage);
 
-export default ResourcesPageWithAllResourceQuery;
+export default ResourcePageWithAllResourceQuery;

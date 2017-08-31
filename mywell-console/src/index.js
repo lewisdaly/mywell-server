@@ -7,8 +7,8 @@ import './index.css'
 
 import { Nav } from './components/common'
 import GraphPage from './components/GraphPage'
-import ResourcesPage from './components/ResourcesPage'
-
+import ResourcePage from './components/Resource/ResourcePage'
+import EditResourcePage from './components/Resource/EditResourcePage'
 
 console.log(process.env.REACT_APP_GRAPHQL_ENDPOINT);
 
@@ -28,7 +28,8 @@ ReactDOM.render(
         <Nav/>
         {/* <Route exact path='/' component={ThreadPage} /> */}
         <Route path='/graphs' component={GraphPage} />
-        <Route path='/resources' component={ResourcesPage} />
+        <Route exact path='/resource' component={ResourcePage}/>
+        <Route path='/resource/edit/:postcode/:resourceId' component={EditResourcePage} />
         {/* <Route path='/thread/:id' component={ThreadDetailPage} /> */}
         {/* <Route path='/user/:phone' component={AccountPage}/> */}
       </div>

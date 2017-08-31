@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 class ResourceList extends Component {
 
@@ -26,6 +27,9 @@ class ResourceList extends Component {
   }
 
   getResourceRow(resource) {
+    const clientId = resource.clientId ? resource.clientId : '-';
+    const editPath = `/resource/edit/${resource.postcode}/${resource.resourceId}`;
+
     return (
       <tr key={`id:${resource.id},postcode:${resource.postcode}`}>
         <td className="pv3 pr3 bb b--black-20">{resource.postcode}</td>
@@ -36,9 +40,9 @@ class ResourceList extends Component {
         <td className="pv3 pr3 bb b--black-20">{resource.lastValue}</td>
         <td className="pv3 pr3 bb b--black-20">{moment(resource.lastDate).format()}</td>
         <td className="pv3 pr3 bb b--black-20">{resource.owner}</td>
-        <td className="pv3 pr3 bb b--black-20">{resource.clientId}</td>
+        <td className="pv3 pr3 bb b--black-20">{clientId}</td>
         <td className="pv3 pr3 bb b--black-20">
-          <a className="f6 link dim br1 ba ph3 pv2 mb2 dib mid-gray" href="#0">Edit</a>
+          <Link className="f6 link dim br1 ba ph3 pv2 mb2 dib mid-gray" to={editPath}>Edit</Link>
         </td>
       </tr>
     );
