@@ -10,9 +10,7 @@ const plugins = { dvr: validatorjs };
 // import 'simple-react-form-material-ui'
 
 import { Loading } from '../common'
-
-// import EditResourceForm from './EditResourceForm'
-
+import EditResourceForm from './EditResourceForm'
 
 class EditResourcePage extends Component {
 
@@ -38,16 +36,44 @@ class EditResourcePage extends Component {
 
   getForm() {
     const fields = {
-      email: {
-        label: 'Email',
-        placeholder: 'Insert Email',
-        rules: 'required|email|string|between:5,25',
+      postcode: {
+        label: 'Pincode',
+        disabled: true,
+        initial: 313603,
+        rules: 'required'
       },
-      password: {
-        label: 'Password',
-        placeholder: 'Insert Password',
-        rules: 'required|string|between:5,25',
+      resourceId: {
+        label: 'ResourceId',
+        disabled: true,
+        initial: 1111,
+        rules: 'required'
       },
+      resourceType: {
+        label: 'ResourceType',
+        disabled: false,
+        extra: [
+          'well',
+          'raingauge',
+          'checkdam'
+        ],
+        initial: 'well',
+        rules: 'required'
+      },
+      lat: {
+        label: 'Latitude',
+        disabled: false,
+        rules: 'required|numeric'
+      },
+      lng: {
+        label: 'Longitude',
+        disabled: false,
+        rules: 'required|numeric'
+      },
+      owner: {
+        label: 'Owner Name',
+        disabled: false,
+        rules: 'required|string'
+      }
     };
 
     const hooks = {
@@ -60,27 +86,20 @@ class EditResourcePage extends Component {
         alert('Form has errors!');
         // get all form errors
         console.log('All form errors', form.errors());
+      },
+      onChange(form, field, value) {
+        // console.log(form, field, value);
+        // form.fields[field].value = value;
+        form.update({
+          field: value
+        });
       }
     };
 
     const form = new MobxReactForm({ fields }, { plugins, hooks });
 
     return (
-      <form onSubmit={form.onSubmit}>
-        <label htmlFor={form.$('username').id}>
-          {form.$('username').label}
-        </label>
-        <input {...form.$('username').bind()} />
-        <p>{form.$('username').error}</p>
-
-        {/* ... other inputs ... */}
-
-        <button type="submit" onClick={form.onSubmit}>Submit</button>
-        <button type="button" onClick={form.onClear}>Clear</button>
-        <button type="button" onClick={form.onReset}>Reset</button>
-
-        <p>{form.error}</p>
-      </form>
+      <EditResourceForm form={form} />
     );
   }
 
