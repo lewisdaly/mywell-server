@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { VictoryAxis, VictoryLine, VictoryTheme, VictoryLegend, VictoryChart, VictoryGroup, VictoryBar } from 'victory';
 import moment from 'moment';
 
-import { Loading } from './common'
-import { DateRange } from '../enums'
+import { Loading } from '../common'
+import { DateRange } from '../../enums'
 
 
 class CumulativeGraph extends Component {
@@ -133,7 +133,7 @@ class CumulativeGraph extends Component {
                 border: "1px solid #ccc"
               },
               data: {
-                fillOpacity: 0.0, strokeWidth: 5
+                fillOpacity: 0.0, strokeWidth: 1
               }
             }}
           >

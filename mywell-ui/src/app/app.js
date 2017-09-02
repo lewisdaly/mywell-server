@@ -39,7 +39,7 @@ import './service/LoginService'
 import './service/SignupService'
 import './service/UserService'
 
-import ApolloGraphContainer from './components/ApolloGraphContainer'
+import ApolloGraphContainer from './components/Graph/ApolloGraphContainer'
 
 let app = () => {
   return {

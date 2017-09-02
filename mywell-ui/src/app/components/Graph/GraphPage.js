@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import CumulativeGraph from './CumulativeGraph'
-import { SelectButton } from './common'
-import '../style/App.css'
-import { DateRange } from '../enums'
+import ScatterGraph from './ScatterGraph'
+import { SelectButton } from '../common'
+import { DateRange } from '../../enums'
 
 console.log("dateRange", DateRange)
 
@@ -82,16 +82,24 @@ class GraphPage extends Component {
 
     return (
       <div>
+        <SelectButton
+          buttonConfig={buttonConfig}
+          selectedIndex={0}
+        />
         <CumulativeGraph
+          className="mw-50"
           resourceId={this.props.resourceId}
           postcode={this.props.postcode}
           startDates={this.state.startDates}
           endDates={this.state.endDates}
           dateRangeEnum={this.state.dateRangeEnum}
         />
-        <SelectButton
-          buttonConfig={buttonConfig}
-          selectedIndex={0}
+        <ScatterGraph
+          resourceId={this.props.resourceId}
+          postcode={this.props.postcode}
+          startDate={this.state.startDates[0]}
+          endDate={this.state.endDates[0]}
+          dateRangeEnum={this.state.dateRangeEnum}
         />
       </div>
     );

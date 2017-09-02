@@ -13,9 +13,11 @@ console.log('ENV:\n  SERVER_URL:\t', process.env.SERVER_URL);
 console.log('  VERSION_NUMBER:\t', process.env.VERSION_NUMBER);
 console.log('  REACT_APP_GRAPHQL_ENDPOINT:\t', process.env.REACT_APP_GRAPHQL_ENDPOINT);
 
+console.log("__dirname: ", __dirname);
+
 
 //Settings
-const enableSourceMaps = true;
+const enableSourceMaps = false;
 //TODO: load from env variable
 const shouldMinify = true;
 const isProduction = true;
@@ -76,8 +78,8 @@ module.exports = function makeWebpackConfig() {
 
   config.resolve = {
       modules: [
-        '/usr/src/app/lib',
-        '/usr/src/app/node_modules'
+        `${__dirname}/lib`,
+        `${__dirname}/node_modules`,
       ],
       alias: {
         ionic: "ionic/js/ionic"
@@ -158,6 +160,10 @@ module.exports = function makeWebpackConfig() {
     stats: 'minimal',
     port: parseInt(process.env.PORT),
     host: '0.0.0.0'
+  };
+
+  config.watchOptions = {
+    poll: 1000
   };
 
   return config;
