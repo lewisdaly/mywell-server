@@ -26,8 +26,8 @@ const typeDefs = `
     mobileNumber: String
     username: String!
     email: String
-    created: DateTime!
-    lastUpdated: DateTime!
+    created: DateTime
+    lastUpdated: DateTime
   }
 
   type Reading {

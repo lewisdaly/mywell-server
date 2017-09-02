@@ -11,6 +11,31 @@ const getBasicRow = (form, rowId) => {
   );
 }
 
+const getEditingButtons = (form) => {
+  if (form.$('disabled').disabled) {
+    return null;
+  }
+
+  return (
+    <div className="pt3">
+      <button
+        className="mv1 w-100 b ph3 pv2 input-reset ba b--black bg-transparent pointer f6 dib"
+        type="submit"
+        onClick={form.onSubmit}
+      >
+        Submit
+      </button>
+      <button
+        className="mv1 w-100 b ph3 pv2 input-reset ba b--black bg-transparent pointer f6 dib"
+        type="button"
+        onClick={form.onReset}
+        >
+          Reset
+        </button>
+    </div>
+  );
+}
+
 export default observer(({ form }) => (
 
   <form className="ba b--transparent ph0 mh0" onSubmit={form.onSubmit}>

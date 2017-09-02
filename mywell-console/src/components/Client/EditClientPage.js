@@ -8,7 +8,7 @@ const plugins = { dvr: validatorjs };
 import moment from 'moment';
 
 import { Loading } from '../common'
-import EditClientForm from './EditclientForm'
+import EditClientForm from './EditClientForm'
 
 class EditClientPage extends Component {
 
@@ -33,9 +33,9 @@ class EditClientPage extends Component {
 
     return (
       <div>
-        <h1 className="f3 f2-m f1-l light-red">ClientId: {client.resourceId}</h1>
-        <h2>Created at: {moment(client.created).format('DD MM YY')}</h2>
-        <h2>Updated at: {moment(client.lastUpdated).format('DD MM YY')}</h2>
+        <h1 className="f3 f2-m f1-l light-red">ClientId: {client.id}</h1>
+        {/* <h2>Created at: {moment(client.created).format('DD MM YY')}</h2> */}
+        {/* <h2>Updated at: {moment(client.lastUpdated).format('DD MM YY')}</h2> */}
       </div>
     );
   }
@@ -46,8 +46,8 @@ class EditClientPage extends Component {
 
     const fields = {
       id: {
-        label: 'User Id',
-        disabled: true
+        label: 'Client Id',
+        disabled: true,
         initial: client.id,
       },
       username: {
@@ -81,12 +81,6 @@ class EditClientPage extends Component {
         // get all form errors
         console.log('All form errors', form.errors());
       },
-      onReset(form) {
-        console.log('resetting');
-
-        //Manually set the select
-        form.update({'resourceType':resource.type});
-      }
     };
 
     const form = new MobxReactForm({ fields }, { plugins, hooks });
@@ -121,7 +115,7 @@ class EditClientPage extends Component {
       return <Loading/>
     }
 
-    if (!this.props.data.resource) {
+    if (!this.props.data.client) {
       return (
         <div className="center w-80">
           <h3 className="tc mt5">Sorry, this user could not be found</h3>
@@ -134,6 +128,7 @@ class EditClientPage extends Component {
         {this.getHeader()}
         {this.getButtons()}
         {this.getForm()}
+        <p>This Client's Resources:</p>
       </div>
     );
   }
@@ -155,7 +150,7 @@ const ClientQuery = gql`
 const EditClientPageWithClientQuery = graphql(ClientQuery, {
   options: ({match}) => ({
     variables: {
-      clientId: match.params.clientId,
+      id: match.params.id,
     },
   }),
 })(EditClientPage)

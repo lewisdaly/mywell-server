@@ -7,8 +7,12 @@ import './index.css'
 
 import { Nav } from './components/common'
 import GraphPage from './components/GraphPage'
+
 import ResourcePage from './components/Resource/ResourcePage'
 import EditResourcePage from './components/Resource/EditResourcePage'
+
+import ClientPage from './components/Client/ClientPage'
+import EditClientPage from './components/Client/EditClientPage'
 
 console.log(process.env.REACT_APP_GRAPHQL_ENDPOINT);
 
@@ -30,6 +34,8 @@ ReactDOM.render(
         <Route path='/graphs' component={GraphPage} />
         <Route exact path='/resource' component={ResourcePage}/>
         <Route path='/resource/edit/:postcode/:resourceId' component={EditResourcePage} />
+        <Route exact path='/client' component={ClientPage}/>
+        <Route path='/client/edit/:id' component={EditClientPage} />
         {/* <Route path='/thread/:id' component={ThreadDetailPage} /> */}
         {/* <Route path='/user/:phone' component={AccountPage}/> */}
       </div>
