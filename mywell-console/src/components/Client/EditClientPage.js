@@ -5,14 +5,12 @@ import { throttle } from 'throttle-debounce'
 import validatorjs from 'validatorjs';
 import MobxReactForm from 'mobx-react-form';
 const plugins = { dvr: validatorjs };
-// import {Form, Field} from 'simple-react-form'
 
-// import 'simple-react-form-material-ui'
 
 import { Loading } from '../common'
-import EditResourceForm from './EditResourceForm'
+import EditClientForm from './EditResourceForm'
 
-class EditResourcePage extends Component {
+class EditClientPage extends Component {
 
   constructor(props) {
     super(props);
@@ -30,15 +28,13 @@ class EditResourcePage extends Component {
     });
   }
 
-
   getHeader() {
     const { resource } = this.props.data;
 
     return (
-      <h1 className="f3 f2-m f1-l light-red">Resource: {resource.resourceId}</h1>
+      <h1 className="f3 f2-m f1-l light-red">ClientId: {resource.resourceId}</h1>
     );
   }
-
 
   getForm() {
     const { editing } = this.state;
@@ -145,7 +141,7 @@ class EditResourcePage extends Component {
     if (!this.props.data.resource) {
       return (
         <div className="center w-80">
-          <h3 className="tc mt5">Sorry, this resource could not be found</h3>
+          <h3 className="tc mt5">Sorry, this user could not be found</h3>
         </div>
       );
     }
