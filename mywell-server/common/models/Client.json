@@ -3,6 +3,9 @@
   "base": "User",
   "idInjection": true,
   "options": {},
+  "mixins": {
+    "TimeStamp": true
+  },
   "properties": {
     "mobile_number": {
       "type": "string",
