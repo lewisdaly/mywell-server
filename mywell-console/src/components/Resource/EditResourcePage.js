@@ -33,46 +33,63 @@ class EditResourcePage extends Component {
   }
 
 
+  getHeader() {
+    const { resource } = this.props.data;
+
+    return (
+      <h1 className="f3 f2-m f1-l light-red">Resource: {resource.resourceId}</h1>
+    );
+  }
+
 
   getForm() {
+    const { editing } = this.state;
+    const { resource } = this.props.data;
+
     const fields = {
       postcode: {
         label: 'Pincode',
-        disabled: true,
-        initial: 313603,
+        disabled: false,
+        initial: resource.postcode,
         rules: 'required'
       },
       resourceId: {
         label: 'ResourceId',
         disabled: true,
-        initial: 1111,
+        initial: resource.resourceId,
         rules: 'required'
       },
       resourceType: {
         label: 'ResourceType',
-        disabled: false,
+        disabled: !editing,
         extra: [
           'well',
           'raingauge',
           'checkdam'
         ],
-        initial: 'well',
+        initial: resource.type,
         rules: 'required'
       },
       lat: {
         label: 'Latitude',
-        disabled: false,
+        disabled: !editing,
+        initial: resource.lat,
         rules: 'required|numeric'
       },
       lng: {
         label: 'Longitude',
-        disabled: false,
+        disabled: !editing,
+        initial: resource.lng,
         rules: 'required|numeric'
       },
       owner: {
         label: 'Owner Name',
-        disabled: false,
+        disabled: !editing,
+        initial: resource.owner,
         rules: 'required|string'
+      },
+      disabled: {
+        disabled: !editing
       }
     };
 
@@ -87,77 +104,19 @@ class EditResourcePage extends Component {
         // get all form errors
         console.log('All form errors', form.errors());
       },
-      onChange(form, field, value) {
-        // console.log(form, field, value);
-        // form.fields[field].value = value;
-        form.update({
-          field: value
-        });
+      onReset(form) {
+        console.log('resetting');
+
+        //Manually set the select
+        form.update({'resourceType':resource.type});
       }
     };
 
     const form = new MobxReactForm({ fields }, { plugins, hooks });
 
     return (
-      <EditResourceForm form={form} />
+      <EditResourceForm className="pa4 black-80 w-80" form={form} />
     );
-  }
-
-  getFormOld() {
-    const { resource } = this.props.data;
-    const { editing } = this.state;
-    console.log("hey");
-
-    if (!resource) {
-      return null;
-    }
-
-    return (
-      <form className="pa4 black-80">
-        <dl className="fl fn-l w-50 dib-l w-auto-l lh-title mr5-l">
-          <dd className="f6 fw4 ml0">Pincode</dd>
-          <dd className="f3 fw6 ml0">{resource.postcode}</dd>
-        </dl>
-        <dl className="fl fn-l w-50 dib-l w-auto-l lh-title mr5-l">
-          <dd className="f6 fw4 ml0">ResourceId</dd>
-          <dd className="f3 fw6 ml0">{resource.resourceId}</dd>
-        </dl>
-        <div className="cf">
-          <div className="pv2 fl w-25">
-            <label for="name" className="pa2 tc f6 b db">Latitude:</label>
-          </div>
-          <div className="pv2 fl w-75 bg-black-025 pa2">
-            <input
-              value={resource.lat}
-              id="name"
-              className="pa2 input-reset ba b--black-20 db w-100"
-              type="text"
-              aria-describedby="name-desc"
-              disabled={!editing}
-            />
-            <small id="name-desc" className="f6 black-60 db"></small>
-          </div>
-          <div className="pv2 fl w-25">
-            <label for="name" className="pa2 tc f6 b db">Longitude:</label>
-          </div>
-          <div className="pv2 fl w-75 bg-black-025 pa2">
-            <input value={resource.lng} id="name" className="pa2 input-reset ba b--black-20 db w-100" type="text" aria-describedby="name-desc"/>
-            <small id="name-desc" className="f6 black-60 db"></small>
-          </div>
-          <div className="pv2 fl w-35">
-            <label for="name" className="pa2 tc f6 b db">Resource Type:</label>
-          </div>
-          <div className="pv2 fl w-65 bg-black-025 pa2">
-            <select value={this.state.value} onChange={this.handleChange}>
-              <option value="grapefruit">Well</option>
-              <option value="lime">Raingauge</option>
-              <option value="coconut">Checkdam</option>
-            </select>
-          </div>
-        </div>
-
-      </form>
-    )
   }
 
   getButtons() {
@@ -169,7 +128,7 @@ class EditResourcePage extends Component {
           className="f6 w-100 link dim br1 ba ph3 pv2 mb2 dib mid-gray"
           onClick={() => this.handleEditOrSavePressed()}
         >
-          { editing ? 'Save' : 'Edit' }
+          { editing ? 'Cancel' : 'Edit' }
         </button>
         <button
           className="f6 w-100 link dim br1 ba ph3 pv2 mb2 dib"
@@ -185,8 +144,17 @@ class EditResourcePage extends Component {
       return <Loading/>
     }
 
+    if (!this.props.data.resource) {
+      return (
+        <div className="center w-80">
+          <h3 className="tc mt5">Sorry, this resource could not be found</h3>
+        </div>
+      );
+    }
+
     return (
       <div className="f6 w-100 mw6 center">
+        {this.getHeader()}
         {this.getForm()}
         {this.getButtons()}
       </div>
