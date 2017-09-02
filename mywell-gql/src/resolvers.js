@@ -53,7 +53,14 @@ const clientsQuery = async(obj, args, context, info) => {
   const [rows, fields] = await context.connection.execute(sqlQuery);
 
   return rows;
+}
 
+const clientQuery = async(obj, args, context, info) => {
+  const sqlQuery = `SELECT id, mobile_number as mobileNumber, username, email, created, lastUpdated
+    FROM Client where id=?`;
+  const [rows, fields] = await context.connection.execute(sqlQuery, [args.id]);
+
+  return rows[0];
 }
 
 const weeklyReadingsQuery = async(obj, args, context, info) => {
@@ -138,6 +145,9 @@ const resolvers = {
   DateTime: DateTime,
 
   Query: {
+    client: clientQuery,
+    clients: clientQuery,
+
     resources: resourcesQuery,
     resource: resourceQuery,
     readings: async (obj, {postcode, resourceId}, context, info) => {

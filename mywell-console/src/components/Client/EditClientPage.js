@@ -5,10 +5,10 @@ import { throttle } from 'throttle-debounce'
 import validatorjs from 'validatorjs';
 import MobxReactForm from 'mobx-react-form';
 const plugins = { dvr: validatorjs };
-
+import moment from 'moment';
 
 import { Loading } from '../common'
-import EditClientForm from './EditResourceForm'
+import EditClientForm from './EditclientForm'
 
 class EditClientPage extends Component {
 
@@ -29,58 +29,41 @@ class EditClientPage extends Component {
   }
 
   getHeader() {
-    const { resource } = this.props.data;
+    const { client } = this.props.data;
 
     return (
-      <h1 className="f3 f2-m f1-l light-red">ClientId: {resource.resourceId}</h1>
+      <div>
+        <h1 className="f3 f2-m f1-l light-red">ClientId: {client.resourceId}</h1>
+        <h2>Created at: {moment(client.created).format('DD MM YY')}</h2>
+        <h2>Updated at: {moment(client.lastUpdated).format('DD MM YY')}</h2>
+      </div>
     );
   }
 
   getForm() {
     const { editing } = this.state;
-    const { resource } = this.props.data;
+    const { client } = this.props.data;
 
     const fields = {
-      postcode: {
-        label: 'Pincode',
-        disabled: false,
-        initial: resource.postcode,
-        rules: 'required'
+      id: {
+        label: 'User Id',
+        disabled: true
+        initial: client.id,
       },
-      resourceId: {
-        label: 'ResourceId',
+      username: {
+        label: "Username",
         disabled: true,
-        initial: resource.resourceId,
-        rules: 'required'
+        initial: client.username
       },
-      resourceType: {
-        label: 'ResourceType',
+      mobileNumber: {
+        label: "Mobile Number (optional)",
         disabled: !editing,
-        extra: [
-          'well',
-          'raingauge',
-          'checkdam'
-        ],
-        initial: resource.type,
-        rules: 'required'
+        initial: client.mobileNumber
       },
-      lat: {
-        label: 'Latitude',
+      email: {
+        label: "Email (optional)",
         disabled: !editing,
-        initial: resource.lat,
-        rules: 'required|numeric'
-      },
-      lng: {
-        label: 'Longitude',
-        disabled: !editing,
-        initial: resource.lng,
-        rules: 'required|numeric'
-      },
-      owner: {
-        label: 'Owner Name',
-        disabled: !editing,
-        initial: resource.owner,
-        rules: 'required|string'
+        initial: client.email
       },
       disabled: {
         disabled: !editing
@@ -109,7 +92,7 @@ class EditClientPage extends Component {
     const form = new MobxReactForm({ fields }, { plugins, hooks });
 
     return (
-      <EditResourceForm className="pa4 black-80 w-80" form={form} />
+      <EditClientForm className="pa4 black-80 w-80" form={form} />
     );
   }
 
@@ -156,32 +139,25 @@ class EditClientPage extends Component {
   }
 }
 
-const ResourceQuery = gql`
-  query resource($postcode: Int!, $resourceId: Int!){
-      resource(postcode: $postcode, resourceId: $resourceId) {
+const ClientQuery = gql`
+  query client($id: Int!) {
+      client(id: $id) {
         id
-        resourceId
-        lat
-        lng
-        lastValue
-        wellDepth
-        lastDate
-        owner
-        elevation
-        type
-        postcode
-        clientId
+        mobileNumber
+        username
+        email
+        created
+        lastUpdated
       }
   }
 `
 
-const EditResourcePageWithResourceQuery = graphql(ResourceQuery, {
+const EditClientPageWithClientQuery = graphql(ClientQuery, {
   options: ({match}) => ({
     variables: {
-      postcode: match.params.postcode,
-      resourceId: match.params.resourceId,
+      clientId: match.params.clientId,
     },
   }),
-})(EditResourcePage)
+})(EditClientPage)
 
-export default EditResourcePageWithResourceQuery;
+export default EditClientPageWithClientQuery;

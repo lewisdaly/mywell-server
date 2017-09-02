@@ -48,6 +48,7 @@ const typeDefs = `
     resources: [Resource]
     clients: [Client]
     resource(postcode: Int, resourceId: Int): Resource
+    client(id: Int): Client
     readings(postcode: Int, resourceId: Int): [Reading]
     weeklyReadings(postcode: Int, resourceId: Int, sumOrAvg: String, startDate: DateTime, endDate: DateTime): [WeeklyReading]
     cumulativeWeeklyReadings(postcode: Int, resourceId: Int, startDate: DateTime, endDate: DateTime): [WeeklyReading]

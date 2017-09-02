@@ -47,7 +47,7 @@ class EditResourcePage extends Component {
     const fields = {
       postcode: {
         label: 'Pincode',
-        disabled: false,
+        disabled: true,
         initial: resource.postcode,
         rules: 'required'
       },
