@@ -13,7 +13,7 @@ const typeDefs = `
     wellDepth: Float
     lastDate: DateTime
     owner: String!
-    elevation: Int!
+    elevation: Int
     type: String!
     postcode: Int!
     lat: Float!
