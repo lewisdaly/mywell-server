@@ -19,8 +19,8 @@ console.log("__dirname: ", __dirname);
 //Settings
 const enableSourceMaps = false;
 //TODO: load from env variable
-const shouldMinify = true;
-const isProduction = true;
+const shouldMinify = false;
+const isProduction = false;
 
 var ENV = process.env.npm_lifecycle_event;
 

@@ -23,6 +23,23 @@ const DateTime = new GraphQLScalarType({
 });
 
 
+/* utils */
+const getDefaultStartDate = (startDate) => {
+  if (!startDate) {
+    return moment().add(-1, 'years').format('Y-MM-DD');
+  }
+
+  return startDate = moment(startDate).format('Y-MM-DD');
+}
+
+const getDefaultEndDate = (endDate) => {
+  if (endDate) {
+    return moment().add().format('Y-MM-DD');
+  }
+
+  return moment(endDate).format('Y-MM-DD');
+}
+
 //TODO: we should probably talk to loopback here...
 //TODO: or we could just use LB for auth, and then do everything in SQL (good idea)
 const resourceQuery = async(obj, args, context, info) => {
@@ -46,6 +63,17 @@ const resourcesQuery = async(obj, args, context, info) => {
 
   return rows;
 }
+
+const readingsQuery =  async (obj, args, context, info) => {
+  let startDate = getDefaultStartDate(args.startDate);
+  let endDate = getDefaultEndDate(args.endDate);
+
+  const [rows, fields] =  await context.connection.execute(`SELECT *
+    FROM reading
+    WHERE postcode = ? AND resourceId = ? AND date >= STR_TO_DATE(?, \'%Y-%m-%d\') AND date <= STR_TO_DATE(?, \'%Y-%m-%d\')`,
+    [args.postcode, args.resourceId, startDate, endDate]);
+  return rows;
+};
 
 const clientsQuery = async(obj, args, context, info) => {
   const sqlQuery = `SELECT id, mobile_number as mobileNumber, username, email, created, lastUpdated
@@ -72,20 +100,8 @@ const weeklyReadingsQuery = async(obj, args, context, info) => {
     throw new Error(`args.sumOrAvg must be AVG or SUM, instead found: ${args.sumOrAvg}`);
   }
 
-  let startDate = null;
-  let endDate = null;
-
-  if (!args.startDate) {
-    startDate = moment().add(-1, 'years').format('Y-MM-DD');
-  } else {
-    startDate = moment(args.startDate).format('Y-MM-DD');
-  }
-
-  if (!args.endDate) {
-    endDate = moment().add().format('Y-MM-DD');
-  } else {
-    endDate = moment(args.endDate).format('Y-MM-DD');
-  }
+  let startDate = getDefaultStartDate(args.startDate);
+  let endDate = getDefaultEndDate(args.endDate);
 
   const [rows, fields] =  await context.connection.execute(`SELECT Day.date as week, SUM(weekly_average) as value FROM (
     select * from Day WHERE date >= STR_TO_DATE(?, '%Y-%m-%d') AND date <= STR_TO_DATE(?, '%Y-%m-%d')
@@ -147,13 +163,9 @@ const resolvers = {
   Query: {
     client: clientQuery,
     clients: clientQuery,
-
     resources: resourcesQuery,
     resource: resourceQuery,
-    readings: async (obj, {postcode, resourceId}, context, info) => {
-      const [rows, fields] =  await context.connection.execute('SELECT * FROM `reading` WHERE `postcode` = ? AND `resourceId` = ?', [postcode, resourceId]);
-      return rows;
-    },
+    readings: readingsQuery,
     weeklyReadings: weeklyReadingsQuery,
     cumulativeWeeklyReadings: cumulativeWeeklyReadingsQuery
   },

@@ -92,12 +92,9 @@ class ScatterGraph extends Component {
       return <Loading/>
     }
 
-    //TODO: get total and add to heading
-    const xTicks = this.props.data.readings.map(reading => {
-      return moment(reading).format("DD-MMM");
-    });
+    //TODO: fill in empty dates
 
-    console.log(xTicks);
+
 
     return (
       <div>
@@ -107,7 +104,7 @@ class ScatterGraph extends Component {
           theme={VictoryTheme.material}
         >
           <VictoryAxis
-            tickFormat={(tick) => moment(tick).format("DD-MMM")}}
+            tickFormat={(tick) => moment(tick).format("DD-MMM")}
             style={{
               grid: {
                fill: "transparent",
