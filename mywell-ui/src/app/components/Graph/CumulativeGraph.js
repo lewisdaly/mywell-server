@@ -89,7 +89,7 @@ class CumulativeGraph extends Component {
     const xTicks = this.getXTicks();
 
     return (
-      <div>
+      <div className={this.props.className}>
         <VictoryChart
           domainPadding={{y: 5}}
           theme={VictoryTheme.material}

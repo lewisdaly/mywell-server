@@ -127,7 +127,7 @@ class ScatterGraph extends Component {
 
 
     return (
-      <div>
+      <div className={this.props.className}>
         <p>Total Rainfall: {this.getTotal()} mm</p>
         <VictoryChart
           domainPadding={{y: 5}}
