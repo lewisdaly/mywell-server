@@ -77,8 +77,8 @@ services:
      - "8080:80"
     volumes:
      - ./mywell-ui:/usr/src/app
-    # command: npm run dev
-    command: "./build_and_run.sh"
+    command: npm run dev
+    # command: "./build_and_run.sh"
     environment:
       - VIRTUAL_HOST=mywell.marvi.org.in
       - HTTPS_METHOD=redirect
