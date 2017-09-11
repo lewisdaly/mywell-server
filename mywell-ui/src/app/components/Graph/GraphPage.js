@@ -86,14 +86,6 @@ class GraphPage extends Component {
           buttonConfig={buttonConfig}
           selectedIndex={0}
         />
-        <CumulativeGraph
-          className="mw-50"
-          resourceId={this.props.resourceId}
-          postcode={this.props.postcode}
-          startDates={this.state.startDates}
-          endDates={this.state.endDates}
-          dateRangeEnum={this.state.dateRangeEnum}
-        />
         <ScatterGraph
           resourceId={this.props.resourceId}
           postcode={this.props.postcode}
@@ -101,6 +93,14 @@ class GraphPage extends Component {
           endDate={this.state.endDates[0]}
           dateRangeEnum={this.state.dateRangeEnum}
         />
+        {/* <CumulativeGraph
+          className="mw-50"
+          resourceId={this.props.resourceId}
+          postcode={this.props.postcode}
+          startDates={this.state.startDates}
+          endDates={this.state.endDates}
+          dateRangeEnum={this.state.dateRangeEnum}
+        /> */}
       </div>
     );
   }

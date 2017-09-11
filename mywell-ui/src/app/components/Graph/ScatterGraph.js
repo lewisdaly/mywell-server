@@ -26,6 +26,24 @@ class ScatterGraph extends Component {
     }, 0);
   }
 
+  getMax() {
+    const { readings } = this.props.data;
+
+    let max = -1;
+    readings.forEach(reading => {
+      if (reading.value >= max) {
+        max = reading.value;
+      }
+    });
+
+    //Default to 10mm
+    if (max <= 0) {
+      return 10;
+    }
+
+    return max;
+  }
+
   transformData(readings) {
     return readings.map(reading => {
       return {
@@ -87,8 +105,20 @@ class ScatterGraph extends Component {
     }
   }
 
+  getDomain() {
+    const { startDate, endDate } = this.props;
+    const domain = {
+      x: [moment(startDate).format('x'), moment(endDate).format('x')],
+      y: [0, this.getMax()],
+    };
+
+    console.log("domain, ", domain);
+    return domain;
+  }
+
   render() {
     if (this.props.data.loading) {
+      //TODO: give loading a nice fixed height
       return <Loading/>
     }
 
@@ -101,10 +131,14 @@ class ScatterGraph extends Component {
         <p>Total Rainfall: {this.getTotal()} mm</p>
         <VictoryChart
           domainPadding={{y: 5}}
+          domain={this.getDomain()}
           theme={VictoryTheme.material}
         >
           <VictoryAxis
-            tickFormat={(tick) => moment(tick).format("DD-MMM")}
+            tickFormat={(tick) => {
+              console.log("tick", tick);
+              return moment(tick).format("DD-MMM")
+            }}
             style={{
               grid: {
                fill: "transparent",
