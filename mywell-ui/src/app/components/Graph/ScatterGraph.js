@@ -122,23 +122,19 @@ class ScatterGraph extends Component {
       return <Loading/>
     }
 
-    //TODO: fill in empty dates
-
-
-
     return (
       <div className={this.props.className}>
-        <p>Total Rainfall: {this.getTotal()} mm</p>
+        <p className="pt1 f5 f3-m f3-l fw2 black-50 mt0 lh-copy">Total Rainfall: <strong>{this.getTotal()} mm</strong></p>
         <VictoryChart
-          domainPadding={{y: 5}}
+          height={200}
+          animate={{ duration: 200 }}
+          padding={{top:15, bottom:25, left:50, right:30}}
+          domainPadding={{y: 0}}
           domain={this.getDomain()}
           theme={VictoryTheme.material}
         >
           <VictoryAxis
-            tickFormat={(tick) => {
-              console.log("tick", tick);
-              return moment(tick).format("DD-MMM")
-            }}
+            tickFormat={(tick) => moment(tick).format("DD-MMM")}
             style={{
               grid: {
                fill: "transparent",

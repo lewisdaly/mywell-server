@@ -88,7 +88,7 @@ class GraphPage extends Component {
         />
         <div className="cf ph2-ns">
           <ScatterGraph
-            className="fl w-100 w-100-m w-50-ns pa2"
+            className="fl w-100 w-100-m w-50-ns"
             resourceId={this.props.resourceId}
             postcode={this.props.postcode}
             startDate={this.state.startDates[0]}
@@ -96,7 +96,7 @@ class GraphPage extends Component {
             dateRangeEnum={this.state.dateRangeEnum}
           />
           <CumulativeGraph
-            className="fl w-100 w-100-m w-50-ns pa2"
+            className="fl w-100 w-100-m w-50-ns"
             resourceId={this.props.resourceId}
             postcode={this.props.postcode}
             startDates={this.state.startDates}
