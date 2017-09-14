@@ -18,4 +18,4 @@ COPY ./ ./
 
 ENV REACT_APP_GRAPHQL_ENDPOINT null
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "build"]
