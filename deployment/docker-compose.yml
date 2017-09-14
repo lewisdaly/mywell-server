@@ -35,5 +35,6 @@ services:
       - REACT_APP_GRAPHQL_ENDPOINT
       - UI_BUCKET_NAME
       - WEBPACK_DEV
+      - CONSOLE_DOMAIN_NAME
     privileged: true
     command: /usr/src/deploy/tools/entrypoint.sh

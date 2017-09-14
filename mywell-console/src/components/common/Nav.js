@@ -9,7 +9,6 @@ class Nav extends Component {
       <nav className="bg-light-red flex justify-between bb b--white-10">
         <div className="link white-70 hover-white no-underline flex items-center pa3" href="">
           <Link className="link dim white dib mr3" to="/" title="Home">Home</Link>
-          <Link className="link dim white dib mr3" to="/graphs" title="Graphs">Graphs</Link>
           <Link className="link dim white dib mr3" to="/resource" title="Graphs">Resource</Link>
         </div>
         {/* <div className="flex-grow pa3 flex items-center">

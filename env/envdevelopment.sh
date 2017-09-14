@@ -22,6 +22,7 @@ export TEMP_SERVER_FRONTEND_RULE="Host:${STAGE_PREFIX}mywell-server.vessels.tech
 export REACT_APP_GRAPHQL_ENDPOINT="https://dev2-mywell-gql.vessels.tech/graphql"
 export UI_BUCKET_NAME="dev2-mywell.vessels.tech"
 export WEBPACK_DEV=false
+export CONSOLE_DOMAIN_NAME="dev-mywell-console.vessels.tech"
 
 
 
