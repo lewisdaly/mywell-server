@@ -12,15 +12,22 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 console.log('ENV:\n  SERVER_URL:\t', process.env.SERVER_URL);
 console.log('  VERSION_NUMBER:\t', process.env.VERSION_NUMBER);
 console.log('  REACT_APP_GRAPHQL_ENDPOINT:\t', process.env.REACT_APP_GRAPHQL_ENDPOINT);
+console.log('  WEBPACK_DEV:\t', process.env.WEBPACK_DEV);
 
 console.log("__dirname: ", __dirname);
 
 
 //Settings
 //TODO: load from env variable
-const enableSourceMaps = true;
-const shouldMinify = true;
-const isProduction = true;
+let enableSourceMaps = true;
+let shouldMinify = true;
+let isProduction = true;
+
+if (process.env.WEBPACK_DEV === 'true') {
+  enableSourceMaps = false;
+  shouldMinify = false;
+  isProduction = false;
+}
 
 var ENV = process.env.npm_lifecycle_event;
 
