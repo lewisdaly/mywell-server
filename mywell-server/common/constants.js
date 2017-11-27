@@ -1,6 +1,7 @@
 var MessageType = {
   update: 0,
-  query: 1
+  SAVE: 'SAVE',
+  QUERY: 'QUERY'
 }
 
 module.exports = MessageType;

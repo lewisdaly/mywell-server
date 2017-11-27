@@ -45,10 +45,10 @@ module.exports = function(Message) {
 
   /*
   Some examples:
-  MARVI 000 POSTCODE DATE WELL_ID DEPTH
-  MARVI 999 POSTCODE                        - get the readings for this postcode
-  MARVI 999 POSTCODE VILLAGE_ID (2 digit)   - get the readings for this village
-  MARVI 999 POSTCODE RESOURCE_ID (4 digits) - get the readings for this village
+  MYWELL 000 POSTCODE DATE WELL_ID DEPTH
+  MYWELL 999 POSTCODE                        - get the readings for this postcode
+  MYWELL 999 POSTCODE VILLAGE_ID (2 digit)   - get the readings for this village
+  MYWELL 999 POSTCODE RESOURCE_ID (4 digits) - get the readings for this village
   */
   Message.sms = function(from, message) {
     const number = from;
@@ -87,24 +87,66 @@ module.exports = function(Message) {
 
   //Parse the message, and return an object to be updated, query to be made or an error
   parseMessage = function(message) {
-    let messageType;
-    const split = message.split(' ');
+    let MessageType = null;
+    const [serviceCode, messageCode, payload] = message.split(' ');
 
-    if (split[1] === '000') {
-      messageType = MessageType.update;
+    //TODO: make sure everything is not null/undefined
+    const errors = [];
+    if (isNullOrUndefined(serviceCode)) {
+      errors.append("Message must start with a service code.");
+    }
 
-      return parseUpdate(split);
-    } else if (split[1] === '999') {
-      messageType = MessageType.query;
+    //We aren't yet handling different services, default to MyWell for now
+    switch (serviceCode) {
+      case 'MYWL':
+      default:
+        console.log("serviceCode is: ", serviceCode);
+    }
 
-      return parseQuery(split);
-    } else {
-      return Promise.reject(new Error("Could not understand message. Message must start with 000 or 999."));
+    switch (messageCode.toLowerCase()) {
+      case 's':
+        messageType = MessageType.SAVE;
+        break;
+      case 'q':
+        messageType = MessageType.QUERY;
+        break;
+      default:
+        if (isNullOrUndefined(messageCode)) {
+          errors.append("Could not find message code.");
+        } else {
+          errors.append("Message Code must be S or Q");
+        }
+    }
+
+
+    if (isNullOrUndefined(payload) || payload.length === 0) {
+      errors.append("You must specify a payload");
+    }
+
+    if (errors.length > 0) {
+      return Promise.reject(errors.reduce((acc, curr) => acc + '\n' + curr));
+    }
+
+    switch (messageType) {
+      case MessageType.SAVE:
+        return parseSave(payload);
+        break;
+      case MessageType.QUERY:
+        return parseQuery(payload);
+        break;
     }
   }
 
+  parseSave = (payload) => {
+    console.log(payload.split('/'));
+  }
+
+  parseQuery = (payload) => {
+    console.log(payload.split('/'));
+  }
+
   //From an array of strings, parse the query message
-  parseQuery = function(splitMessage) {
+  parseQuery_old = function(splitMessage) {
     if (splitMessage.length < 3) {
       return Promise.reject(new Error("Incorrect number of args. Query requires at least 3"));
     }
