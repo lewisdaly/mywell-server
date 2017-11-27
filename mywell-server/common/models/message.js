@@ -93,7 +93,7 @@ module.exports = function(Message) {
     //TODO: make sure everything is not null/undefined
     const errors = [];
     if (isNullOrUndefined(serviceCode)) {
-      errors.append("Message must start with a service code.");
+      errors.push("Message must start with a service code.");
     }
 
     //We aren't yet handling different services, default to MyWell for now
@@ -112,19 +112,19 @@ module.exports = function(Message) {
         break;
       default:
         if (isNullOrUndefined(messageCode)) {
-          errors.append("Could not find message code.");
+          errors.push("Could not find message code.");
         } else {
-          errors.append("Message Code must be S or Q");
+          errors.push("Message Code must be S or Q");
         }
     }
 
     if (isNullOrUndefined(payload) || payload.length === 0) {
-      errors.append("You must specify a payload");
+      errors.push("You must specify a payload");
     }
 
     if (errors.length > 0) {
       //TODO: We could use the user's parameters here to inform this response
-      errors.append("For example: MYWL S 313603/1105/1130")
+      errors.push("For example: MYWL S 313603/1105/1130")
       return Promise.reject(errors.reduce((acc, curr) => acc + '\n' + curr));
     }
 
