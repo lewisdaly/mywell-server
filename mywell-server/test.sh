@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $DIR/../env/envdevelopment.sh
 
 if [ "$1" == "build" ]; then
   docker-compose -f docker-compose.test.yml build

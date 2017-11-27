@@ -87,7 +87,7 @@ module.exports = function(Message) {
 
   //Parse the message, and return an object to be updated, query to be made or an error
   parseMessage = function(message) {
-    let MessageType = null;
+    let messageType = null;
     const [serviceCode, messageCode, payload] = message.split(' ');
 
     //TODO: make sure everything is not null/undefined
@@ -118,12 +118,13 @@ module.exports = function(Message) {
         }
     }
 
-
     if (isNullOrUndefined(payload) || payload.length === 0) {
       errors.append("You must specify a payload");
     }
 
     if (errors.length > 0) {
+      //TODO: We could use the user's parameters here to inform this response
+      errors.append("For example: MYWL S 313603/1105/1130")
       return Promise.reject(errors.reduce((acc, curr) => acc + '\n' + curr));
     }
 
@@ -139,10 +140,12 @@ module.exports = function(Message) {
 
   parseSave = (payload) => {
     console.log(payload.split('/'));
+    return Promise.resolve(true);
   }
 
   parseQuery = (payload) => {
     console.log(payload.split('/'));
+    return Promise.resolve(true);
   }
 
   //From an array of strings, parse the query message

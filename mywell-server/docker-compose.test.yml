@@ -9,6 +9,17 @@ services:
      - ./node_modules:/usr/src/app/node_modules
     environment:
       - "TERM=xterm-256color"
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=mywell
+      - MYSQL_USER=mywell
+      - MYSQL_PASSWORD=password
+      - DB_HOST
+      - DB_NAME
+      - DB_PASSWORD
+      - DB_USER
+      - TWILIO_ACCOUNT_SID
+      - TWILIO_AUTH_TOKEN
+      - TWILIO_PHONE_NUMBER
     links:
     - test_db:db
     entrypoint:
