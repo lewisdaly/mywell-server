@@ -134,7 +134,7 @@ module.exports = function(Message) {
         return Message.parseSave(payload);
         break;
       case MessageType.QUERY:
-        return parseQuery(payload);
+        return Message.parseQuery(payload);
         break;
     }
   }
@@ -167,8 +167,27 @@ module.exports = function(Message) {
     return Message.processSave({postcode, date, resourceId, value});
   }
 
-  parseQuery = function(payload) {
-    console.log(payload.split('/'));
+  Message.parseQuery = function(payload) {
+    const parameterCount = payload.split('/').length;
+
+    let postcode, anonId, villageId, resourceId
+    switch (parameterCount) {
+      case 1:
+        [postcode] = payload.split('/');
+        break;
+      case 2:
+        [postcode, anonId] = payload.split('/');
+        if (anonId.length >= 2) {
+          villageId = anonId;
+        } else {
+          resouceId = anonId;
+        }
+        break;
+      default:
+        const errMessage = "Wrong number of parameters, expected 1 or 2.\nFor example: MYWL Q 313603/11"
+        return Promise.reject(new Error(errMessage));
+    }
+
     return Promise.resolve(true);
   }
 

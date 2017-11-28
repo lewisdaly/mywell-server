@@ -9,6 +9,45 @@ const Message = app.models.Message;
 describe('Message tests', function() {
 
   describe('Query', () => {
+    it('errors with too few parameters', () => {
+      return Message.parseMessage("MYWL Q")
+        .then(response => {
+          return Promise.reject("This should've failed");
+        })
+        .catch(err => {
+          if (err.message === "This should've failed") {
+            return Promise.reject(err);
+          }
+
+          console.log(err.message);
+        });
+    });
+
+    it('errors with too many parameters', () => {
+      return Message.parseMessage("MYWL Q 313603/1104/12")
+        .then(response => {
+          return Promise.reject("This should've failed");
+        })
+        .catch(err => {
+          if (err.message === "This should've failed") {
+            return Promise.reject(err);
+          }
+
+          console.log(err.message);
+        });
+    });
+
+
+  });
+
+
+  /**
+    MYWL Q 313603/1024
+    MYWL Q 313603/10
+    MYWL Q 313603
+  */
+
+  describe('Save', () => {
     it('errors with old query', () => {
       const expected = 'Message Code must be S or Q\nFor example: MYWL S 313603/1105/1130'
 
