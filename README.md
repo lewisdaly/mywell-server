@@ -160,7 +160,7 @@ Where:
 <RESOURCE_ID> is a 4 digit ID, specifying a specific resource within a village. The first 2 digits of the resourceId are the villageId.
 
 
-for example:
+## for example:
 ``` bash
 #for the service MyWell, get the report for the resources in postcode 313603
 MYWL Q 313603
@@ -170,5 +170,22 @@ MYWL Q 313603/15
 
 #for the service MyWell, get the report for a single resource with id: 1105 in postcode 313603
 MYWL Q 313603/1105
-
 ```
+
+
+## example responses:
+`MYWL Q 313603`
+>For pincode 313603, the average depth to water level is 45.54m.
+
+`MYWL Q 313603/15`
+>Badgaon has an average depth to water level of 33.34m
+
+`MYWL Q 313603/1511`
+>Well 11 in Badgaon has a depth to water level of 23.34m
+
+`MYWL Q 313603/1581`
+>Raingauge 81 in Badgaon's last reading was 11mm
+
+next steps:
+- Add the cumulative rainfall into the village and pincode query, eg:
+  >For pincode 313603, the average depth to water level is 45.54m. The has been 12mm of rain in the last 1 month.`

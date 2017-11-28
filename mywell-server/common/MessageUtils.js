@@ -57,6 +57,21 @@ const getReadingHeadingForType = (resourceType) => {
   }
 }
 
+module.exports.getReadingHeadingForType = getReadingHeadingForType;
+
+module.exports.formatResourceForType = (resourceType) => {
+  switch (resourceType) {
+    case 'well':
+      return "Well";
+    case 'checkdam':
+      return 'Checkdam'
+    case 'raingauge':
+      return 'Rainfall Station'
+    default:
+      throw new Error(`Unknown resource type ${resourceType}`);
+  }
+}
+
 const getReadingEndingForType = (resourceType) => {
   switch (resourceType) {
     case 'well':
@@ -68,6 +83,9 @@ const getReadingEndingForType = (resourceType) => {
       throw new Error(`Unknown resource type ${resourceType}`);
   }
 }
+
+module.exports.getReadingUnits = getReadingEndingForType;
+
 
 /**
  * Take a Resource object, convert to a nice message format

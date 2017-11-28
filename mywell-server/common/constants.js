@@ -1,7 +1,16 @@
-var MessageType = {
+const MessageType = {
   update: 0,
   SAVE: 'SAVE',
   QUERY: 'QUERY'
+};
+
+const QueryType = {
+  POSTCODE: 'POSTCODE',
+  VILLAGE: 'VILLAGE',
+  RESOURCE:  'RESOURCE',
 }
 
-module.exports = MessageType;
+module.exports = {
+  MessageType,
+  QueryType
+}

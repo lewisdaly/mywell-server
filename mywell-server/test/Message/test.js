@@ -37,6 +37,20 @@ describe('Message tests', function() {
         });
     });
 
+    it('queries for a postcode', () => {
+      return Message.parseMessage("MYWL Q 313603")
+        .then(response => {
+          console.log(response);
+        });
+    });
+
+    it.only('queries for a villageId', () => {
+      return Message.parseMessage("MYWL Q 313603/11")
+        .then(response => {
+          console.log(response);
+        });
+    });
+
 
   });
 
