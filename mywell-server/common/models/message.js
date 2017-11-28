@@ -305,7 +305,7 @@ module.exports = function(Message) {
     .then(villages => {
       console.log('villages', villages);
       if (villages.length == 0) {
-        return Promise.reject(new Error("No villages exist for this postcode."));
+        return Promise.reject(new Error(`Could not find pincode: ${postcode}.`));
       }
 
       return Message.app.models.resource.findById(resourceId)
