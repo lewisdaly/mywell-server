@@ -125,7 +125,8 @@ module.exports = function(Message) {
     if (errors.length > 0) {
       //TODO: We could use the user's parameters here to inform this response
       errors.push("For example: MYWL S 313603/1105/1130")
-      return Promise.reject(errors.reduce((acc, curr) => acc + '\n' + curr));
+      const errorMessage = errors.reduce((acc, curr) => acc + '\n' + curr);
+      return Promise.reject(new Error(errorMessage));
     }
 
     switch (messageType) {
@@ -139,8 +140,31 @@ module.exports = function(Message) {
   }
 
   parseSave = (payload) => {
-    console.log(payload.split('/'));
-    return Promise.resolve(true);
+    const parameterCount = payload.split('/').length;
+
+    let postcode, resourceId, dateString, reading;
+    switch (parameterCount) {
+      case 3:
+        [postcode, resourceId, reading] = payload.split('/');
+        break;
+      case 4:
+        [postcode, resourceId, dateString, reading] = payload.split('/');
+        break;
+      default:
+        const errMessage = "Wrong number of parameters, expected 3 or 4.\nFor example: MYWL S 313603/1105/1130"
+        return Promise.reject(new Error(errMessage));
+    }
+
+    let date = moment();
+    if (!isNullOrUndefined(dateString)) {
+      date = moment(dateString, "YYMMDD");
+
+      if(!date.isValid()) {
+        return Promise.reject(new Error("Incorrect date format. Expected YYMMDD\nFor example: MYWL S 313603/1105/170101/1130"));
+      }
+    }
+
+    return processSave({postcode, date, resourceId, reading});
   }
 
   parseQuery = (payload) => {
@@ -270,6 +294,61 @@ module.exports = function(Message) {
       };
 
       return MessageUtils.convertResourceToMessage(reading);
+    });
+  }
+
+  processSave = ({postcode, date, resourceId, reading}) => {
+    console.log("processing save");
+
+    //check to see if postcode exists:
+    return Message.app.models.village.find({"where":{"postcode":postcode}})
+    .then(villages => {
+      console.log('villages', villages);
+      if (villages.length == 0) {
+        return Promise.reject(new Error("No villages exist for this postcode."));
+      }
+
+      return Message.app.models.resource.findById(resourceId)
+    })
+    .then(resource => {
+      console.log('resource', resource);
+      if (isNullOrUndefined(resource)) {
+        return Promise.reject(new Error("Could not find resource with ID: " + resourceId));
+      }
+
+      const villageID = `${resourceId}`.substring(0,2);
+
+      //Parse the depth:
+      let depthFloat;
+      try {
+        depthFloat = (parseFloat(depthString)/100).toFixed(2);
+      } catch (err) {
+        return Promise.reject(new Error("Reading value is invalid"));
+      }
+
+      if (isNullOrUndefined(depthFloat)) {
+        return Promise.reject(new Error("Reading value is not found."));
+      }
+
+      //TODO: We could probably also check to make sure the depth doesn't exceed the max of the resource
+      //Assume that the water level is valid for now.
+      //make a reading object
+      const reading = {
+        resourceId,
+        date,
+        value: depthFloat,
+        village_id: villageID,
+        postcode,
+      };
+
+      return Message.app.models.Reading.create(reading);
+    })
+    .then(savedReading => {
+      return Promise.resolve("Reading successfully recorded. ReadingId:" + savedReading.id);
+    })
+    .catch(err => {
+      console.log(err);
+      return Promise.reject(err);
     });
   }
 

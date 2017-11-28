@@ -1,6 +1,7 @@
 version: '2'
 services:
   mywell-server:
+    container_name: test-mywell-server
     build: .
     ports:
       - "3000:3000"
@@ -21,13 +22,14 @@ services:
       - TWILIO_AUTH_TOKEN
       - TWILIO_PHONE_NUMBER
     links:
-    - test_db:db
+    - mywell-db:db
     entrypoint:
       - tail
       - -f
       - /dev/null
 
-  test_db:
+  mywell-db:
+    container_name: test-mywell-db
     image: mariadb:10.0
     environment:
       - MYSQL_ROOT_PASSWORD=password
