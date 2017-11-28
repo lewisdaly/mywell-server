@@ -7,7 +7,7 @@ const mockDate = require('mockdate');
 const Message = app.models.Message;
 
 describe('Message tests', function() {
-  this.timeout(4000);
+  this.timeout(10000);
 
   describe('Query', () => {
     it('errors with old query', () => {
@@ -30,7 +30,7 @@ describe('Message tests', function() {
     });
 
     it.only('handles a save with a date', () => {
-      return parseMessage("MYWL S 313603/1105/170601/1100")
+      return Message.parseMessage("MYWL S 313603/1112/170601/1100")
         .then(response => {
           console.log("response, ", response);
         })

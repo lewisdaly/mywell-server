@@ -82,11 +82,11 @@ module.exports = function(Message) {
   );
 
   Message.testSms = function(no, msg) {
-    return parseMessage(msg);
+    return Message.parseMessage(msg);
   }
 
   //Parse the message, and return an object to be updated, query to be made or an error
-  parseMessage = function(message) {
+  Message.parseMessage = function(message) {
     let messageType = null;
     const [serviceCode, messageCode, payload] = message.split(' ');
 
@@ -131,7 +131,7 @@ module.exports = function(Message) {
 
     switch (messageType) {
       case MessageType.SAVE:
-        return parseSave(payload);
+        return Message.parseSave(payload);
         break;
       case MessageType.QUERY:
         return parseQuery(payload);
@@ -139,16 +139,16 @@ module.exports = function(Message) {
     }
   }
 
-  parseSave = (payload) => {
+  Message.parseSave = function(payload) {
     const parameterCount = payload.split('/').length;
 
-    let postcode, resourceId, dateString, reading;
+    let postcode, resourceId, dateString, value;
     switch (parameterCount) {
       case 3:
-        [postcode, resourceId, reading] = payload.split('/');
+        [postcode, resourceId, value] = payload.split('/');
         break;
       case 4:
-        [postcode, resourceId, dateString, reading] = payload.split('/');
+        [postcode, resourceId, dateString, value] = payload.split('/');
         break;
       default:
         const errMessage = "Wrong number of parameters, expected 3 or 4.\nFor example: MYWL S 313603/1105/1130"
@@ -164,10 +164,10 @@ module.exports = function(Message) {
       }
     }
 
-    return processSave({postcode, date, resourceId, reading});
+    return Message.processSave({postcode, date, resourceId, value});
   }
 
-  parseQuery = (payload) => {
+  parseQuery = function(payload) {
     console.log(payload.split('/'));
     return Promise.resolve(true);
   }
@@ -206,11 +206,11 @@ module.exports = function(Message) {
     });
   }
 
-  parseQueryPostcode = (postcode, cb) => {
+  parseQueryPostcode = function(postcode, cb) {
     console.log('TODO: parse postcode');
   }
 
-  parseQueryVillage = (postcode, villageId) => {
+  parseQueryVillage = function(postcode, villageId){
     const app = Message.app;
     const lastMonth =  moment().subtract(1, 'months').format('Y-M');
     const lastYear = moment().subtract(12, 'months').format('Y-M');
@@ -256,7 +256,7 @@ module.exports = function(Message) {
     });
   }
 
-  parseQueryResource = (postcode, resourceId) => {
+  parseQueryResource = function(postcode, resourceId) {
     const app = Message.app;
     const lastMonth =  moment().subtract(1, 'months').format('Y-M');
     const lastYear = moment().subtract(12, 'months').format('Y-M');
@@ -297,8 +297,8 @@ module.exports = function(Message) {
     });
   }
 
-  processSave = ({postcode, date, resourceId, reading}) => {
-    console.log("processing save");
+  Message.processSave = function({postcode, date, resourceId, value}) {
+    console.log("processing save", value);
 
     //check to see if postcode exists:
     return Message.app.models.village.find({"where":{"postcode":postcode}})
@@ -313,21 +313,20 @@ module.exports = function(Message) {
     .then(resource => {
       console.log('resource', resource);
       if (isNullOrUndefined(resource)) {
-        return Promise.reject(new Error("Could not find resource with ID: " + resourceId));
+        const message = `Could not find resource with ID:${resourceId} in Pincode:${postcode}`
+        return Promise.reject(new Error(message));
       }
 
       const villageID = `${resourceId}`.substring(0,2);
 
-      //Parse the depth:
-      let depthFloat;
-      try {
-        depthFloat = (parseFloat(depthString)/100).toFixed(2);
-      } catch (err) {
-        return Promise.reject(new Error("Reading value is invalid"));
-      }
+      //TODO: figure out the type of reading, and set units based on resource type
 
-      if (isNullOrUndefined(depthFloat)) {
-        return Promise.reject(new Error("Reading value is not found."));
+      //Parse the depth:
+      let valueFloat;
+      try {
+        valueFloat = (parseFloat(value)/100).toFixed(2);
+      } catch (err) {
+        return Promise.reject(new Error("Reading value is invalid. Please enter your reading in cm."));
       }
 
       //TODO: We could probably also check to make sure the depth doesn't exceed the max of the resource
@@ -336,7 +335,7 @@ module.exports = function(Message) {
       const reading = {
         resourceId,
         date,
-        value: depthFloat,
+        value: valueFloat,
         village_id: villageID,
         postcode,
       };
