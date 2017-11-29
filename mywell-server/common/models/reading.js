@@ -25,8 +25,6 @@ const formatReadingTsv = (reading) => {
          reading.resourceId + '\t' +
          moment(reading.date).format() + '\t' +
          reading.value + '\n';
-
-  // return `${reading.postcode}\t${reading.resourceId}\t${reading.date}\t${reading.value}\n`
 }
 
 module.exports = function(Reading) {
@@ -151,24 +149,42 @@ module.exports = function(Reading) {
 
   Reading.remoteMethod('exportReadings', {
     accepts: [
-      {arg: 'postcode', type:'string', description: 'The postcode to download readings for'},
+      {arg: 'pincodes', type:'string', required: true, description: 'A comma seperated list of 1 or more pincodes to download readings for'},
     ],
     description: 'Exports all readings from a given postcode',
     returns: {arg: 'body', type: 'file', root: true},
     http: {path: '/exportReadings', verb: 'get', status:200}
   });
 
-  Reading.exportReadings = (postcode) => {
+  Reading.exportReadings = (pincodes) => {
+    const pincodeList = pincodes.split(',')
+      .filter(pincodeString => pincodeString.length > 0);
+
+    if (pincodeList.length === 0) {
+      return Promise.reject(new Error("Pincodes must be a comma separated list of 1 or more pincodes to download."));
+    }
+
+    //eg. {"where": {"or": [{"postcode": 313603}]}}
+    const or = pincodeList.map(postcode => {
+      return { postcode };
+    });
     const filter = {
       where: {
-        postcode: postcode
+        or
       }
-    }
+    };
+
+    console.log("getting readings for filter:", filter);
     return Reading.app.models.reading.find(filter)
     .then(readings => {
-      return readings.reduce((acc, reading) => {
+      console.log('got readings', readings.length);
+
+      const tsvString = readings.reduce((acc, reading) => {
         return acc + formatReadingTsv(reading);
       }, '');
+
+      //return just one line - see if the bottleneck is at the ORM level, or transport layer.
+      return "313603	1170	2017-08-18T00:00:00+00:00\t123\n"
     });
   }
 

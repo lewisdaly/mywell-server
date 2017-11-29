@@ -182,3 +182,30 @@ SMA 999 313603 1560              #Query information from resource 1560 in pincod
 ### MyWell SMS Screenshots
 
 [image-17-sms-screenshots]
+
+
+
+## Getting Data in and out of MyWell
+
+MyWell allows you to export your readings into a tsv format, which can be read by Excel or Google Sheets.
+
+The url for downloading readings is:
+```
+https://mywell.vessels.tech/api/readings/exportReadings?pincodes=<pincode list>"
+```
+
+where `<pincode list>` is a list of postcodes you want to get the reading data for, separated by commas.
+For example, to get the readings from postcodes 313603 and 313604, you would use the url:
+```
+https://mywell.vessels.tech/api/readings/exportReadings?postcodes=313603,313604"
+```
+
+*note: For postcodes with lots of readings, please be patient! It can take a while to download all readings.*
+
+### Google Sheets
+
+You can use the `IMPORTDATA` function in google sheets.
+
+1. On a new sheet go to cell A2, and press `=`
+2. Enter the function IMPORTDATA(<url>), where <url> is the url for the readings you want to download
+3. The table should load sucessfully.
