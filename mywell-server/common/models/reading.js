@@ -21,9 +21,10 @@ const getError = function(code, errorMessage) {
 };
 
 const formatReadingTsv = (reading) => {
-  return reading.postcode + '\t' +
-         reading.resourceId + '\t' +
-         moment(reading.date).format() + '\t' +
+  const separator = ',';
+  return reading.postcode + separator +
+         reading.resourceId + separator +
+         moment(reading.date).format() + separator +
          reading.value + '\n';
 }
 
@@ -174,17 +175,20 @@ module.exports = function(Reading) {
       }
     };
 
-    console.log("getting readings for filter:", filter);
+    console.log("getting readings for filter:", JSON.stringify(filter));
     return Reading.app.models.reading.find(filter)
     .then(readings => {
       console.log('got readings', readings.length);
+
+      //TODO: save as tmp file, and stream file to user?
+      //TODO: save as tmp file, and redirect user to storage path?
 
       const tsvString = readings.reduce((acc, reading) => {
         return acc + formatReadingTsv(reading);
       }, '');
 
       //return just one line - see if the bottleneck is at the ORM level, or transport layer.
-      return "313603	1170	2017-08-18T00:00:00+00:00\t123\n"
+      return "313603,1170,2017-08-18T00:00:00+00:00,123\n"
     });
   }
 
