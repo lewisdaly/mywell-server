@@ -30,9 +30,13 @@ services:
           memory: 350M
         reservations:
           memory: 200M
-      # restart_policy:
-      #   condition: on-failure
-      #   delay: 5s
+      update_config:
+        parallelism: 1
+        delay: 2m
+      restart_policy:
+        condition: on-failure
+      #this may not fix the oom problem, but by delaying, hopefully memory has
+        delay: 5m
       #   max_attempts: 3
       #   window: 120s
 
