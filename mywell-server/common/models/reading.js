@@ -147,12 +147,15 @@ module.exports = function(Reading) {
     return weekStartForWeeksAgo(weeksAgo -1 , previousWeekStart, weeks);
   }
 
-
+  /**
+   * TODO: a better implementation for this would be to have a separate data export pipeline.
+   * this will do for now however.
+   */
   Reading.remoteMethod('exportReadings', {
     accepts: [
-      {arg: 'pincodes', type:'string', required: true, description: 'A comma seperated list of 1 or more pincodes to download readings for'},
+      {arg: 'pincodes', type:'string', required: true, description: 'A comma seperated list of 1 or more pincodes to download readings for. '},
     ],
-    description: 'Exports all readings from a given postcode',
+    description: 'Exports all readings for the last 3 from a given postcode.',
     returns: {arg: 'body', type: 'file', root: true},
     http: {path: '/exportReadings', verb: 'get', status:200}
   });
@@ -163,6 +166,10 @@ module.exports = function(Reading) {
 
     if (pincodeList.length === 0) {
       return Promise.reject(new Error("Pincodes must be a comma separated list of 1 or more pincodes to download."));
+    }
+
+    if (pincodes.length > 5) {
+      return Promise.reject(new Error("Cannot search for more than 5 pincodes at a time."));
     }
 
     //eg. {"where": {"or": [{"postcode": 313603}]}}
@@ -176,16 +183,23 @@ module.exports = function(Reading) {
     };
 
     console.log("getting readings for filter:", JSON.stringify(filter));
+    //It's this filter that is the problem...
+
+    /* potential solutions:
+      - daily cron job that exports all readings for that day out (don't like, as bad for demo purposes)
+      - try streaming to a file, and then redirect to that file
+      - allow for direct sql connection (ew)
+      - limit to just n years of data at a time? maybe 3
+    */
     return Reading.app.models.reading.find(filter)
     .then(readings => {
       console.log('got readings', readings.length);
 
       //TODO: save as tmp file, and stream file to user?
       //TODO: save as tmp file, and redirect user to storage path?
-
-      const tsvString = readings.reduce((acc, reading) => {
-        return acc + formatReadingTsv(reading);
-      }, '');
+      // const tsvString = readings.reduce((acc, reading) => {
+      //   return acc + formatReadingTsv(reading);
+      // }, '');
 
       //return just one line - see if the bottleneck is at the ORM level, or transport layer.
       return "313603,1170,2017-08-18T00:00:00+00:00,123\n"
