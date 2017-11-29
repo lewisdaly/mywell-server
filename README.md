@@ -106,3 +106,86 @@ docker cp /tmp/2017-09-02-production-mywell.sql mywell-db:/tmp/
 docker exec -it mywell-db bash
 mysql  mywell -u $MYSQL_USER -p$MYSQL_ROOT_PASSWORD < /tmp/2017-09-02-production-mywell.sql
 ```
+
+
+### SMS Queries:
+
+
+users can submit readings over a single SMS message.
+
+The format for these queries starts as follows:
+```
+[<SERVICE_CODE> ]<MESSAGE_CODE>
+```
+where <SERVICE_CODE> is the optional code specifying the service. The default for MyWell will be `MYWL`.
+
+>*A note about SERVICE_CODES*
+Service codes can serve a dual purpose in the MyWell system. In India, SMS providers share 1 number between many customers. As a result, users are required to specify a code at the start of the SMS, in order to get the message routed to the correct place.
+
+>For deployments of MyWell in other regions, this may or may not be required, but this design decision gives us the ability to share numbers between multiple deployments of MyWell, if this is required in the future.
+
+
+MESSAGE_CODE is a code denoting the type of message the user will be sending. They are:
+
+- `S` - saves a new reading.
+- `Q` - queries an existing resource. This can be by postcode, village, or individual resource.
+
+#### save message:
+
+```
+S <POSTCODE>/<RESOURCE_ID>/[<DATE>/]<READING>
+```
+
+The date must be in a YYMMD format, and is optional. If not specified, the reading will default to the current date.
+
+for example:
+```bash
+# for the service MyWell, save a reading of 3000 units for the resource 1501 in postcode 313603
+MYWL S 313603/1501/3000
+
+# or, specifying the date for a past reading:
+MYWL S 313603/1501/170101/3000
+#will save a reading of 3000 units on the 1st of January, 2017 for the resource 1501 in postcode 313603
+```
+
+#### query message:
+
+```
+Q <POSTCODE>[/<VILLAGE_ID>|/<RESOURCE_ID>]
+```
+
+Where:
+<POSTCODE> is the postcode containing the resources.
+<VILLAGE_ID> is a 2 digit ID referring to a group of resources
+<RESOURCE_ID> is a 4 digit ID, specifying a specific resource within a village. The first 2 digits of the resourceId are the villageId.
+
+
+## for example:
+``` bash
+#for the service MyWell, get the report for the resources in postcode 313603
+MYWL Q 313603
+
+#for the service MyWell, get the report for the resources in village 15 in postcode 313603
+MYWL Q 313603/15
+
+#for the service MyWell, get the report for a single resource with id: 1105 in postcode 313603
+MYWL Q 313603/1105
+```
+
+
+## example responses:
+`MYWL Q 313603`
+>For pincode 313603, the average depth to water level is 45.54m.
+
+`MYWL Q 313603/15`
+>Badgaon has an average depth to water level of 33.34m
+
+`MYWL Q 313603/1511`
+>Well 11 in Badgaon has a depth to water level of 23.34m
+
+`MYWL Q 313603/1581`
+>Raingauge 81 in Badgaon's last reading was 11mm
+
+next steps:
+- Add the cumulative rainfall into the village and pincode query, eg:
+  >For pincode 313603, the average depth to water level is 45.54m. The has been 12mm of rain in the last 1 month.`

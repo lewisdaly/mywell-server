@@ -20,6 +20,15 @@ const getError = function(code, errorMessage) {
   return getError;
 };
 
+const formatReadingTsv = (reading) => {
+  return reading.postcode + '\t' +
+         reading.resourceId + '\t' +
+         moment(reading.date).format() + '\t' +
+         reading.value + '\n';
+
+  // return `${reading.postcode}\t${reading.resourceId}\t${reading.date}\t${reading.value}\n`
+}
+
 module.exports = function(Reading) {
 
   /**
@@ -139,6 +148,35 @@ module.exports = function(Reading) {
     return weekStartForWeeksAgo(weeksAgo -1 , previousWeekStart, weeks);
   }
 
+
+  Reading.remoteMethod('exportReadings', {
+    accepts: [
+      {arg: 'postcode', type:'string', description: 'The postcode to download readings for'},
+    ],
+    description: 'Exports all readings from a given postcode',
+    returns: {arg: 'body', type: 'file', root: true},
+    http: {path: '/exportReadings', verb: 'get', status:200}
+  });
+
+  Reading.exportReadings = (postcode) => {
+    const filter = {
+      where: {
+        postcode: postcode
+      }
+    }
+    return Reading.app.models.reading.find(filter)
+    .then(readings => {
+      return readings.reduce((acc, reading) => {
+        return acc + formatReadingTsv(reading);
+      }, '');
+    });
+  }
+
+  //Make sure the exportReadings response is plain text
+  Reading.afterRemote('exportReadings', function(context, remoteMethodOutput, next) {
+    context.res.setHeader('Content-Type', 'text/plain');
+    context.res.end(context.result);
+  });
 
   /**
    * Endpoint for excel uploading
