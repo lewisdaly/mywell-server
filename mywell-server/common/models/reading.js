@@ -168,7 +168,7 @@ module.exports = function(Reading) {
       return Promise.reject(new Error("Pincodes must be a comma separated list of 1 or more pincodes to download."));
     }
 
-    if (pincodes.length > 5) {
+    if (pincodeList.length > 5) {
       return Promise.reject(new Error("Cannot search for more than 5 pincodes at a time."));
     }
 
