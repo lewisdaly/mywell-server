@@ -20,12 +20,21 @@ const getError = function(code, errorMessage) {
   return getError;
 };
 
+const separator = ',';
 const formatReadingTsv = (reading) => {
-  const separator = ',';
   return reading.postcode + separator +
          reading.resourceId + separator +
          moment(reading.date).format() + separator +
-         reading.value + '\n';
+         reading.value + separator +
+         reading.type;
+}
+
+const getHeadingTsv = () => {
+  return 'pincode' + separator +
+         'resourceId' + separator +
+         'date' + separator +
+         'value'+ separator +
+         'type';
 }
 
 module.exports = function(Reading) {
@@ -155,7 +164,7 @@ module.exports = function(Reading) {
     accepts: [
       {arg: 'pincodes', type:'string', required: true, description: 'A comma seperated list of 1 or more pincodes to download readings for. '},
     ],
-    description: 'Exports all readings for the last 3 from a given postcode.',
+    description: 'Exports all readings for the given pincodes. Limited to 10,000 readings.',
     returns: {arg: 'body', type: 'file', root: true},
     http: {path: '/exportReadings', verb: 'get', status:200}
   });
@@ -179,11 +188,10 @@ module.exports = function(Reading) {
     const filter = {
       where: {
         or
-      }
+      },
+      limit: 10000,
+      order: "date DESC"
     };
-
-    console.log("getting readings for filter:", JSON.stringify(filter));
-    //It's this filter that is the problem...
 
     /* potential solutions:
       - daily cron job that exports all readings for that day out (don't like, as bad for demo purposes)
@@ -195,14 +203,13 @@ module.exports = function(Reading) {
     .then(readings => {
       console.log('got readings', readings.length);
 
-      //TODO: save as tmp file, and stream file to user?
-      //TODO: save as tmp file, and redirect user to storage path?
-      // const tsvString = readings.reduce((acc, reading) => {
-      //   return acc + formatReadingTsv(reading);
-      // }, '');
+      //More efficent than using array.reduce
+      const tsvArray = [];
+      for (var i = 0; i < readings.length; i++) {
+        tsvArray[i] = formatReadingTsv(readings[i]);
+      }
 
-      //return just one line - see if the bottleneck is at the ORM level, or transport layer.
-      return "313603,1170,2017-08-18T00:00:00+00:00,123\n"
+      return getHeadingTsv() + '\n' + tsvArray.join('\n');
     });
   }
 
