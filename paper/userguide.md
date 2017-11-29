@@ -187,7 +187,7 @@ SMA 999 313603 1560              #Query information from resource 1560 in pincod
 
 ## Getting Data in and out of MyWell
 
-MyWell allows you to export your readings into a tsv format, which can be read by Excel or Google Sheets.
+MyWell allows you to export your readings into a tsv format, which can be read by Excel or Google Sheets. The export has a limit of 10,000 rows. If you need to export more than this number of readings, contact support for other options.
 
 The url for downloading readings is:
 ```
@@ -208,4 +208,8 @@ You can use the `IMPORTDATA` function in google sheets.
 
 1. On a new sheet go to cell A2, and press `=`
 2. Enter the function IMPORTDATA(<url>), where <url> is the url for the readings you want to download
-3. The table should load sucessfully.
+3. The table should load sucessfully. If it doesn't load, make sure that your url is formatted correctly.
+
+You can see an example of this working here: https://docs.google.com/spreadsheets/d/1D-SNQevbVzt5Nks2rLOlehaxQDpeujNdkBzdYTGlMgQ/edit?usp=sharing
+
+Feel free to copy this spreadsheet, and change the postcodes to the postcodes you require.

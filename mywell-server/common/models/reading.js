@@ -25,16 +25,14 @@ const formatReadingTsv = (reading) => {
   return reading.postcode + separator +
          reading.resourceId + separator +
          moment(reading.date).format() + separator +
-         reading.value + separator +
-         reading.type;
+         reading.value;
 }
 
 const getHeadingTsv = () => {
   return 'pincode' + separator +
          'resourceId' + separator +
          'date' + separator +
-         'value'+ separator +
-         'type';
+         'value';
 }
 
 module.exports = function(Reading) {
