@@ -152,7 +152,7 @@ MyWell has a numbers in the following countries:
 
 | Country       | Number|Service Code
 | ------------- |:-------------:|:-------------:
-| India         | `90000000`| MYWL
+| India         | `+91 97655 56555`| MYWL
 | Laos          | `coming soon`| *none*
 | Australia     | `coming soon`| *none*
 
