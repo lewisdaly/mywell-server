@@ -453,7 +453,9 @@ module.exports = function(Reading) {
         let err = new Error("Reading recorded, but resource not updated. A newer reading exists.")
         console.log("warning: ", err);
         err.statusCode = 206;
-        return next(err);
+        //If we return an error, loopback disregards the statusCode;
+        // return next(err);
+        return next();
       }
     });
    });

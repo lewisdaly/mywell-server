@@ -206,7 +206,7 @@ https://mywell.vessels.tech/api/readings/exportReadings?postcodes=313603,313604"
 
 You can use the `IMPORTDATA` function in google sheets.
 
-1. On a new sheet go to cell A2, and press `=`
+1. On a new sheet go to cell A1, and press `=`
 2. Enter the function IMPORTDATA(<url>), where <url> is the url for the readings you want to download
 3. The table should load sucessfully. If it doesn't load, make sure that your url is formatted correctly.
 
