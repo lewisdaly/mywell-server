@@ -33,6 +33,7 @@
     "victory": "^0.21.4"
   },
   "devDependencies": {
+    "@ionic/app-scripts": "^3.1.4",
     "angular-mocks": "^1.5.0",
     "autoprefixer": "^6.0.3",
     "babel-core": "^6.2.1",
@@ -82,7 +83,7 @@
     "ios",
     {
       "platform": "ios",
-      "version": "",
+      "version": "4.3.0",
       "locator": "ios"
     }
   ]
