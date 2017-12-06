@@ -47,5 +47,13 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-plugin-hidden-statusbar": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-hidden-statusbar"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

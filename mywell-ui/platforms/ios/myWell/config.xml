@@ -65,11 +65,11 @@
     <preference name="PaginationMode" value="unpaginated" />
     <preference name="StatusBarOverlaysWebView" value="false" />
     <preference name="StatusBarStyle" value="default" />
+    <preference name="Fullscreen" value="true" />
     <preference name="webviewbounce" value="false" />
     <preference name="UIWebViewBounce" value="false" />
     <preference name="android-minSdkVersion" value="16" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
     <preference name="SplashShowOnlyFirstTime" value="false" />
-    <preference name="CodePushDeploymentKey" value="0d4npXG_08nY9YbvqDIBZqL-AQaa4JbCl_GyM" />
 </widget>

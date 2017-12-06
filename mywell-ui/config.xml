@@ -16,8 +16,10 @@
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
+    <feature name="StatusBar">
+        <param name="ios-package" onload="true" value="CDVStatusBar" />
+    </feature>
     <platform name="android">
-        <preference name="CodePushDeploymentKey" value="HtPOwj7ZnjrmFmdjRTHJxNP8g-8j4JbCl_GyM" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon2.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon2.png" />
         <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon2.png" />
@@ -38,7 +40,6 @@
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <platform name="ios">
-        <preference name="CodePushDeploymentKey" value="0d4npXG_08nY9YbvqDIBZqL-AQaa4JbCl_GyM" />
         <preference name="StatusBarOverlaysWebView" value="false" />
         <preference name="StatusBarStyle" value="default" />
         <icon height="29" src="resources/ios/icon/Icon-App-29x29@1x.png" width="29" />

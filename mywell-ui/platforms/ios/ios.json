@@ -19,6 +19,26 @@
                         {
                             "xml": "<preference name=\"StatusBarStyle\" value=\"lightcontent\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<preference name=\"Fullscreen\" value=\"true\" />",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "*-Info.plist": {
+                "parents": {
+                    "UIStatusBarHidden": [
+                        {
+                            "xml": "<true />",
+                            "count": 1
+                        }
+                    ],
+                    "UIViewControllerBasedStatusBarAppearance": [
+                        {
+                            "xml": "<false />",
+                            "count": 1
                         }
                     ]
                 }
@@ -30,6 +50,9 @@
             "PACKAGE_NAME": "com.ionicframework.ionicrainapp175406"
         },
         "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.ionicframework.ionicrainapp175406"
+        },
+        "cordova-plugin-hidden-statusbar": {
             "PACKAGE_NAME": "com.ionicframework.ionicrainapp175406"
         }
     },
@@ -46,6 +69,7 @@
     ],
     "plugin_metadata": {
         "cordova-plugin-whitelist": "1.2.2",
-        "cordova-plugin-statusbar": "2.3.1-dev"
+        "cordova-plugin-statusbar": "2.3.1-dev",
+        "cordova-plugin-hidden-statusbar": "1.0.0"
     }
 }
