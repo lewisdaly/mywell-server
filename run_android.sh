@@ -1,15 +1,16 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+MYWELL_UI_DIR="$DIR"/mywell-ui/src
 
-if [ "$1" == "development" ]; then
-  source "$DIR/env/envdevelopment.sh"
-else
-  source "$DIR/env/envproduction.sh"
+export VERSION_NUMBER=1.3.1
+export ENABLE_LOGS=true
+
+cd /Users/lewis/developer/mywell/src/mywell-ui && npm run build:development
+
+if [ "$1" == "emulator" ]; then
+  ionic cordova run android --emulator
+  exit 0
 fi
 
-cd /Users/lewis/developer/mywell/src/mywell-ui/src
-gulp replace --env prod
-gulp babel || exit 1
-
-ionic run android
+ionic cordova run android --device
