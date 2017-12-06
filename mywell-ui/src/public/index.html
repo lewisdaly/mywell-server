@@ -11,7 +11,7 @@
                  script-src 'self' 'unsafe-inline' 'unsafe-eval';
                  object-src 'self';
                  media-src * blob:;">
-  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <meta name="viewport" content="viewport-fit=cover,initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width ">
 
   <!-- Setup for iOS Web App -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,6 +22,14 @@
   <meta charset="UTF-8">
   <title>MyWell</title>
   <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+
+  <script type="text/javascript">
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+        function onDeviceReady(){
+            StatusBar.overlaysWebView(false);
+        }
+  </script>
 
   <!--TODO: REMOVE An unfortunate inclusion - Ionic doesn't play nice with Webpack -->
   <link href="ionic.app.min.css" rel="stylesheet">
