@@ -16,5 +16,13 @@
     "www/**/*",
     "!www/lib/**/*",
     "!www/**/*.map"
-  ]
+  ],
+  "fonts": {
+    "src": [
+      "node_modules/ionic-framework/fonts/**/*.ttf",
+      "node_modules/ionicons/dist/fonts/*.ttf",
+      "node_modules/ionicons/dist/fonts/*.woff*"
+    ],
+    "dest": "www/build/fonts"
+  }
 }

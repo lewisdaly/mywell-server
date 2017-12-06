@@ -37,5 +37,6 @@
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
+    <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="CodePushDeploymentKey" value="HtPOwj7ZnjrmFmdjRTHJxNP8g-8j4JbCl_GyM" />
 </widget>

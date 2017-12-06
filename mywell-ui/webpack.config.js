@@ -19,9 +19,9 @@ console.log("__dirname: ", __dirname);
 
 //Settings
 //TODO: load from env variable
-let enableSourceMaps = true;
+let enableSourceMaps = false;
 let shouldMinify = false;
-let isProduction = true;
+let isProduction = false;
 
 if (process.env.WEBPACK_DEV === 'true') {
   enableSourceMaps = false;

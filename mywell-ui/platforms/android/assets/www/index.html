@@ -1,7 +1,16 @@
 <!doctype html>
 <html ng-app="app" lang="en">
 <head>
-  <!-- <meta http-equiv="Content-Security-Policy" content="default-src * 'self' gap://ready file://* *; img-src 'self' https://*.mapbox.com data:; connect-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval';"> -->
+  <!--  <meta http-equiv="Content-Security-Policy" content="default-src 'self' yourhost.com ws://localhost:35729 data: gap: https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *;script-src 'self' localhost:35729 'unsafe-eval' 'unsafe-inline';">-->
+  <!-- <meta http-equiv="Content-Security-Policy" -->
+        <!-- content="default-src * 'self' gap://ready blob:*; file://* *; img-src 'self' https://*.mapbox.com data:; connect-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval';"> -->
+
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src *;
+                 style-src 'self' 'unsafe-inline' blob:;
+                 script-src 'self' 'unsafe-inline' 'unsafe-eval';
+                 object-src 'self';
+                 media-src * blob:;">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 
   <!-- Setup for iOS Web App -->
