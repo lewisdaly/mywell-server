@@ -12,13 +12,22 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 console.log('ENV:\n  SERVER_URL:\t', process.env.SERVER_URL);
 console.log('  VERSION_NUMBER:\t', process.env.VERSION_NUMBER);
 console.log('  REACT_APP_GRAPHQL_ENDPOINT:\t', process.env.REACT_APP_GRAPHQL_ENDPOINT);
+console.log('  WEBPACK_DEV:\t', process.env.WEBPACK_DEV);
+
+console.log("__dirname: ", __dirname);
 
 
 //Settings
-const enableSourceMaps = true;
 //TODO: load from env variable
-const shouldMinify = true;
-const isProduction = true;
+let enableSourceMaps = true;
+let shouldMinify = false;
+let isProduction = true;
+
+if (process.env.WEBPACK_DEV === 'true') {
+  enableSourceMaps = false;
+  shouldMinify = false;
+  isProduction = false;
+}
 
 var ENV = process.env.npm_lifecycle_event;
 
@@ -36,7 +45,7 @@ module.exports = function makeWebpackConfig() {
   config.output = {
     path: __dirname + '/www',
     // publicPath: `http://localhost:${process.env.PORT}/`,
-    publicPath: '/',
+    publicPath: '',
     filename: '[name].bundle.js',
     chunkFilename: '[name].bundle.js'
   };
@@ -69,15 +78,15 @@ module.exports = function makeWebpackConfig() {
       },
       {
         test: /\.html$/,
-        loader: 'raw-loader'
+        loader: 'html-loader'
       }
     ]
   };
 
   config.resolve = {
       modules: [
-        __dirname + '/lib',
-        __dirname + '/node_modules',
+        `${__dirname}/lib`,
+        `${__dirname}/node_modules`,
       ],
       alias: {
         ionic: "ionic/js/ionic"
@@ -158,6 +167,10 @@ module.exports = function makeWebpackConfig() {
     stats: 'minimal',
     port: parseInt(process.env.PORT),
     host: '0.0.0.0'
+  };
+
+  config.watchOptions = {
+    poll: 1000
   };
 
   return config;
