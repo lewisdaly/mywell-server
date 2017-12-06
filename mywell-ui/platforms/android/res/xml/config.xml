@@ -10,6 +10,7 @@
     <content src="index.html" />
     <access origin="*" />
     <allow-navigation href="http://*/*" />
+    <allow-navigation href="http://192.168.254.7:8100" />
     <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon2.png" />
     <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon2.png" />
     <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon2.png" />

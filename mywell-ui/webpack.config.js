@@ -76,8 +76,8 @@ module.exports = function makeWebpackConfig() {
 
   config.resolve = {
       modules: [
-        '/usr/src/app/lib',
-        '/usr/src/app/node_modules'
+        __dirname + '/lib',
+        __dirname + '/node_modules',
       ],
       alias: {
         ionic: "ionic/js/ionic"
