@@ -1,0 +1,56 @@
+{
+  "name": "village",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "mixins": {
+    "TimeStamp": true
+  },
+  "properties": {
+    "id": {
+      "type": "number",
+      "id": 2,
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "postcode": {
+      "type": "number",
+      "id": 1,
+      "required": true
+    },
+    "coordinates": {
+      "type": "geopoint",
+      "required": false
+    }
+  },
+  "validations": [],
+  "relations": {
+    "resources": {
+      "type": "hasMany",
+      "model": "resource"
+    }
+  },
+  "acls": [
+    {
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY",
+      "property": "*"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "ALLOW",
+      "property": [
+        "find",
+        "findById"
+      ]
+    }
+  ],
+  "methods": {}
+}

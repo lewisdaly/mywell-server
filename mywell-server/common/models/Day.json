@@ -1,0 +1,21 @@
+{
+  "name": "Day",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "date": {
+      "id": 1,
+      "required": true,
+      "type": "date",
+      "dataType": "date",
+      "columnName": "date"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

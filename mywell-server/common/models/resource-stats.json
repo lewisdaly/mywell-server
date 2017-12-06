@@ -1,0 +1,43 @@
+{
+  "name": "resource_stats",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "resourceId": {
+      "type": "number",
+      "id": 1,
+      "required": true
+    },
+    "postcode": {
+      "type": "number",
+      "id": 1,
+      "required": true
+    },
+    "month": {
+      "type": "string",
+      "id": 1,
+      "required": true
+    },
+    "ave_reading": {
+      "type": "number",
+      "required": false,
+      "dataType": "decimal",
+      "precision": 10,
+      "scale": 2
+    },
+    "villageId": {
+      "type": "number"
+    },
+    "resourceType": {
+      "type": "string",
+      "default": "well"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
