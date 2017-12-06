@@ -424,13 +424,14 @@ module.exports = function(ResourceStats) {
             resource.type = "${resourceType}"
       GROUP BY reading.villageId, reading.postcode;
       `;
+      console.log(`SQL query is: ${query}`);
 
       const datasource = ResourceStats.dataSource;
       return ResourceStats.queryDatasource(query, datasource)
         .then(results => {
 
           if (isNullOrUndefined(results[0])) {
-            return Promise.reject(Utils.getError('404', `No average reading for villageId: ${villageId}, postcode: ${postcode} ,resourceType: ${resourceType} month: ${month}`));
+            return Promise.reject(Utils.getError('404', `No readings found for villageId:${villageId}, postcode: ${postcode}, resourceType: ${resourceType} month: ${month}`));
           }
 
           const avgReading = parseFloat(results[0].avgReadingStr);

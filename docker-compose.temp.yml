@@ -11,7 +11,7 @@ services:
       - ./mywell-console/node_modules:/usr/src/app/node_modules
     environment:
       - REACT_APP_GRAPHQL_ENDPOINT
-    command: tail -f /dev/null
+    # command: tail -f /dev/null
 
   mywell-gql:
     container_name: mywell-gql

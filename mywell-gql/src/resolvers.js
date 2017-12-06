@@ -22,19 +22,58 @@ const DateTime = new GraphQLScalarType({
    },
 });
 
+
+/* utils */
+const getDefaultStartDate = (startDate) => {
+  if (!startDate) {
+    return moment().add(-1, 'years').format('Y-MM-DD');
+  }
+
+  return startDate = moment(startDate).format('Y-MM-DD');
+}
+
+const getDefaultEndDate = (endDate) => {
+  if (endDate) {
+    return moment().add().format('Y-MM-DD');
+  }
+
+  return moment(endDate).format('Y-MM-DD');
+}
+
+//TODO: we should probably talk to loopback here...
+//TODO: or we could just use LB for auth, and then do everything in SQL (good idea)
+const resourceQuery = async(obj, args, context, info) => {
+  const sqlQuery = `SELECT concat(resource.id,resource.postcode) as id, id as resourceId, ST_X(geo) as lat, ST_Y(geo) as lng,  last_value as lastValue, well_depth as wellDepth, last_date as lastDate, owner, elevation, type, postcode, clientId
+    FROM resource WHERE postcode = ? AND id = ? limit 1`;
+  const [rows, fields] = await context.connection.execute(sqlQuery, [args.postcode, args.resourceId]);
+
+  return rows[0];
+}
+
 const resourcesQuery = async(obj, args, context, info) => {
   const selectionSet = graphqlFields(info);
-  console.log('selectionSet:', selectionSet);
 
   //TODO: generate/optimize nicely
-  const sqlQuery = `SELECT resource.id as id, last_value as lastValue, well_depth as wellDepth, last_date as lastDate, owner, elevation, type, postcode, clientId, Client.username
-    FROM resource join Client on resource.clientId = Client.id`;
-  const [rows, fields] = await context.connection.execute(sqlQuery);
 
-  //TODO do we need to take the flattened client out of here now?
+  //We concat id and postcode into a unique Id, as Apollo is having trouble handling composite keys
+  //This is probably also best practices, and we can work towards moving our model this direction anyway
+  const sqlQuery = `SELECT concat(resource.id,resource.postcode) as id, id as resourceId, ST_X(geo) as lat, ST_Y(geo) as lng,  last_value as lastValue, well_depth as wellDepth, last_date as lastDate, owner, elevation, type, postcode, clientId
+    FROM resource`;
+  const [rows, fields] = await context.connection.execute(sqlQuery);
 
   return rows;
 }
+
+const readingsQuery =  async (obj, args, context, info) => {
+  let startDate = getDefaultStartDate(args.startDate);
+  let endDate = getDefaultEndDate(args.endDate);
+
+  const [rows, fields] =  await context.connection.execute(`SELECT *
+    FROM reading
+    WHERE postcode = ? AND resourceId = ? AND date >= STR_TO_DATE(?, \'%Y-%m-%d\') AND date <= STR_TO_DATE(?, \'%Y-%m-%d\')`,
+    [args.postcode, args.resourceId, startDate, endDate]);
+  return rows;
+};
 
 const clientsQuery = async(obj, args, context, info) => {
   const sqlQuery = `SELECT id, mobile_number as mobileNumber, username, email, created, lastUpdated
@@ -42,7 +81,14 @@ const clientsQuery = async(obj, args, context, info) => {
   const [rows, fields] = await context.connection.execute(sqlQuery);
 
   return rows;
+}
 
+const clientQuery = async(obj, args, context, info) => {
+  const sqlQuery = `SELECT id, mobile_number as mobileNumber, username, email, created, lastUpdated
+    FROM Client where id=?`;
+  const [rows, fields] = await context.connection.execute(sqlQuery, [args.id]);
+
+  return rows[0];
 }
 
 const weeklyReadingsQuery = async(obj, args, context, info) => {
@@ -54,20 +100,8 @@ const weeklyReadingsQuery = async(obj, args, context, info) => {
     throw new Error(`args.sumOrAvg must be AVG or SUM, instead found: ${args.sumOrAvg}`);
   }
 
-  let startDate = null;
-  let endDate = null;
-
-  if (!args.startDate) {
-    startDate = moment().add(-1, 'years').format('Y-MM-DD');
-  } else {
-    startDate = moment(args.startDate).format('Y-MM-DD');
-  }
-
-  if (!args.endDate) {
-    endDate = moment().add().format('Y-MM-DD');
-  } else {
-    endDate = moment(args.endDate).format('Y-MM-DD');
-  }
+  let startDate = getDefaultStartDate(args.startDate);
+  let endDate = getDefaultEndDate(args.endDate);
 
   const [rows, fields] =  await context.connection.execute(`SELECT Day.date as week, SUM(weekly_average) as value FROM (
     select * from Day WHERE date >= STR_TO_DATE(?, '%Y-%m-%d') AND date <= STR_TO_DATE(?, '%Y-%m-%d')
@@ -127,14 +161,11 @@ const resolvers = {
   DateTime: DateTime,
 
   Query: {
+    client: clientQuery,
+    clients: clientQuery,
     resources: resourcesQuery,
-    resource(root, args) {
-      return { id:1, last_value: 10.11, owner: 'Lewis Ji', postcode: 5063 }
-    },
-    readings: async (obj, {postcode, resourceId}, context, info) => {
-      const [rows, fields] =  await context.connection.execute('SELECT * FROM `reading` WHERE `postcode` = ? AND `resourceId` = ?', [postcode, resourceId]);
-      return rows;
-    },
+    resource: resourceQuery,
+    readings: readingsQuery,
     weeklyReadings: weeklyReadingsQuery,
     cumulativeWeeklyReadings: cumulativeWeeklyReadingsQuery
   },

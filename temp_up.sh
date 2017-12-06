@@ -13,4 +13,4 @@ then
   docker-compose -f "$COMPOSE_FILE" build
 fi
 
-docker-compose -f "$COMPOSE_FILE" up mywell-ui
+docker-compose -f "$COMPOSE_FILE" up db mywell-gql mywell-console

@@ -26,11 +26,15 @@ MyWell is a Smartphone and SMS app for tracking wells in MARVI. The app works by
 			- [Update a resource's photo (App only)](#update-a-resources-photo-app-only)
 			- [Other](#other)
 	- [MyWell SMS](#mywell-sms)
-		- [Recording a new Reading](#recording-a-new-reading)
-			- [Examples](#examples)
-		- [Query MyWell for Information](#query-mywell-for-information)
-			- [Example](#example)
-		- [MyWell SMS Screenshots](#mywell-sms-screenshots)
+		- [Phone Numbers](#phone-numbers)
+		- [Message Format](#message-format)
+			- [Message Code](#message-code)
+			- [saveReading Format:](#savereading-format)
+			- [saveReading Examples:](#savereading-examples)
+			- [queryResource Format:](#queryresource-format)
+			- [queryResource Examples:](#queryresource-examples)
+	- [Getting Data in and out of MyWell](#getting-data-in-and-out-of-mywell)
+		- [Google Sheets](#google-sheets)
 
 <!-- /TOC -->
 ## MyWell App
@@ -140,45 +144,143 @@ From this page, you can register a new resource, update a resource's image, and 
 You can also download all of the readings in mywell's database as an excel file, and download an example template for bulk uploading many readings at once.
 
 ## MyWell SMS
-Two of the key MyWell tools are available over SMS as well as through the MyWell app; Recording a new reading, and querying a Well, Checkdam or Raingauge for information
+Two of the key MyWell tools are available over SMS as well as through the MyWell app; Recording a new reading, and querying a Well, Checkdam or Raingauge for information.
 
-MyWell's SMS number is `'90000000'`, and messages to MyWell SMS all start with the same format:
-```
-SMA <code> <pincode>
-```
->**Where:**
->`<code>` is 000 for saving a reading, and 999 for requesting information
->`<pincode>` is the pincode that the Well, Checkdam or Rain Gauge is located in
+### Phone Numbers
 
-### Recording a new Reading
-A Recording takes 3 additional parameters:
-```
-<date> <resourceId> <reading>
-```
->**Where:**
->`<date>` is a 6 digit date that the reading has been taken, in format YYMMDD
->`<resourceId>` is the 4 digit id of the resource being recorded
->`<reading>` is the value of the reading, in cm
+MyWell has a numbers in the following countries:
 
-#### Examples
+| Country       | Number|Service Code
+| ------------- |:-------------:|:-------------:
+| India         | `+91 97655 56555`| MYWL
+| Laos          | `coming soon`| *none*
+| Australia     | `coming soon`| *none*
+
+You can send messages to any of the above MyWell numbers.
+
+
+### Message Format
+In order for MyWell to understand the message, the user must follow a strict messaging format.
+
+The format for these messages starts as follows:
 ```
-SMA 000 313603 170125 1501 1500 # update resource 1501 to a reading of 1500cm in village with pincode 313603, on the 25th of Jan, 2017
+[<SERVICE_CODE> ]<MESSAGE_CODE>
+```
+where `<SERVICE_CODE>` is the optional code specifying the service. The default for MyWell is `MYWL`.
+
+>*A note about SERVICE_CODES*
+Service codes can serve a dual purpose in the MyWell system. In India, SMS providers share 1 number between many customers. As a result, users are required to specify a code at the start of the SMS, in order to get the message routed to the correct place.
+
+>For deployments of MyWell in other regions, this may or may not be required, but this design decision gives us the ability to share numbers between multiple deployments of MyWell, if this is required in the future.
+
+#### Message Code
+
+`MESSAGE_CODE` is a code denoting the type of message the user will be sending. They are:
+
+| `MESSAGE_CODE` | Method |Description
+| ------------- |:-------------:|:-------------
+| `S`         | saveReading| saves a new reading.
+| `Q`          | queryResource| queries an existing resource. This can be by postcode, village, or individual resource.
+
+- `S` - saves a new reading.
+- `Q` - queries an existing resource. This can be by postcode, village, or individual resource.
+
+#### saveReading Format:
+
+The format for a saveReading request is as follows:
+
+```
+S <POSTCODE>/<RESOURCE_ID>/[<DATE>/]<READING>
 ```
 
-### Query MyWell for Information
-A Query takes 1 additional parameter:
-```
-<id>
-```
->**Where:**
->`<id>` is the 2 digit villageId, or the 4 digit resourceId
+>*Note:*
+`<DATE>` must be in a YYMMD format, and is optional. If not specified, the reading will default to the current date.
 
-#### Example
+#### saveReading Examples:
+
+
+- `MYWL S 313603/1501/3000`
+"for the service MyWell, save a reading of 3000 units for the resource 1501 in postcode 313603"
+
+
+- `MYWL S 313603/1501/170101/3000`
+For the service MyWell, save a reading of 3000 units for the resource 1501 in postcode 313603 for the 1st of January, 2017
+
+
+#### queryResource Format:
+
 ```
-SMA 999 313603 15                #Query information from village 15 in pincode 313603
-SMA 999 313603 1560              #Query information from resource 1560 in pincode 313603
+Q <POSTCODE>[/<VILLAGE_ID>|/<RESOURCE_ID>]
 ```
 
-### MyWell SMS Screenshots
+Where:
+`<POSTCODE>` is the postcode containing the resources.
+`<VILLAGE_ID>` is a 2 digit ID referring to a group of resources
+`<RESOURCE_ID>` is a 4 digit ID, specifying a specific resource within a village. The first 2 digits of the resourceId are the villageId.
 
-[image-17-sms-screenshots]
+
+#### queryResource Examples:
+
+**Query a Pincode:**
+
+message: `MYWL Q 313603`
+"For the service MyWell, get the report for the resources in postcode 313603"
+
+response:
+>For pincode 313603, the average depth to water level is 45.54m.
+
+**Query a Village:**
+
+`MYWL Q 313603/15`
+"For the service MyWell, get the report for the resources in village 15 in postcode 313603"
+
+response:
+>Badgaon has an average depth to water level of 33.34m
+
+**Query a Well:**
+
+`MYWL Q 313603/1512`
+"For the service MyWell, get the report for a single resource with id: 1512 in postcode 313603"
+
+response:
+>Well 12 in Badgaon has a depth to water level of 23.34m
+
+
+**Query a RainGauge:**
+
+`MYWL Q 313603/1581`
+"For the service MyWell, get the report for a single resource with id: 1512 in postcode 313603"
+
+response:
+>Raingauge 81 in Badgaon's last reading was 11mm
+
+
+
+## Getting Data in and out of MyWell
+
+MyWell allows you to export your readings into a tsv format, which can be read by Excel or Google Sheets. The export has a limit of 10,000 rows. If you need to export more than this number of readings, contact support for other options.
+
+The url for downloading readings is:
+```
+https://mywell.vessels.tech/api/readings/exportReadings?pincodes=<pincode list>"
+```
+
+where `<pincode list>` is a list of postcodes you want to get the reading data for, separated by commas.
+For example, to get the readings from postcodes 313603 and 313604, you would use the url:
+```
+https://mywell.vessels.tech/api/readings/exportReadings?postcodes=313603,313604"
+```
+
+*note: For postcodes with lots of readings, please be patient! It can take a while to download all readings.*
+
+### Google Sheets
+
+You can use the `IMPORTDATA` function in google sheets.
+
+1. On a new sheet go to cell `A1`, and press `=`
+2. Enter the function IMPORTDATA(<url>), where <url> is the url for the readings you want to download
+3. The table should load sucessfully. If it doesn't load, make sure that your url is formatted correctly.
+
+You can see an example of this working here: https://docs.google.com/spreadsheets/d/1D-SNQevbVzt5Nks2rLOlehaxQDpeujNdkBzdYTGlMgQ/edit?usp=sharing
+
+Feel free to copy this spreadsheet, and change the postcodes to the postcodes you require.

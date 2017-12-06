@@ -21,6 +21,8 @@ export DONE_SEEDING_SUFFIX="production_done"
 export TEMP_SERVER_FRONTEND_RULE="Host:${STAGE_PREFIX}mywell-server.vessels.tech,dev-mywell-server.marvi.org.in,mywell-server.marvi.org.in"
 export REACT_APP_GRAPHQL_ENDPOINT="https://mywell-gql.vessels.tech/graphql"
 export UI_BUCKET_NAME="mywell.vessels.tech"
+export WEBPACK_DEV=false
+export CONSOLE_DOMAIN_NAME="mywell-console.vessels.tech"
 
 
 source $DIR/env.sh

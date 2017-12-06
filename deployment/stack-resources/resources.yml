@@ -13,6 +13,12 @@ Parameters:
   DevRootDomainName:
     Description: The domain name of the dev site
     Type: String
+  ConsoleDomainName:
+    Description: The domain of the production console
+    Type: String
+  DevConsoleDomainName:
+    Description: The domain name of the dev console
+    Type: String
   AcmCertificateArn:
     Type: String
     Description: the Amazon Resource Name (ARN) of an AWS Certificate Manager (ACM) certificate.

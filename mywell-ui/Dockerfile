@@ -27,6 +27,7 @@ COPY ./ /usr/src/app/
 ENV ENABLE_LOGS false
 ENV ENVIRONMENT development
 ENV PORT 8080
+ENV WEBPACK_DEV false
 #These env variables will first get replaced by webpack in the 'build step'
 #then by gulp when actually running
 ENV VERSION_NUMBER __VERSION_NUMBER__

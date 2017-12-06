@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { VictoryAxis, VictoryLine, VictoryTheme, VictoryLegend, VictoryChart, VictoryGroup, VictoryBar } from 'victory';
 import moment from 'moment';
 
-import { Loading } from './common'
-import { DateRange } from '../enums'
+import { Loading } from '../common'
+import { DateRange } from '../../enums'
 
 
 class CumulativeGraph extends Component {
@@ -89,17 +89,18 @@ class CumulativeGraph extends Component {
     const xTicks = this.getXTicks();
 
     return (
-      <div>
+      <div className={this.props.className}>
         <VictoryChart
+          height={265}
           domainPadding={{y: 5}}
           theme={VictoryTheme.material}
         >
           <VictoryLegend
             data={[
-              {name: '2 Years Ago'},
-              {name: '1 Year Ago'},
-              {name: 'This Year'}
-              ]}
+              { name: "2 Years Ago", symbol: { fill: "#FF725C", } },
+              { name: "1 Year Ago", symbol: { fill: "#111111", } },
+              { name: "This Year", symbol: { fill: "#357EDD", } },
+            ]}
           />
           <VictoryAxis
             tickValues={xTicks}
@@ -129,19 +130,21 @@ class CumulativeGraph extends Component {
           />
           <VictoryGroup
             style={{
+              data: { stroke: "#111111" },
               parent: {
-                border: "1px solid #ccc"
+                border: "2px solid #ccc"
               },
               data: {
-                fillOpacity: 0.0, strokeWidth: 5
+                fillOpacity: 0.0, strokeWidth: 1
               }
             }}
           >
             <VictoryLine
               data={this.transformGraphData(this.props.twoYearQuery.cumulativeWeeklyReadings)}
               style={{
+                data: { stroke: "#FF725C" },
                 parent: {
-                  border: "1px solid #ccc"
+                  border: "2px solid red"
                 },
                 labels: {
                   fontSize: 10,
@@ -151,8 +154,9 @@ class CumulativeGraph extends Component {
             <VictoryLine
               data={this.transformGraphData(this.props.lastYearQuery.cumulativeWeeklyReadings)}
               style={{
+                data: { stroke: "#111111" },
                 parent: {
-                  border: "1px solid #ccc"
+                  border: "2px solid #ccc"
                 },
                 labels: {
                   fontSize: 10,
@@ -162,8 +166,9 @@ class CumulativeGraph extends Component {
             <VictoryLine
               data={this.transformGraphData(this.props.thisYearQuery.cumulativeWeeklyReadings)}
               style={{
+                data: { stroke: "#357EDD" },
                 parent: {
-                  border: "1px solid #ccc"
+                  border: "2px solid #ccc"
                 },
                 labels: {
                   fontSize: 10,

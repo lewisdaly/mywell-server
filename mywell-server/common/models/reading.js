@@ -20,6 +20,21 @@ const getError = function(code, errorMessage) {
   return getError;
 };
 
+const separator = ',';
+const formatReadingTsv = (reading) => {
+  return reading.postcode + separator +
+         reading.resourceId + separator +
+         moment(reading.date).format() + separator +
+         reading.value;
+}
+
+const getHeadingTsv = () => {
+  return 'pincode' + separator +
+         'resourceId' + separator +
+         'date' + separator +
+         'value';
+}
+
 module.exports = function(Reading) {
 
   /**
@@ -139,6 +154,68 @@ module.exports = function(Reading) {
     return weekStartForWeeksAgo(weeksAgo -1 , previousWeekStart, weeks);
   }
 
+  /**
+   * TODO: a better implementation for this would be to have a separate data export pipeline.
+   * this will do for now however.
+   */
+  Reading.remoteMethod('exportReadings', {
+    accepts: [
+      {arg: 'pincodes', type:'string', required: true, description: 'A comma seperated list of 1 or more pincodes to download readings for. '},
+    ],
+    description: 'Exports all readings for the given pincodes. Limited to 10,000 readings.',
+    returns: {arg: 'body', type: 'file', root: true},
+    http: {path: '/exportReadings', verb: 'get', status:200}
+  });
+
+  Reading.exportReadings = (pincodes) => {
+    const pincodeList = pincodes.split(',')
+      .filter(pincodeString => pincodeString.length > 0);
+
+    if (pincodeList.length === 0) {
+      return Promise.reject(new Error("Pincodes must be a comma separated list of 1 or more pincodes to download."));
+    }
+
+    if (pincodeList.length > 5) {
+      return Promise.reject(new Error("Cannot search for more than 5 pincodes at a time."));
+    }
+
+    //eg. {"where": {"or": [{"postcode": 313603}]}}
+    const or = pincodeList.map(postcode => {
+      return { postcode };
+    });
+    const filter = {
+      where: {
+        or
+      },
+      limit: 10000,
+      order: "date DESC"
+    };
+
+    /* potential solutions:
+      - daily cron job that exports all readings for that day out (don't like, as bad for demo purposes)
+      - try streaming to a file, and then redirect to that file
+      - allow for direct sql connection (ew)
+      - limit to just n years of data at a time? maybe 3
+    */
+    return Reading.app.models.reading.find(filter)
+    .then(readings => {
+      console.log('got readings', readings.length);
+
+      //More efficent than using array.reduce
+      const tsvArray = [];
+      for (var i = 0; i < readings.length; i++) {
+        tsvArray[i] = formatReadingTsv(readings[i]);
+      }
+
+      return getHeadingTsv() + '\n' + tsvArray.join('\n');
+    });
+  }
+
+  //Make sure the exportReadings response is plain text
+  Reading.afterRemote('exportReadings', function(context, remoteMethodOutput, next) {
+    context.res.setHeader('Content-Type', 'text/plain');
+    context.res.end(context.result);
+  });
 
   /**
    * Endpoint for excel uploading
@@ -376,7 +453,9 @@ module.exports = function(Reading) {
         let err = new Error("Reading recorded, but resource not updated. A newer reading exists.")
         console.log("warning: ", err);
         err.statusCode = 206;
-        return next(err);
+        //If we return an error, loopback disregards the statusCode;
+        // return next(err);
+        return next();
       }
     });
    });

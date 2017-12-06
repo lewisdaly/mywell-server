@@ -3,6 +3,9 @@
   "base": "PersistedModel",
   "idInjection": true,
   "options": {},
+  "mixins": {
+    "TimeStamp": true
+  },
   "properties": {
     "expiry": {
       "type": "date",

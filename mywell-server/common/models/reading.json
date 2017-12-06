@@ -5,6 +5,9 @@
   "options": {
     "validateUpsert": true
   },
+  "mixins": {
+    "TimeStamp": true
+  },
   "properties": {
     "date": {
       "type": "date",
@@ -45,7 +48,10 @@
       "principalType": "ROLE",
       "principalId": "$unauthenticated",
       "permission": "ALLOW",
-      "property": "getReadingsByWeek"
+      "property": [
+        "getReadingsByWeek",
+        "exportReadings"
+      ]
     }
   ],
   "methods": {}
