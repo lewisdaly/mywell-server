@@ -1,6 +1,6 @@
 angular.module('controller.map', [])
 
-.controller('MapCtrl', function($scope, $state, $window, $ionicHistory, $ionicModal, $ionicPopup, ApiService, CachingService) {
+.controller('MapCtrl', function($scope, $state, $window, $ionicHistory, $ionicModal, $ionicPopup, ApiService, PermissionService, CachingService) {
 
   $scope.$on('$ionicView.enter', function(e) {
     leafletMap.invalidateSize();
@@ -38,6 +38,19 @@ angular.module('controller.map', [])
     }
 
     return savedResource;
+  }
+
+  const getLocation = function() {
+    return new Promise(function(resolve, reject) {
+      if (!navigator || !navigator.geolocation) {
+        return reject(new Error("Geolocation is not supported by this browser."));
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => resolve(position),
+        (err) => reject(err)
+      );
+    });
   }
 
   const resetMap = () => {
@@ -106,6 +119,9 @@ angular.module('controller.map', [])
       });
   }
 
+  //Call getLocation(), in case we need to ask permission from the user
+  getLocation();
+
   //Set up the Leaflet Map
   var leafletMap = L.map('leafletMap', { zoomControl:true, minZoom:5, maxZoom:18});
   L.tileLayer('https://api.mapbox.com/styles/v1/lewisdaly/ciuqhjyzo00242iphq3wo7bm4/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGV3aXNkYWx5IiwiYSI6ImNpdXE3ajltaDAwMGYyb2tkdjk2emx3NGsifQ.wnqFweA7kdijEtsgjTJIPw')
@@ -156,16 +172,12 @@ angular.module('controller.map', [])
   });
 
   $scope.locate = function() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position){
-        leafletMap.panTo(new L.LatLng(position.coords.latitude, position.coords.longitude));
-        //TODO: drop pin
-        // ion-ios-navigate
-      });
-    }
-    else {
-      console.log("Geolocation is not supported by this browser.");
-    }
+    return getLocation()
+    .then(position => leafletMap.panTo(new L.LatLng(position.coords.latitude, position.coords.longitude)))
+    .catch(err => {
+      console.log(err);
+      $ionicPopup.alert({title: 'GeoLocation Error', template: err.message});
+    });
   }
 
   $scope.showSearchResults = () => {

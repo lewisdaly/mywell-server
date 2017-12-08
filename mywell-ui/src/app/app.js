@@ -36,6 +36,7 @@ import './controller/VillageDetailController'
 import './service/ApiService'
 import './service/AuthenticationService'
 import './service/LoginService'
+import './service/PermissionService'
 import './service/SignupService'
 import './service/UserService'
 
@@ -78,6 +79,7 @@ let app2 = angular.module(MODULE_NAME, [
   'service.signup',
   'service.user',
   'service.api',
+  'service.permission',
 
   //Libs
   'ionic',

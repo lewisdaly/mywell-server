@@ -15,7 +15,20 @@
         },
         "cordova-plugin-hidden-statusbar": {
             "PACKAGE_NAME": "com.ionicframework.ionicrainapp175406"
+        },
+        "cordova-plugin-android-permissions": {
+            "PACKAGE_NAME": "com.ionicframework.ionicrainapp175406"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.ionicframework.ionicrainapp175406"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.ionicframework.ionicrainapp175406"
         }
     },
-    "dependent_plugins": {}
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.ionicframework.ionicrainapp175406"
+        }
+    }
 }

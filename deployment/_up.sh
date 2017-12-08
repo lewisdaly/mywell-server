@@ -47,7 +47,7 @@ deployInfrastructure() {
   aws s3 ls
 
   incrementMinor "updating-static-resources"
-  aws s3 sync /tmp/www s3://"$UI_BUCKET_NAME"
+  aws s3 sync -d /tmp/www s3://"$UI_BUCKET_NAME"
 
   incrementMinor "updating-docker-stack"
   cd $STACK_DOCKER_SWARM_DIR

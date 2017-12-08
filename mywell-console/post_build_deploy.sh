@@ -2,7 +2,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 #Run the mywell-ui container to finish the build step, and save to s3
-BUILD_IMAGE_NAME="mywell-console-build"
+BUILD_IMAGE_NAME="mywell-console"
 
 if [ -z "$STAGE" ]; then
   STAGE=local
