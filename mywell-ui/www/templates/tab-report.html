@@ -49,16 +49,43 @@
     </button>
   </div>
 
-  <h4 ng-if="cachedReports.length > 0" class="centerText">Saved Reports:</h4>
-  <div ng-if="cachedReports.length > 0" class="reportCache drop-box">
+<div ng-if="cachedReports.length > 0">
+  <h4 class="left">Saved Reports:</h4>
+  <div class="pa4">
+    <div class="overflow-auto">
+      <table class="f6 w-100 mw8 center" cellspacing="0">
+        <thead>
+          <tr>
+            <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Id</th>
+            <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Reading</th>
+            <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Email</th>
+            <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">ID</th>
+          </tr>
+        </thead>
+        <tbody class="lh-copy">
+          <tr ng-repeat="report in cachedReports">
+            <td class="pv3 pr3 bb b--black-20">{{report.resourceId}}</td>
+            <td class="pv3 pr3 bb b--black-20">{{report.value}}</td>
+            <button class="button button-small button-clear button-positive" ng-click=submit($index)>submit</button>
+            <button class="button button-small button-clear button-assertive" ng-click=delete($index)>delete</button>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+  <!-- <div  class="reportCache drop-box">
     <div class="row" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="report in cachedReports">
-      <p class="col col-75">ID: {{report.resourceId}} Reading: {{report.value}}m</p>
+      <p class="col col-50">ID: {{report.resourceId}} Reading: {{report.value}}m</p>
       <button class="col button button-small button-clear button-positive" ng-click=submit($index)>submit</button>
       <button class="col button button-small button-clear button-assertive" ng-click=delete($index)>delete</button>
     </div>
-  </div>
+  </div> -->
 
-<div class="row">
+
+<!-- Disabled this feature for now. -->
+<!-- <div class="row">
   <h4 class="centerText paddingTop">Upload a spreadsheet of past readings:</h4>
 </div>
 <div class="row">
@@ -67,7 +94,7 @@
       <h5 class="paddingTop" ng-show="!file">Drag and drop or
       <div class="button button-clear button-stable inlineTextButton" ngf-select ng-model="file" name="file" ngf-pattern=".xlsx" ngf-max-size="20MB">select</div>
       a .xlsx file.</h5>
-      <!-- <a class="button button-clear button-dark">Download a template file</a> -->
+      <a class="button button-clear button-dark">Download a template file</a>
 
       <h5 class="paddingTop" ng-if="file">Selected: {{file.name}}
         <div class="button button-clear button-assertive inlineTextButton" ng-click=clearFile()>remove</div>
@@ -80,7 +107,7 @@
       </button>
     </div>
   </form>
-</div>
+</div> -->
 
 </div>
 </ion-content>

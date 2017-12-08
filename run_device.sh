@@ -114,7 +114,6 @@ function run_web() {
 
   source "$DIR"/env/env"$_arg_environment".sh
   npm run webpack_dev_server
-  open http://localhost:8080
 }
 
 
