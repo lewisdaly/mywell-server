@@ -44,8 +44,10 @@ preDeploySteps() {
 deployInfrastructure() {
   incrementMajor "deploy-infrastructure"
 
+  aws s3 ls
+
   incrementMinor "updating-static-resources"
-  aws s3 sync /tmp/www s3://"$UI_BUCKET_NAME"
+  aws s3 sync /tmp/www s3://"$UI_BUCKET_NAME" || exit 1
 
   incrementMinor "updating-docker-stack"
   cd $STACK_DOCKER_SWARM_DIR
