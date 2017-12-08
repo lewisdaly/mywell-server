@@ -124,7 +124,12 @@ module.exports = function makeWebpackConfig() {
       "SERVER_URL": `'${process.env.SERVER_URL}'`,
       "VERSION_NUMBER": `'${process.env.VERSION_NUMBER}'`,
       "REACT_APP_GRAPHQL_ENDPOINT": `'${process.env.REACT_APP_GRAPHQL_ENDPOINT}'`
-    })
+    }),
+
+    //Copy files from the public folder
+    new CopyWebpackPlugin([{
+      from: __dirname + '/src/public'
+    }]),
   ];
 
   if (isProduction) {
@@ -155,10 +160,7 @@ module.exports = function makeWebpackConfig() {
         compress: true,
         sourceMap: true,
         mangle: false
-      }),
-      new CopyWebpackPlugin([{
-        from: __dirname + '/src/public'
-      }])
+      })
     );
   }
 

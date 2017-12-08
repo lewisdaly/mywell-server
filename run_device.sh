@@ -100,5 +100,6 @@ echo "Value of --environment: $_arg_environment"
 export VERSION_NUMBER=1.3.1
 export ENABLE_LOGS=true
 
-cd /Users/lewis/developer/mywell/src/mywell-ui && npm run build:"$_arg_environment"
+cd /Users/lewis/developer/mywell/src/mywell-ui
+npm run build:"$_arg_environment"
 ionic cordova run $_arg_platform --"$_arg_device"
