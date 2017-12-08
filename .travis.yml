@@ -51,7 +51,7 @@ before_install:
 
 install:
   - docker-compose -f docker-compose.yml build
-  - docker ps -a
+  - docker images
   # - cd ./deployment && docker-compose build
   # - mkdir -p $CACHE_DIR
   #TODO: this will only cache old ones...

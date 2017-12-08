@@ -148,6 +148,7 @@ angular.module('controller.settings', ['ionic'])
 
   const getImage = () => {
     return new Promise((resolve, reject) => {
+      console.log(navigator);
       if (angular.isNullOrUndefined(navigator) || angular.isNullOrUndefined(navigator.camera)) {
         displayMessage("Error", "The camera is not available on your device");
 
