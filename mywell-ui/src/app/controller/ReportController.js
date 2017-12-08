@@ -76,45 +76,82 @@ angular.module(MODULE_NAME, [])
     }
   }
 
-  // Validate and submit form
-  $scope.sendReport = function(form){
+  const displayErrorMessageOrUnknown = function(error) {
+    if (error.status && error.status === 0 || error.status === -1) {
+      return displayMessage("Connection Error", "Having trouble connecting. Please try again later.");
+    }
 
-    // TODO: Validate fields
+    if (error.data && error.data.error && error.data.error.message) {
+      return displayMessage("Error", error.data.error.message);
+    }
+
+    displayMessage("Error", "An unknwown error has occoured. Please try again later.");
+  }
+
+  /**
+   * Validate the form.
+   * @returns boolean
+   */
+  const validateForm = function(form) {
     if (($scope.form.postcode == null) || ($scope.form.postcode == null) || ($scope.form.postcode== null) || ($scope.form.postcode == null))
     {
-      console.log("Fill out the form!");
       var alertPopup = $ionicPopup.alert({
         title: 'Error',
         template: "Please fill out all the fields"
       });
+      return false;
     }
-    else
-    {
-      let data = {
-        postcode: $scope.form.postcode,
-        value: $scope.form.value,
-        resourceId: $scope.form.resourceId,
-        villageId: `${$scope.form.resourceId}`.substring(0,2),
-        date: $scope.form.date.toDateString()
-      }
 
-      ApiService.updateReading(data)
-      .then(function(response) {
-        displayMessage("Thanks!", "Submitted successfully.")
-        resetForm();
-      })
-      .catch(function(err) {
-        if (err.status === 0) {
-          displayMessage("Connection Error", "Saving for later submission.");
-          CachingService.addReportToCache(data);
-          $scope.cachedReports = CachingService.getReportCache();
-          resetForm();
-        } else {
-          console.log("Error: ", err);
-          displayMessage("Error", err.data.error.message);
-        }
-      });
+    return true;
+  }
+
+  /**
+   * Format the form's data in a consistent format
+   */
+  const getFormData = function(form) {
+    return {
+      postcode: $scope.form.postcode,
+      value: $scope.form.value,
+      resourceId: $scope.form.resourceId,
+      villageId: `${$scope.form.resourceId}`.substring(0,2),
+      date: $scope.form.date.toDateString()
     }
+  }
+
+  $scope.saveReport = function(form) {
+    if (!validateForm(form)) {
+      return;
+    }
+
+    const data = getFormData(form);
+
+    CachingService.addReportToCache(data);
+    $scope.cachedReports = CachingService.getReportCache();
+    resetForm();
+  }
+
+  // Validate and submit form
+  $scope.sendReport = function(form) {
+    if (!validateForm(form)) {
+      return;
+    }
+
+    ApiService.updateReading(getFormData(form))
+    .then(function(response) {
+      displayMessage("Thanks!", "Submitted successfully.")
+      resetForm();
+    })
+    .catch(function(err) {
+      //apparently this error code has changed?
+      if (err.status === 0 || err.status === -1) {
+        displayMessage("Connection Error", "Saving for later submission.");
+        CachingService.addReportToCache(data);
+        $scope.cachedReports = CachingService.getReportCache();
+        resetForm();
+      } else {
+        displayErrorMessageOrUnknown(err);
+      }
+    });
   }
 
   $scope.submit = function(index) {
@@ -125,17 +162,12 @@ angular.module(MODULE_NAME, [])
       displayMessage("Thanks!", "Submitted successfully.")
       CachingService.deleteReportAtIndex(index);
       $scope.cachedReports = CachingService.getReportCache();
-
     })
     .catch(function(err) {
-      if (err.status === 0) {
-        displayMessage("Connection Error", "Still having trouble connecting. Please try again later.");
-      } else {
-        console.log("Error: ", err);
-        displayMessage("Error", err.data.error.message);
-      }
+      displayErrorMessageOrUnknown(err);
     });
   }
+
 
   $scope.delete = function(index) {
     CachingService.deleteReportAtIndex(index);

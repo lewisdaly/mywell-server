@@ -77,7 +77,7 @@ services:
      - "8080:80"
     volumes:
      - ./mywell-ui:/usr/src/app
-    command: npm run dev
+    command: npm run webpack_dev_server
     # command: "./build_and_run.sh"
     environment:
       - VIRTUAL_HOST=mywell.marvi.org.in

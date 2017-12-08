@@ -19,9 +19,9 @@ console.log("__dirname: ", __dirname);
 
 //Settings
 //TODO: load from env variable
-let enableSourceMaps = true;
-let shouldMinify = true;
-let isProduction = true;
+let enableSourceMaps = false;
+let shouldMinify = false;
+let isProduction = false;
 
 if (process.env.WEBPACK_DEV === 'true') {
   enableSourceMaps = false;
@@ -45,7 +45,7 @@ module.exports = function makeWebpackConfig() {
   config.output = {
     path: __dirname + '/www',
     // publicPath: `http://localhost:${process.env.PORT}/`,
-    publicPath: '/',
+    publicPath: '',
     filename: '[name].bundle.js',
     chunkFilename: '[name].bundle.js'
   };
@@ -78,7 +78,7 @@ module.exports = function makeWebpackConfig() {
       },
       {
         test: /\.html$/,
-        loader: 'raw-loader'
+        loader: 'html-loader'
       }
     ]
   };
@@ -124,7 +124,12 @@ module.exports = function makeWebpackConfig() {
       "SERVER_URL": `'${process.env.SERVER_URL}'`,
       "VERSION_NUMBER": `'${process.env.VERSION_NUMBER}'`,
       "REACT_APP_GRAPHQL_ENDPOINT": `'${process.env.REACT_APP_GRAPHQL_ENDPOINT}'`
-    })
+    }),
+
+    //Copy files from the public folder
+    new CopyWebpackPlugin([{
+      from: __dirname + '/src/public'
+    }]),
   ];
 
   if (isProduction) {
@@ -155,10 +160,7 @@ module.exports = function makeWebpackConfig() {
         compress: true,
         sourceMap: true,
         mangle: false
-      }),
-      new CopyWebpackPlugin([{
-        from: __dirname + '/src/public'
-      }])
+      })
     );
   }
 

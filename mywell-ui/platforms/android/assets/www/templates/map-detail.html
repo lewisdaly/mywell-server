@@ -72,16 +72,22 @@
         </span>
       </div>
     </section>
-    <react-component ng-if="shouldDisplayCumulative()" name="ApolloGraphContainer" props="props" watch-depth="reference"></react-component>
+    <react-component
+      class="dib ph4 center"
+      ng-if="shouldDisplayCumulative()"
+      name="ApolloGraphContainer"
+      props="props"
+      watch-depth="reference">
+    </react-component>
 
-    <div ng-if="!shouldDisplayCumulative()" class="graphs padding">
-      <div>
-        <canvas id="detailChart" width="400" height="350"></canvas>
-      </div>
-      <div class="row">
+    <div ng-if="!shouldDisplayCumulative()" class="padding">
+      <div class="row w-100 w-two-thirds-m w-third-l center">
         <button class="col button button-outline" ng-click="updateData('month')">1 Month</button>
         <button class="col button button-outline" ng-click="updateData('3month')">3 Months</button>
         <button class="col button button-outline" ng-click="updateData('year')">1 Year</button>
+      </div>
+      <div class="w-100 w-two-thirds-m w-third-l center" style="height:350px">
+        <canvas id="detailChart" width="400" height="350"></canvas>
       </div>
     </div>
 

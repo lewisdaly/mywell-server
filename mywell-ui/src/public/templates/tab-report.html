@@ -43,22 +43,35 @@
     </label>
   </form>
 
-  <div class="padding">
-    <button class="button button-block button-positive" ng-click="sendReport(form)">
-      Submit
-    </button>
+  <div class="p4 mh2">
+    <a class="w-100 pv3 f6 link dim br1 ph3 pv2 mb2 dib white bg-dark-blue" ng-click="sendReport(form)">Submit</a>
+    <a class="w-100 pv3 f6 link dim ph3 pv2 mb2 dib bg-lightest-blue black" ng-click="saveReport(form)">Save for Later</a>
   </div>
 
-  <h4 ng-if="cachedReports.length > 0" class="centerText">Saved Reports:</h4>
-  <div ng-if="cachedReports.length > 0" class="reportCache drop-box">
-    <div class="row" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="report in cachedReports">
-      <p class="col col-75">ID: {{report.resourceId}} Reading: {{report.value}}m</p>
-      <button class="col button button-small button-clear button-positive" ng-click=submit($index)>submit</button>
-      <button class="col button button-small button-clear button-assertive" ng-click=delete($index)>delete</button>
+<div ng-if="cachedReports.length > 0">
+  <h4 class="left">Saved Reports:</h4>
+  <div class="ph2">
+    <div class="overflow-auto">
+      <table class="f6 w-100 mw8 center" cellspacing="0">
+        <tbody class="lh-copy">
+          <tr ng-repeat="report in cachedReports">
+            <td class="pv3 pr3 bb b--black-20">Id: {{report.resourceId}}</td>
+            <td class="pv3 pr3 bb b--black-20">Value: {{report.value}}</td>
+            <td>
+              <button class="f6 link dim br1 ba ph3 pv2 mb2 dib dark-blue" ng-click=submit($index)>Submit</button>
+              <button class="f6 link dim br1 ba ph3 pv2 mb2 dib dark-red"  ng-click=delete($index)>Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+</div>
 
-<div class="row">
+
+
+<!-- Disabled this feature for now. -->
+<!-- <div class="row">
   <h4 class="centerText paddingTop">Upload a spreadsheet of past readings:</h4>
 </div>
 <div class="row">
@@ -67,7 +80,7 @@
       <h5 class="paddingTop" ng-show="!file">Drag and drop or
       <div class="button button-clear button-stable inlineTextButton" ngf-select ng-model="file" name="file" ngf-pattern=".xlsx" ngf-max-size="20MB">select</div>
       a .xlsx file.</h5>
-      <!-- <a class="button button-clear button-dark">Download a template file</a> -->
+      <a class="button button-clear button-dark">Download a template file</a>
 
       <h5 class="paddingTop" ng-if="file">Selected: {{file.name}}
         <div class="button button-clear button-assertive inlineTextButton" ng-click=clearFile()>remove</div>
@@ -80,7 +93,7 @@
       </button>
     </div>
   </form>
-</div>
+</div> -->
 
 </div>
 </ion-content>

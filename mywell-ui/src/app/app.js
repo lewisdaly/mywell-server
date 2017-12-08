@@ -90,7 +90,8 @@ let app2 = angular.module(MODULE_NAME, [
   $ionicPlatform.ready(() => {
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
+      cordova.plugins.Keyboard.disableScroll(false);
+      this.statusBar.overlaysWebView(false);
     }
   });
 
