@@ -85,7 +85,6 @@ aws s3 cp /tmp/mywell_2017-06-253:12:22.sql s3://mywell-deployment/restore/
 docker rmi $(docker images -q --filter "dangling=true")
 
 
-
 ### copy dev db to local:
 
 #### in mywell-utils
@@ -189,3 +188,17 @@ MYWL Q 313603/1105
 next steps:
 - Add the cumulative rainfall into the village and pincode query, eg:
   >For pincode 313603, the average depth to water level is 45.54m. The has been 12mm of rain in the last 1 month.`
+
+
+## Manual Migrations
+
+
+This is a super hacky manual migration to set all of the createdAts.
+
+We are doing this because Loopback sucks, and right now, it's just easier to do things in the db.
+
+```sql
+update resource set createdAt = NOW() where createdAt is null;
+```
+
+Please don't do this at home, kids
