@@ -43,31 +43,24 @@
     </label>
   </form>
 
-  <div class="padding">
-    <button class="button button-block button-positive" ng-click="sendReport(form)">
-      Submit
-    </button>
+  <div class="p4 mh2">
+    <a class="w-100 pv3 f6 link dim br1 ph3 pv2 mb2 dib white bg-dark-blue" ng-click="sendReport(form)">Submit</a>
+    <a class="w-100 pv3 f6 link dim ph3 pv2 mb2 dib bg-lightest-blue black" ng-click="saveReport(form)">Save for Later</a>
   </div>
 
 <div ng-if="cachedReports.length > 0">
   <h4 class="left">Saved Reports:</h4>
-  <div class="pa4">
+  <div class="ph2">
     <div class="overflow-auto">
       <table class="f6 w-100 mw8 center" cellspacing="0">
-        <thead>
-          <tr>
-            <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Id</th>
-            <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Reading</th>
-            <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Email</th>
-            <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">ID</th>
-          </tr>
-        </thead>
         <tbody class="lh-copy">
           <tr ng-repeat="report in cachedReports">
-            <td class="pv3 pr3 bb b--black-20">{{report.resourceId}}</td>
-            <td class="pv3 pr3 bb b--black-20">{{report.value}}</td>
-            <button class="button button-small button-clear button-positive" ng-click=submit($index)>submit</button>
-            <button class="button button-small button-clear button-assertive" ng-click=delete($index)>delete</button>
+            <td class="pv3 pr3 bb b--black-20">Id: {{report.resourceId}}</td>
+            <td class="pv3 pr3 bb b--black-20">Value: {{report.value}}</td>
+            <td>
+              <button class="f6 link dim br1 ba ph3 pv2 mb2 dib dark-blue" ng-click=submit($index)>Submit</button>
+              <button class="f6 link dim br1 ba ph3 pv2 mb2 dib dark-red"  ng-click=delete($index)>Delete</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -75,13 +68,6 @@
   </div>
 </div>
 
-  <!-- <div  class="reportCache drop-box">
-    <div class="row" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="report in cachedReports">
-      <p class="col col-50">ID: {{report.resourceId}} Reading: {{report.value}}m</p>
-      <button class="col button button-small button-clear button-positive" ng-click=submit($index)>submit</button>
-      <button class="col button button-small button-clear button-assertive" ng-click=delete($index)>delete</button>
-    </div>
-  </div> -->
 
 
 <!-- Disabled this feature for now. -->
