@@ -10,5 +10,5 @@ describe('tests the application', () => {
   //removed atm, nt
   // require('./Reading/reading-tests.js'); //For some reason this turns up as pending if it is second.. weird.
   // require('./ExcelReader/ExcelReader-tests.js');
-  // require('./Msg/message-tests.js');
+  require('./Message/test.js');
 });

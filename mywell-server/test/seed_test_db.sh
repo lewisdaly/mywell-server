@@ -8,7 +8,7 @@ function seedDB() {
   mysql -u mywell -ppassword -e "DROP DATABASE mywell;"
   mysql -u mywell -ppassword -e "CREATE DATABASE mywell;"
   echo 'seeding db...'
-  mysql mywell -u mywell -ppassword < /usr/ubuntu/mywell_test_seed.sql
+  mysql mywell -u mywell -ppassword < /usr/ubuntu/mywell_test_seed_4.sql || exit 1
   echo 'seeding complete'
   tail -f /dev/null
 }

@@ -1,0 +1,125 @@
+{
+  "name": "resource",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "mixins": {
+    "TimeStamp": true
+  },
+  "properties": {
+    "id": {
+      "type": "number",
+      "id": 1,
+      "required": true
+    },
+    "geo": {
+      "type": "geopoint",
+      "required": true
+    },
+    "last_value": {
+      "type": "number",
+      "required": false,
+      "dataType": "decimal",
+      "precision": 10,
+      "scale": 2
+    },
+    "well_depth": {
+      "type": "number",
+      "required": false,
+      "dataType": "decimal",
+      "precision": 10,
+      "scale": 2
+    },
+    "last_date": {
+      "type": "date",
+      "required": false,
+      "default": "2016-05-11 03:04:59"
+    },
+    "owner": {
+      "type": "string",
+      "required": true
+    },
+    "elevation": {
+      "type": "number",
+      "required": false
+    },
+    "type": {
+      "type": "string",
+      "required": true,
+      "description": "one of: well, raingauge, checkdam"
+    },
+    "postcode": {
+      "type": "number",
+      "id": 1,
+      "required": true
+    },
+    "image": {
+      "type": "text",
+      "required": false
+    },
+    "mobile": {
+      "type": "string",
+      "required": false,
+      "description": "The mobile number of the resource owner/person who registered the well"
+    },
+    "email": {
+      "type": "string",
+      "required": false,
+      "description": "The email of the resource owner/person who registered the resource"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "readings": {
+      "type": "hasMany",
+      "model": "reading"
+    },
+    "village": {
+      "type": "belongsTo",
+      "model": "village",
+      "foreignKey": ["villageId", "postcode"]
+    },
+    "client": {
+      "type": "belongsTo",
+      "model": "client",
+      "foreignKey": ["clientId"]
+    }
+  },
+  "acls": [
+    {
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY",
+      "property": "*"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "ALLOW",
+      "property": [
+        "find",
+        "findById"
+      ]
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": [
+        "updateResourceByIdAndPostcode"
+      ]
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY",
+      "property": [
+        "updateById",
+        "updateAll"
+      ]
+    }
+  ],
+  "methods": {}
+}

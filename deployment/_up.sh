@@ -44,8 +44,10 @@ preDeploySteps() {
 deployInfrastructure() {
   incrementMajor "deploy-infrastructure"
 
+  aws s3 ls
+
   incrementMinor "updating-static-resources"
-  aws s3 sync /tmp/www s3://"$UI_BUCKET_NAME"
+  aws s3 sync -d /tmp/www s3://"$UI_BUCKET_NAME"
 
   incrementMinor "updating-docker-stack"
   cd $STACK_DOCKER_SWARM_DIR
@@ -78,6 +80,11 @@ printStepSeparator
 echo -e "${green}---Deploying MyWell: "$STAGE"---${endColor}"
 printStepSeparator
 
+echo 'checking permissions'
+ls -la ~/.aws/
+ls -la /root/.aws/
+
+echo $AWS_ACCESS_KEY_ID
 
 preDeploySteps
 deployInfrastructure

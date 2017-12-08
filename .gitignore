@@ -18,4 +18,21 @@ node_modules
 npm-debug.log
 hasDBSeeded
 .env
-mywell-ui/www
+
+mywell-ui/www/*
+
+//this isn't ideal, but it's what we have to work with for now
+//this is because of webpack + ionic + angular issues
+//mywell-ui/www/img
+//mywell-ui/www/lib
+//mywell-ui/www/templates
+//mywell-ui/www/ionic*
+//mywell-ui/www/ngReact*
+
+platforms/ios/build
+platforms/android/assets
+
+
+taskArtifacts
+platforms/ios/build/
+platforms/ios/CordovaLib

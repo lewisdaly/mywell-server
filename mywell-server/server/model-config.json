@@ -1,14 +1,15 @@
 {
   "_meta": {
     "sources": [
-      "loopback/common/models",
+      "loopback/common/mdls",
       "loopback/server/models",
-      "../common/models",
+      "../common/mdls",
       "./models"
     ],
     "mixins": [
       "loopback/common/mixins",
       "loopback/server/mixins",
+      "../node_modules/loopback-ds-timestamp-mixin",
       "../common/mixins",
       "./mixins"
     ]

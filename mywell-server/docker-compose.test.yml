@@ -1,6 +1,7 @@
 version: '2'
 services:
   mywell-server:
+    container_name: test-mywell-server
     build: .
     ports:
       - "3000:3000"
@@ -9,14 +10,26 @@ services:
      - ./node_modules:/usr/src/app/node_modules
     environment:
       - "TERM=xterm-256color"
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=mywell
+      - MYSQL_USER=mywell
+      - MYSQL_PASSWORD=password
+      - DB_HOST
+      - DB_NAME
+      - DB_PASSWORD
+      - DB_USER
+      - TWILIO_ACCOUNT_SID
+      - TWILIO_AUTH_TOKEN
+      - TWILIO_PHONE_NUMBER
     links:
-    - test_db:db
+    - mywell-db:db
     entrypoint:
       - tail
       - -f
       - /dev/null
 
-  test_db:
+  mywell-db:
+    container_name: test-mywell-db
     image: mariadb:10.0
     environment:
       - MYSQL_ROOT_PASSWORD=password

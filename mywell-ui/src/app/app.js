@@ -36,10 +36,11 @@ import './controller/VillageDetailController'
 import './service/ApiService'
 import './service/AuthenticationService'
 import './service/LoginService'
+import './service/PermissionService'
 import './service/SignupService'
 import './service/UserService'
 
-import ApolloGraphContainer from './components/ApolloGraphContainer'
+import ApolloGraphContainer from './components/Graph/ApolloGraphContainer'
 
 let app = () => {
   return {
@@ -78,6 +79,7 @@ let app2 = angular.module(MODULE_NAME, [
   'service.signup',
   'service.user',
   'service.api',
+  'service.permission',
 
   //Libs
   'ionic',
@@ -90,7 +92,8 @@ let app2 = angular.module(MODULE_NAME, [
   $ionicPlatform.ready(() => {
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
+      cordova.plugins.Keyboard.disableScroll(false);
+      this.statusBar.overlaysWebView(false);
     }
   });
 

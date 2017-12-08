@@ -1,6 +1,5 @@
 FROM mhart/alpine-node:8
 
-ENV NPM_CONFIG_LOGLEVEL error
 ENV APP_DIR "/usr/src/app"
 RUN mkdir -p "APP_DIR"
 WORKDIR "$APP_DIR"
@@ -19,4 +18,4 @@ COPY ./ ./
 
 ENV REACT_APP_GRAPHQL_ENDPOINT null
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "build"]

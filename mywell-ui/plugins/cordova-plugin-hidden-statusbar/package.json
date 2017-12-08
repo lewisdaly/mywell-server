@@ -1,0 +1,35 @@
+{
+  "name": "cordova-plugin-hidden-statusbar",
+  "version": "1.0.0",
+  "author": "Enrico Deleo <hello@enricodeleo.com> (http://enricodeleo.com/)",
+  "description": "Cordova / PhoneGap Plugin that hides the statusbar at launch.",
+  "cordova": {
+    "id": "cordova-plugin-hidden-statusbar",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enricodeleo/cordova-plugin-hidden-statusbar.git"
+  },
+  "keywords": [
+    "cordova",
+    "ios",
+    "app",
+    "statusbar",
+    "ecosystem:cordova",
+    "cordova-ios"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/enricodeleo/cordova-plugin-hidden-statusbar/issues"
+  },
+  "homepage": "https://github.com/enricodeleo/cordova-plugin-hidden-statusbar#readme"
+}

@@ -1,11 +1,30 @@
-angular.module('controller.settings', [])
+angular.module('controller.settings', ['ionic'])
 .controller('SettingsController', function($scope, AuthenticationService, $location, $rootScope, $ionicModal, $ionicPopup, ApiService, CachingService) {
   $scope.version_number = VERSION_NUMBER;
   $scope.templateUrl = `${SERVER_URL}/containers/container1/download/template`;
   $scope.apiBaseUrl = SERVER_URL;
   $scope.imageResourceId = null;
 
-  $scope.isDesktop = angular.isNullOrUndefined(window.cordova);
+  const isDesktop = function() {
+    console.log("checking device");
+
+    if (!ionic || !ionic.Platform) {
+      return true;
+    }
+
+    if (ionic.Platform.isWebView() ||
+        ionic.Platform.isIPad() ||
+        ionic.Platform.isIOS() ||
+        ionic.Platform.isAndroid() ||
+        ionic.Platform.isWindowsPhone()) {
+      return false
+    }
+
+    return true;
+  }
+
+  // $scope.isDesktop = angular.isNullOrUndefined(window.cordova);
+  $scope.isDesktop = isDesktop();
 
 	$scope.$on('$ionicView.enter', function(e) {
 		checkUserStatus();
@@ -23,7 +42,6 @@ angular.module('controller.settings', [])
 	}
 
   $scope.clearLogin = () => {
-    console.log("Clearing login!!");
     AuthenticationService.ClearCredentials();
     AuthenticationService.clearLastUser();
 		$rootScope.$broadcast('login-state-changed');
