@@ -18,7 +18,8 @@ class ApolloGraphContainer extends Component {
   render() {
 
     return (
-      <ApolloProvider client={client}>
+      <ApolloProvider
+        client={client}>
         <GraphPage
           resourceId={this.props.resourceId}
           postcode={this.props.postcode}

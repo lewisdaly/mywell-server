@@ -72,7 +72,13 @@
         </span>
       </div>
     </section>
-    <react-component ng-if="shouldDisplayCumulative()" name="ApolloGraphContainer" props="props" watch-depth="reference"></react-component>
+    <react-component
+      class="dib ph4 center"
+      ng-if="shouldDisplayCumulative()"
+      name="ApolloGraphContainer"
+      props="props"
+      watch-depth="reference">
+    </react-component>
 
     <div ng-if="!shouldDisplayCumulative()" class="padding">
       <div class="row w-100 w-two-thirds-m w-third-l center">
