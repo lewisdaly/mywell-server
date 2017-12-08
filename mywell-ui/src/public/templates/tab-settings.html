@@ -24,10 +24,12 @@
   </br>
   <h4>Tools</h4>
   <div ng-if="isDesktop">
-    <a class="button button-outline button-block button-positive" target="_self" ng-href="{{apiBaseUrl}}/api/containers/container1/download/template.xlsx" download="template.xlsx">Download a template</a>
-  </div>
-  <div ng-if="isDesktop">
-    <a class="button button-outline button-block button-positive" target="_self" ng-href="{{apiBaseUrl}}/api/containers/container1/download/reading.csv" download="reading.csv">Download Reading Data</a>
+    <a
+      class="button button-outline button-block button-positive"
+      target="_blank"
+      ng-href="https://github.com/lewisdaly/mywell-server/blob/develop/paper/userguide.md#getting-data-in-and-out-of-mywell">
+      Upload/Download Reading Data
+    </a>
   </div>
   </br>
   <div ng-if="isDesktop">
