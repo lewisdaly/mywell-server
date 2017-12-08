@@ -2,6 +2,10 @@
 #
 # Example taken from http://argbash.readthedocs.io/en/stable/example.html
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+export VERSION_NUMBER=1.3.1
+export ENABLE_LOGS=true
+
 die()
 {
 	local _ret=$2
@@ -22,16 +26,16 @@ begins_with_short_option()
 
 # THE DEFAULTS INITIALIZATION - OPTIONALS
 _arg_platform=ios
-_arg_device=emulator
+_arg_device=''
 _arg_environment=local
 
 print_help ()
 {
 	printf "%s\n" "The general script's help msg"
 	printf 'Usage: %s [-p|--platform <arg>] [-d|--device <arg>] [-e|--environment <arg>] [-h|--help]\n' "$0"
-	printf "\t%s\n" "-p,--platform: the platform to target 'android | ios'. default: ios (no default)"
-	printf "\t%s\n" "-d,--device: the platform to target 'emulator | device'. default: emulator (no default)"
-	printf "\t%s\n" "-e,--environment: the environment to target. default: local (no default)"
+	printf "\t%s\n" "-p,--platform: the platform to target 'android | ios | web'. default: ios"
+	printf "\t%s\n" "-d,--device: the platform to target 'emulator | device'. default: none"
+	printf "\t%s\n" "-e,--environment: the environment to target. default: local"
 	printf "\t%s\n" "-h,--help: Prints help"
 }
 
@@ -97,9 +101,31 @@ echo "Value of --device: $_arg_device"
 echo "Value of --environment: $_arg_environment"
 
 
-export VERSION_NUMBER=1.3.1
-export ENABLE_LOGS=true
 
-cd /Users/lewis/developer/mywell/src/mywell-ui
-npm run build:"$_arg_environment"
-ionic cordova run $_arg_platform --"$_arg_device"
+function run_device() {
+  cd "$DIR"/mywell-ui/
+  npm run build:"$_arg_environment"
+  ionic cordova run $_arg_platform --"$_arg_device"
+}
+
+function run_web() {
+  cd "$DIR"/mywell-ui/
+  echo "WARNING: run_device -d web currently only supports webpack dev server"
+
+  source "$DIR"/env/env"$_arg_environment".sh
+  npm run webpack_dev_server
+  open http://localhost:8080
+}
+
+
+case "$_arg_platform" in
+  ios|android)
+    run_device
+    ;;
+  web)
+    run_web
+    ;;
+  *)
+    _PRINT_HELP=yes die "FATAL ERROR: Device must be one of android | ios | web. Got: '$1'" 1
+    ;;
+esac
