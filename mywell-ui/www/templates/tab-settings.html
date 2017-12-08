@@ -18,7 +18,8 @@
   </div>
   <div ng-if="isUserLoggedInAndVerified">
   	<a class="button button-outline button-block button-clear button-positive" ng-show="isVerified" href="#/tab/settings/register">Register a New Well Rain Gauge or Checkdam</a>
-	  <a class="button button-outline button-block button-clear button-positive" ng-show="isVerified" ng-if="!isDesktop" ng-click="showGetImagePopup()">Change an image</a>
+    <!-- removing this for now. Can't get it working with the current version of cordova -->
+	  <!-- <a class="button button-outline button-block button-clear button-positive" ng-show="isVerified" ng-if="!isDesktop" ng-click="showGetImagePopup()">Change an image</a> -->
 	  <a class="button button-outline button-block button-clear button-assertive" ng-show="isVerified" ng-click="clearLogin()">Logout and Forget Me</a>
   </div>
   </br>
