@@ -14,7 +14,6 @@ import { styles as s } from "react-native-style-tachyons";
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 
-
 import ReadingStore from '../api/ReadingStore';
 import ServerApi from '../api/ServerApi';
 
@@ -25,8 +24,6 @@ class RecordScreen extends Component<{}> {
 
   constructor(props){
     super(props);
-
-    console.log('props are: ', props);
 
     this.state = {
       submitEnabled: false,
@@ -63,9 +60,6 @@ class RecordScreen extends Component<{}> {
    }
 
   checkPincodeAndResourceId({ pincode, resourceId }) {
-    //TODO: validate fields
-    console.log(pincode, resourceId);
-
     if (!pincode || !resourceId || resourceId.length < 3 ) {
 
       this.setState({
@@ -79,7 +73,6 @@ class RecordScreen extends Component<{}> {
     return this.setLoading(true)
       .then(() => ServerApi.checkResourceExists({pincode, resourceId}))
       .then(({resourceType, resourceReadingName, resourceUnits, maxValue, minValue}) => {
-        console.log('checkResourceExists response:', resourceType, resourceReadingName, resourceUnits);
         return this.setState({
           resourceType,
           resourceReadingName,
@@ -127,6 +120,10 @@ class RecordScreen extends Component<{}> {
   }
 
   getValuePlaceholderName() {
+    if (!this.state.hasNetworkAccess) {
+      return `Enter the reading.`;
+    }
+
     return `Enter the ${this.state.resourceReadingName} (${this.state.resourceUnits})`;
   }
 
@@ -276,7 +273,6 @@ class RecordScreen extends Component<{}> {
       return true;
     }
 
-    console.log("should enable value field? ", this.state.isResourceValid);
     //if we do, then make sure that pincode and resourceId exists
     return this.state.isResourceValid;
   }
@@ -289,7 +285,6 @@ class RecordScreen extends Component<{}> {
   isReadingValid() {
     const { maxValue, minValue, value, isResourceValid } = this.state;
 
-    console.log("isReadingValid, value: ", value);
     if (value === null || typeof value === undefined || value.length === 0) {
       return false;
     }
@@ -327,12 +322,10 @@ class RecordScreen extends Component<{}> {
 
   shouldDisableSubmitButton() {
     if (this.state.hasNetworkAccess === false) {
-      console.log('no network access');
       return true;
     }
 
     if (this.state.isAuthenciated === false) {
-      console.log('not authenticated');
       return true;
     }
 
@@ -372,7 +365,11 @@ class RecordScreen extends Component<{}> {
     const {resourceId, date, pincode, value} = this.state;
 
     return ReadingStore.pushSavedReading({resourceId, date, pincode, value})
-    .then(() => this.setState({value: null}));
+    .then(readings => {
+
+      this.props.screenProps.readings = readings;
+      this.setState({value: null});
+    });
   }
 
   getRecordButtons() {

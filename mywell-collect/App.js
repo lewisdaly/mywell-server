@@ -6,6 +6,7 @@ import {
   View
 } from 'react-native';
 import { StackNavigator, TabNavigator } from 'react-navigation';
+import { enhance } from 'react-navigation-addons';
 
 import RecordScreen from './components/RecordScreen';
 import SavedReadingsScreen from './components/SavedReadingsScreen';
@@ -21,43 +22,37 @@ const tabNavigatorOptions = {
   },
 };
 
-const RecordStack = StackNavigator({
-  Home: {
+// const RecordStack = StackNavigator({
+//   Home: {
+//     screen: RecordScreen,
+//   },
+// });
+//
+// const SavedReadingStack = enhance(StackNavigator)({
+//   Home: {
+//     screen: SavedReadingsScreen,
+//   },
+// });
+
+const AppNavigator = enhance(TabNavigator)({
+  Record: {
     screen: RecordScreen,
   },
-});
-
-const SavedReadingStack = StackNavigator({
-  Home: {
-    screen: SavedReadingsScreen,
-  },
-});
-
-const AppNavigator = TabNavigator({
-  Record: {
-    screen: RecordStack,
-  },
   Saved: {
-    screen: SavedReadingStack
+    screen: SavedReadingsScreen
   }
 }, tabNavigatorOptions);
 
 
 class App extends Component {
   render() {
-    const screenProps = {
-      savedReadings: [
-        {id: 1234},
-      ],
-      user: {
-        name: 'John Doe',
-        username: 'johndoe123',
-        email: 'john@doe.com',
-      },
-    }
+    const screenProps = {};
 
     return (
-      <AppNavigator screenProps={screenProps} />
+      <AppNavigator
+        onNavigationStateChange={(prev, curr, action) => console.log("state changed")}
+        screenProps={screenProps}
+      />
     )
   }
 }
