@@ -15,6 +15,7 @@ import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 
 
+import ReadingStore from '../api/ReadingStore';
 import ServerApi from '../api/ServerApi';
 
 class RecordScreen extends Component<{}> {
@@ -25,6 +26,8 @@ class RecordScreen extends Component<{}> {
   constructor(props){
     super(props);
 
+    console.log('props are: ', props);
+
     this.state = {
       submitEnabled: false,
       saveForLaterEnabled: false,
@@ -32,6 +35,7 @@ class RecordScreen extends Component<{}> {
       pincode: '313603',
       resourceId: '111',
       date: moment().format('DD-MM-YYYY'),
+      value: null,
 
       resourceUnits: null,
       resourceType: null,
@@ -63,6 +67,12 @@ class RecordScreen extends Component<{}> {
     console.log(pincode, resourceId);
 
     if (!pincode || !resourceId || resourceId.length < 3 ) {
+
+      this.setState({
+        isResourceValid: false,
+        hasNetworkAccess: null,
+        isAuthenciated: null,
+      });
       return Promise.resolve(null);
     }
 
@@ -82,7 +92,7 @@ class RecordScreen extends Component<{}> {
       })
       .then(() => this.setLoading(false))
       .catch(err => {
-        console.warn('error', err);
+        console.log('error', err);
 
         let newState = {}
         switch (err.status) {
@@ -125,14 +135,10 @@ class RecordScreen extends Component<{}> {
       return null;
     }
 
-    let valueText = null
-    if (this.state.value) {
-      valueText = `${this.state.value} ${this.state.resourceUnits}`
-    }
-
     return (
       <View>
         <TextInput
+          clearButtonMode="always"
           style={{height: 40, borderColor: 'gray', borderWidth: 1}}
           onChangeText={(value) => this.setState({value})}
           value={this.state.value}
@@ -152,6 +158,7 @@ class RecordScreen extends Component<{}> {
       <View style={[s.center, s.w_100]}>
         <Text style={[s.center, s.w_100]}>Form</Text>
         <TextInput
+          clearButtonMode="always"
           style={[s.h2, s.w_100, s.ph2, s.ba, s.jcfs]}
           onChangeText={(pincode) => {
             this.setState({pincode});
@@ -163,6 +170,7 @@ class RecordScreen extends Component<{}> {
           keyboardType="numeric"
         />
         <TextInput
+          clearButtonMode="always"
           style={{height: 40, borderColor: 'gray', borderWidth: 1}}
           onChangeText={(resourceId) => {
             this.setState({resourceId});
@@ -209,6 +217,7 @@ class RecordScreen extends Component<{}> {
     return <ActivityIndicator/>
   }
 
+  //TODO: get warning for when new reading is behind old date of reading
   getInvalidReadingWarningText() {
     const { maxValue, minValue, resourceUnits } = this.state;
     let warningText = 'The value you provided is not valid for this resource.';
@@ -233,15 +242,15 @@ class RecordScreen extends Component<{}> {
       warnings.push('Could not connect to server. You can always save your reading for later.');
     }
 
-    if (this.state.pincode && this.state.resouceId && this.state.isResourceValid === false) {
-      warnings.push('Resource is not valid. Please check the pincode and resourceId and try again.');
+    if (this.state.pincode && this.state.resourceId && this.state.isResourceValid === false) {
+      warnings.push('Could not find a resource with those details. Please check the pincode and resourceId and try again.');
     }
 
     if(this.state.isAuthenciated === false) {
       warnings.push('You must be logged in to submit your reading');
     }
 
-    if(this.isReadingValid() === false) {
+    if(this.isReadingValueValid() === false) {
       warnings.push(this.getInvalidReadingWarningText());
     }
 
@@ -267,6 +276,7 @@ class RecordScreen extends Component<{}> {
       return true;
     }
 
+    console.log("should enable value field? ", this.state.isResourceValid);
     //if we do, then make sure that pincode and resourceId exists
     return this.state.isResourceValid;
   }
@@ -277,11 +287,25 @@ class RecordScreen extends Component<{}> {
    * Check the max and min values. If null, then just return true
    */
   isReadingValid() {
-    const { maxValue, minValue, value } = this.state;
+    const { maxValue, minValue, value, isResourceValid } = this.state;
 
-    if (!value) {
-      return null;
+    console.log("isReadingValid, value: ", value);
+    if (value === null || typeof value === undefined || value.length === 0) {
+      return false;
     }
+
+    if (isResourceValid === false) {
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Check the max and min values. If null, then just return true
+   */
+  isReadingValueValid() {
+    const { maxValue, minValue, value } = this.state;
 
     if (maxValue !== null && value > maxValue) {
       return false;
@@ -345,7 +369,10 @@ class RecordScreen extends Component<{}> {
   }
 
   saveReading() {
-    console.log('saving reading for later');
+    const {resourceId, date, pincode, value} = this.state;
+
+    return ReadingStore.pushSavedReading({resourceId, date, pincode, value})
+    .then(() => this.setState({value: null}));
   }
 
   getRecordButtons() {
@@ -353,11 +380,11 @@ class RecordScreen extends Component<{}> {
       <View>
         <Button
           disabled={this.shouldDisableSubmitButton()}
-          onPress={this.submitReading()}
+          onPress={() => this.submitReading()}
           title="Submit"/>
         <Button
           disabled={this.shouldDisableSaveButton()}
-          onPress={this.saveReading()}
+          onPress={() => this.saveReading()}
           title="Save for Later"/>
       </View>
     );

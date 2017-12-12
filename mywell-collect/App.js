@@ -10,6 +10,9 @@ import { StackNavigator, TabNavigator } from 'react-navigation';
 import RecordScreen from './components/RecordScreen';
 import SavedReadingsScreen from './components/SavedReadingsScreen';
 
+
+//TODO: read the saved readings from local storage or something.
+
 const tabNavigatorOptions = {
   tabBarPosition: 'bottom',
   animationEnabled: false,
@@ -17,7 +20,6 @@ const tabNavigatorOptions = {
     activeTintColor: '#e91e63',
   },
 };
-
 
 const RecordStack = StackNavigator({
   Home: {
@@ -31,7 +33,7 @@ const SavedReadingStack = StackNavigator({
   },
 });
 
-const App = TabNavigator({
+const AppNavigator = TabNavigator({
   Record: {
     screen: RecordStack,
   },
@@ -40,14 +42,24 @@ const App = TabNavigator({
   }
 }, tabNavigatorOptions);
 
-export default App;
 
-// export default class App extends Component<{}> {
-//   render() {
-//     return (
-//       <View>
-//         <RecordPage/>
-//       </View>
-//     );
-//   }
-// }
+class App extends Component {
+  render() {
+    const screenProps = {
+      savedReadings: [
+        {id: 1234},
+      ],
+      user: {
+        name: 'John Doe',
+        username: 'johndoe123',
+        email: 'john@doe.com',
+      },
+    }
+
+    return (
+      <AppNavigator screenProps={screenProps} />
+    )
+  }
+}
+
+export default App;
