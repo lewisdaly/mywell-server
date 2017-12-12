@@ -6,6 +6,8 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  Keyboard,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { styles as s } from "react-native-style-tachyons";
@@ -43,17 +45,6 @@ class RecordScreen extends Component<{}> {
     };
   }
 
-  shouldEnableValueField() {
-
-    //if we don't have internet enable the field
-    if (!this.state.hasNetworkAccess) {
-      return true;
-    }
-
-    //if we do, then make sure that pincode and resourceId exists
-    return this.state.isResourceValid;
-  }
-
   /**
    * Change the loading state in a promise
    */
@@ -70,7 +61,7 @@ class RecordScreen extends Component<{}> {
     const { pincode, resourceId } = this.state;
     console.log(pincode, resourceId);
 
-    if (!pincode || !resourceId) {
+    if (!pincode || !resourceId || resourceId.length < 3 ) {
       return Promise.resolve(null);
     }
 
@@ -90,7 +81,7 @@ class RecordScreen extends Component<{}> {
       })
       .then(() => this.setLoading(false))
       .catch(err => {
-        console.error(err);
+        console.warn('error', err);
 
         let newState = {}
         switch (err.statusCode) {
@@ -128,13 +119,6 @@ class RecordScreen extends Component<{}> {
     return `Enter the ${this.state.resourceReadingName} (${this.state.resourceUnits})`;
   }
 
-
-  validateForm() {
-    const { pincode } = this.state;
-
-    //TODO: check
-  }
-
   getValueField() {
     if (!this.shouldEnableValueField()) {
       return null;
@@ -146,14 +130,17 @@ class RecordScreen extends Component<{}> {
     }
 
     return (
-      <TextInput
-        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-        onChangeText={(value) => this.setState({value})}
-        value={valueText}
-        placeholder={this.getValuePlaceholderName()}
-        returnKeyType="next"
-        keyboardType="numeric"
-      />
+      <View>
+        <TextInput
+          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+          onChangeText={(value) => this.setState({value})}
+          value={this.state.value}
+          placeholder={this.getValuePlaceholderName()}
+          returnKeyType="next"
+          keyboardType="numeric"
+        />
+        <Text>{this.state.resourceUnits}</Text>
+      </View>
     );
   }
 
@@ -166,8 +153,8 @@ class RecordScreen extends Component<{}> {
         <TextInput
           style={[s.h2, s.w_100, s.ph2, s.ba, s.jcfs]}
           onChangeText={(pincode) => {
-            return this.checkPincodeAndResourceId({pincode, resourceId:this.state.resourceId})
-              .then(() => this.setState({pincode}));
+            this.setState({pincode});
+            return this.checkPincodeAndResourceId({pincode, resourceId:this.state.resourceId});
           }}
           value={this.state.pincode}
           placeholder={'Enter your Pincode'}
@@ -177,8 +164,8 @@ class RecordScreen extends Component<{}> {
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1}}
           onChangeText={(resourceId) => {
-            return this.checkPincodeAndResourceId({resourceId, pincode:this.state.pincode})
-              .then(() => this.setState({resourceId}));
+            this.setState({resourceId});
+            return this.checkPincodeAndResourceId({resourceId, pincode:this.state.pincode});
           }}
           value={this.state.resourceId}
           placeholder={'Enter your Resource Id'}
@@ -221,6 +208,23 @@ class RecordScreen extends Component<{}> {
     return <ActivityIndicator/>
   }
 
+  getInvalidReadingWarningText() {
+    const { maxValue, minValue, resourceUnits } = this.state;
+    let warningText = 'The value you provided is not valid for this resource.';
+
+    const resourceUnitsString = resourceUnits ? resourceUnits : '';
+
+    if (maxValue !== null) {
+      warningText += ` The maximum value is ${maxValue.toFixed(2)}${resourceUnitsString}.`
+    }
+
+    if (minValue !== null) {
+      warningText += ` The minimum value is ${minValue.toFixed(2)}${resourceUnitsString}.`
+    }
+
+    return warningText;
+  }
+
   getWarningBanner() {
     const warnings = [];
 
@@ -230,6 +234,14 @@ class RecordScreen extends Component<{}> {
 
     if (this.state.pincode && this.state.resouceId && this.state.isResourceValid === false) {
       warnings.push('Resource is not valid. Please check the pincode and resourceId and try again.');
+    }
+
+    if(this.state.isAuthenciated === false) {
+      warnings.push('You must be logged in to submit your reading');
+    }
+
+    if(this.isReadingValid() === false) {
+      warnings.push(this.getInvalidReadingWarningText());
     }
 
     if (warnings.length === 0) {
@@ -247,14 +259,78 @@ class RecordScreen extends Component<{}> {
   }
 
 
-  shouldDisableSubmitButton() {
-    //if we have no network, return true
-    //if all fields are filled in, and valid return false
+  shouldEnableValueField() {
+
+    //if we don't have internet enable the field
+    if (this.state.hasNetworkAccess === false) {
+      return true;
+    }
+
+    //if we do, then make sure that pincode and resourceId exists
+    return this.state.isResourceValid;
+  }
+
+
+
+  /**
+   * Check the max and min values. If null, then just return true
+   */
+  isReadingValid() {
+    const { maxValue, minValue, value } = this.state;
+
+    if (!value) {
+      return null;
+    }
+
+    if (maxValue !== null && value > maxValue) {
+      return false;
+    }
+
+    if (minValue !== null && value < minValue) {
+      return false;
+    }
 
     return true;
   }
 
+  validateForm() {
+    const { pincode } = this.state;
+
+    //TODO: check
+  }
+
+
+  shouldDisableSubmitButton() {
+    if (this.state.hasNetworkAccess === false) {
+      console.log('no network access');
+      return true;
+    }
+
+    if (this.state.isAuthenciated === false) {
+      console.log('not authenticated');
+      return true;
+    }
+
+    if (this.isReadingValid() === true) {
+      return false;
+    }
+
+    //if we have no network, return true
+    //if all fields are filled in, and valid return false
+    return true;
+  }
+
   shouldDisableSaveButton() {
+    const { isResourceValid } = this.state;
+    const isReadingValid = this.isReadingValid();
+
+    if (isResourceValid === false) {
+      return true;
+    }
+
+    if (isReadingValid === false) {
+      return true;
+    }
 
     //if no network, and all fields are filled out, return false
     //if we have network, and all fields are filled out and valid, return false
@@ -288,12 +364,15 @@ class RecordScreen extends Component<{}> {
 
   render() {
     return (
-      <View style={[s.jcfs, s.pa2]}>
-        {this.getLoadingIndicator()}
-        {this.getWarningBanner()}
-        {this.getRecordForm()}
-        {this.getRecordButtons()}
-      </View>
+      <TouchableWithoutFeedback
+        onPress={Keyboard.dismiss} accessible={false}>
+        <View style={[s.jcfs, s.pa2]}>
+            {this.getLoadingIndicator()}
+            {this.getWarningBanner()}
+            {this.getRecordForm()}
+            {this.getRecordButtons()}
+        </View>
+    </TouchableWithoutFeedback>
     );
   }
 }
