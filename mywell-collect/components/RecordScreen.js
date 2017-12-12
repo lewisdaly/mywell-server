@@ -14,6 +14,7 @@ import { styles as s } from "react-native-style-tachyons";
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 
+
 import ServerApi from '../api/ServerApi';
 
 class RecordScreen extends Component<{}> {
@@ -27,8 +28,9 @@ class RecordScreen extends Component<{}> {
     this.state = {
       submitEnabled: false,
       saveForLaterEnabled: false,
-      pincode: null,
-      resourceId: null,
+      //TODO: change back to null
+      pincode: '313603',
+      resourceId: '111',
       date: moment().format('DD-MM-YYYY'),
 
       resourceUnits: null,
@@ -56,9 +58,8 @@ class RecordScreen extends Component<{}> {
      });
    }
 
-  checkPincodeAndResourceId() {
+  checkPincodeAndResourceId({ pincode, resourceId }) {
     //TODO: validate fields
-    const { pincode, resourceId } = this.state;
     console.log(pincode, resourceId);
 
     if (!pincode || !resourceId || resourceId.length < 3 ) {
@@ -84,7 +85,7 @@ class RecordScreen extends Component<{}> {
         console.warn('error', err);
 
         let newState = {}
-        switch (err.statusCode) {
+        switch (err.status) {
           case 400:
             /* wrong pincode or resourceId */
             newState = {

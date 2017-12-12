@@ -1,13 +1,26 @@
 //TODO: load from env var
-const MYWELL_HOST = 'http://192.168.99.100:3000'
+import Config from 'react-native-config';
+
+const SERVER_URL = Config.SERVER_URL;
+
+const appendUrlParameters = (url, qs) => {
+  let queryString = new URLSearchParams();
+  for (let idx in Object.keys(qs)) {
+    const key = Object.keys(qs)[idx];
+
+    queryString.append(key, qs[key]);
+  }
+
+  return `${url}?${queryString.toString()}`;
+}
 
 class ServerApi {
 
   static checkResourceExists({pincode, resourceId}) {
-    const url = `${MYWELL_HOST}/api/resources`
+    const baseUrl = `${SERVER_URL}/api/resources`;
 
     //{"where":{"and": [{"postcode":313603}, {"id":1111}]}}
-    const filter = encodeURIComponent({
+    const filter = JSON.stringify({
       where: {
         and: [
           {postcode: pincode},
@@ -15,17 +28,57 @@ class ServerApi {
         ]
       }
     });
-    const request = new Request(url, {method: 'GET', qs: {filter}});
-    console.log("url is:", url);
-    // const request = new Request(url);
-    return fetch(request)
+
+    return fetch(appendUrlParameters(baseUrl, {filter}))
     .then(response => {
-      //TODO: parse and format the body
       //Resource exists, format the response
-      console.log('response', response);
       if (!response.ok) {
-        return Promise.reject({statusCode: response.statusCode});
+        return Promise.reject({status: response.status});
       }
+      return response.json();
+    })
+    .then(body => {
+      if (!body || !body[0]) {
+        //Where filter found nothing
+        return Promise.reject({status: 400});
+      }
+
+      const resource = body[0];
+      //TODO: the server really should return these, but for now this will do.
+      let formattedResponse = null;
+      const defaultResponse = {
+        resourceType: resource.type,
+        resourceUnits: 'm',
+        maxValue: null,
+        minValue: null,
+      };
+      switch (resource.type) {
+        case "well":
+          formattedResponse = {
+            ...defaultResponse,
+            resourceReadingName: 'Depth to Water Level',
+            maxValue: resource.well_depth,
+          }
+          break;
+        case "checkdam":
+          formattedResponse = {
+            ...defaultResponse,
+            resourceReadingName: 'Watertable Height',
+          }
+
+          break;
+        case "raingauge":
+          formattedResponse = {
+            ...defaultResponse,
+            resourceReadingName: 'Water column height',
+            resourceUnits: 'mm',
+          }
+          break;
+        default:
+          return Promise.reject(new Error(`Unkown resource type: ${resource.type}`));
+      }
+
+      return formattedResponse;
     });
   }
 

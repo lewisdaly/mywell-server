@@ -6,7 +6,7 @@ export ENABLE_NOTIFICATIONS=false
 export ENABLE_LOGS=true
 export ENVIRONMENT=development
 export REFRESH_UI=false
-export SERVER_URL=https://dev2-mywell-server.vessels.tech
+SERVER_URL=https://dev2-mywell-server.vessels.tech
 export STAGE_PREFIX="dev2-"
 export DB_HOST="mywelldb.cyftlfi9bxci.ap-southeast-2.rds.amazonaws.com"
 export DB_NAME="development_mywell"
@@ -25,5 +25,6 @@ export WEBPACK_DEV=false
 export CONSOLE_DOMAIN_NAME="dev-mywell-console.vessels.tech"
 
 
+export SERVER_URL
 
 source $DIR/env.sh
