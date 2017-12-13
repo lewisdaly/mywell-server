@@ -262,13 +262,13 @@ MyWell allows you to export your readings into a tsv format, which can be read b
 
 The url for downloading readings is:
 ```
-https://mywell.vessels.tech/api/readings/exportReadings?pincodes=<pincode list>"
+https://mywell-server.vessels.tech/api/readings/exportReadings?pincodes=<pincode list>"
 ```
 
 where `<pincode list>` is a list of postcodes you want to get the reading data for, separated by commas.
 For example, to get the readings from postcodes 313603 and 313604, you would use the url:
 ```
-https://mywell.vessels.tech/api/readings/exportReadings?postcodes=313603,313604"
+https://mywell-server.vessels.tech/api/readings/exportReadings?postcodes=313603,313604"
 ```
 
 *note: For postcodes with lots of readings, please be patient! It can take a while to download all readings.*
