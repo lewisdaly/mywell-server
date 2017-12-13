@@ -24,29 +24,23 @@ class SavedReadingsScreen extends Component<{}> {
   }
 
   componentWillMount() {
-    console.log('SavedReadingsScreen component will mount');
-
-    ReadingStore.getSavedReadings()
-    .then(readings => {
-      console.log("saved readings are: ", readings);
-
-      //TODO: load saved readings
-      this.setState({
-        readings
-      });
-    });
+    this.fetchData();
   }
 
   componentDidMount() {
-    this.props.navigation.addListener('focus', this._fetchData);
+    this.props.navigation.addListener('focus', () => this.fetchData());
   }
 
   componentWillUnmount() {
-   this.props.navigation.removeListener('focus', this._fetchData);
+   this.props.navigation.removeListener('focus', () => this.fetchData());
  }
 
-  _fetchData() {
-    console.log('loading data');
+  fetchData() {
+    ReadingStore.getSavedReadings()
+    .then(readings => {
+
+      this.setState({readings});
+    });
   }
 
   loadReadingRow(key, reading) {
