@@ -1,12 +1,15 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+unset SERVER_URL
+
 #the env variables to set up the development environment
 
 export ENABLE_NOTIFICATIONS=false
 export ENABLE_LOGS=true
 export ENVIRONMENT=development
 export REFRESH_UI=false
-SERVER_URL=https://dev2-mywell-server.vessels.tech
+export SERVER_URL=https://dev2-mywell-server.vessels.tech
+export DONT_USE_ACCESS_TOKEN=xIYvJnc1R5DDVz1EqwR1BqYG5llm6MU8b1Yb3Pj0JvGsZywfTsbTplCK5sjyQ0Gm
 export STAGE_PREFIX="dev2-"
 export DB_HOST="mywelldb.cyftlfi9bxci.ap-southeast-2.rds.amazonaws.com"
 export DB_NAME="development_mywell"
@@ -23,8 +26,5 @@ export REACT_APP_GRAPHQL_ENDPOINT="https://dev2-mywell-gql.vessels.tech/graphql"
 export UI_BUCKET_NAME="dev2-mywell.vessels.tech"
 export WEBPACK_DEV=false
 export CONSOLE_DOMAIN_NAME="dev-mywell-console.vessels.tech"
-
-
-export SERVER_URL
 
 source $DIR/env.sh

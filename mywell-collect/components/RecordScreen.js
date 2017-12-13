@@ -16,6 +16,7 @@ import DatePicker from 'react-native-datepicker';
 
 import ReadingStore from '../api/ReadingStore';
 import ServerApi from '../api/ServerApi';
+import { showAlert } from '../util';
 
 class RecordScreen extends Component<{}> {
   static navigationOptions = {
@@ -31,7 +32,7 @@ class RecordScreen extends Component<{}> {
       //TODO: change back to null
       pincode: '313603',
       resourceId: '111',
-      date: moment().format('DD-MM-YYYY'),
+      date: moment().format('YYYY-MM-DD'),
       value: null,
 
       resourceUnits: null,
@@ -183,7 +184,7 @@ class RecordScreen extends Component<{}> {
           date={this.state.date}
           mode="date"
           placeholder="select date"
-          format="DD-MM-YYYY"
+          format="YYYY-MM-DD"
           minDate="2016-05-01"
           maxDate={maxDate}
           confirmBtnText="Confirm"
@@ -329,6 +330,10 @@ class RecordScreen extends Component<{}> {
       return true;
     }
 
+    if (this.isReadingValueValid() === false) {
+      return true;
+    }
+
     if (this.isReadingValid() === true) {
       return false;
     }
@@ -346,6 +351,10 @@ class RecordScreen extends Component<{}> {
       return true;
     }
 
+    if (this.isReadingValueValid() === false) {
+      return true;
+    }
+
     if (isReadingValid === false) {
       return true;
     }
@@ -358,15 +367,36 @@ class RecordScreen extends Component<{}> {
   }
 
   submitReading() {
-    console.log('submitting reading');
+    const {resourceId, date, pincode, value} = this.state;
+
+    Keyboard.dismiss();
+    this.setState({loading:true});
+
+    return ServerApi.submitReading({resourceId, date, pincode, value})
+    .then(() => {
+      showAlert('Saved!', 'Saved your reading. Thanks!');
+      this.setState({
+        loading:false,
+        value:null
+      });
+    })
+    .catch(error => {
+      console.log(error);
+      //TODO: show alert
+      showAlert('Problem Saving Reading', 'There was a problem saving the reading. Please check and try again.');
+      this.setState({
+        loading: false
+      });
+    });
   }
 
   saveReading() {
     const {resourceId, date, pincode, value} = this.state;
 
+    Keyboard.dismiss();
+
     return ReadingStore.pushSavedReading({resourceId, date, pincode, value})
     .then(readings => {
-
       this.props.screenProps.readings = readings;
       this.setState({value: null});
     });

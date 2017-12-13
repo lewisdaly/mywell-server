@@ -1,7 +1,9 @@
-//TODO: load from env var
-import Config from 'react-native-config';
+// import Config from 'react-native-config';
 
-const SERVER_URL = Config.SERVER_URL;
+import { rejectRequestWithError } from '../util';
+
+const SERVER_URL = process.env.SERVER_URL;
+const DONT_USE_ACCESS_TOKEN = process.env.DONT_USE_ACCESS_TOKEN;
 
 const appendUrlParameters = (url, qs) => {
   let queryString = new URLSearchParams();
@@ -16,7 +18,53 @@ const appendUrlParameters = (url, qs) => {
 
 class ServerApi {
 
+  static submitReading({pincode, resourceId, date, value}) {
+
+    console.log(pincode, resourceId, date, value);
+
+    const baseUrl = `${SERVER_URL}/api/readings`;
+    const url = appendUrlParameters(baseUrl, {access_token:DONT_USE_ACCESS_TOKEN});
+
+    /* eg:
+    {
+      "date": "2017-12-12",
+      "value": 0,
+      "postcode": 0,
+      "resourceId": 0,
+    }
+    */
+
+    const data = JSON.stringify({
+      date,
+      value,
+      resourceId,
+      postcode: pincode
+    });
+
+    return fetch(url, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: data
+    })
+    .then(response => {
+      if (!response.ok) {
+        console.log(response._bodyText);
+        return rejectRequestWithError(response.status);
+      }
+
+      return response.json();
+    })
+    .then(body => {
+      console.log(body);
+    });
+  }
+
   static checkResourceExists({pincode, resourceId}) {
+    console.log('server_url ', SERVER_URL);
+
     const baseUrl = `${SERVER_URL}/api/resources`;
 
     //{"where":{"and": [{"postcode":313603}, {"id":1111}]}}
@@ -33,6 +81,7 @@ class ServerApi {
     .then(response => {
       //Resource exists, format the response
       if (!response.ok) {
+        //TODO: should this be an error?
         return Promise.reject({status: response.status});
       }
       return response.json();
