@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean",
+    "bundle:ios": "source ../env/envproduction.sh && node node_modules/react-native/local-cli/cli.js bundle --entry-file='index.js' --bundle-output='./ios/MywellCollect/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
   },
@@ -11,6 +13,7 @@
     "babel-plugin-transform-inline-environment-variables": "^0.2.0",
     "moment": "^2.19.3",
     "prop-types": "^15.6.0",
+    "query-string": "^5.0.1",
     "react": "16.0.0",
     "react-native": "0.51.0",
     "react-native-config": "^0.11.2",
@@ -22,7 +25,8 @@
     "react-navigation-addons": "satya164/react-navigation-addons",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
-    "request-promise-native": "^1.0.5"
+    "request-promise-native": "^1.0.5",
+    "url-search-params": "^0.10.0"
   },
   "devDependencies": {
     "babel-jest": "21.2.0",

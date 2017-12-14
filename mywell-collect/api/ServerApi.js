@@ -1,19 +1,19 @@
-// import Config from 'react-native-config';
-
 import { rejectRequestWithError } from '../util';
+// import URLSearchParams from 'url-search-params';
+import QueryString from 'query-string';
 
 const SERVER_URL = process.env.SERVER_URL;
 const DONT_USE_ACCESS_TOKEN = process.env.DONT_USE_ACCESS_TOKEN;
 
 const appendUrlParameters = (url, qs) => {
-  let queryString = new URLSearchParams();
-  for (let idx in Object.keys(qs)) {
-    const key = Object.keys(qs)[idx];
+  // let queryString = new URLSearchParams();
+  // for (let idx in Object.keys(qs)) {
+  //   const key = Object.keys(qs)[idx];
+  //
+  //   queryString.append(key, qs[key]);
+  // }
 
-    queryString.append(key, qs[key]);
-  }
-
-  return `${url}?${queryString.toString()}`;
+  return `${url}?${QueryString.stringify(qs)}`;
 }
 
 class ServerApi {
@@ -60,7 +60,6 @@ class ServerApi {
 
   static checkResourceExists({pincode, resourceId}) {
     console.log('server_url ', SERVER_URL);
-
     const baseUrl = `${SERVER_URL}/api/resources`;
 
     //{"where":{"and": [{"postcode":313603}, {"id":1111}]}}

@@ -36,9 +36,8 @@ class RecordScreen extends Component<{}> {
     this.state = {
       submitEnabled: false,
       saveForLaterEnabled: false,
-      //TODO: change back to null
-      pincode: '313603',
-      resourceId: '111',
+      pincode: null,
+      resourceId: null,
       date: moment().format('YYYY-MM-DD'),
       value: null,
 
