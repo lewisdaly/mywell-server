@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import NativeTachyons, { styles as s } from "react-native-style-tachyons";
 import NavigationBar from 'react-native-navbar';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 import SavedListItem from './SavedListItem';
@@ -20,6 +21,9 @@ class SavedReadingsScreen extends Component<{}> {
   static navigationOptions = {
     //TODO: give this a number badge with the number of saved readings
     title: `Saved Readings`,
+    tabBarIcon: ({tintColor}) => (
+      <Icon name="toc" size={30} color={tintColor} />
+    )
   };
 
   constructor(props){

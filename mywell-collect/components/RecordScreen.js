@@ -16,6 +16,7 @@ import NativeTachyons, { styles as s } from "react-native-style-tachyons";
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 import NavigationBar from 'react-native-navbar';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import ReadingStore from '../api/ReadingStore';
 import ServerApi from '../api/ServerApi';
@@ -24,6 +25,9 @@ import { showAlert } from '../util';
 class RecordScreen extends Component<{}> {
   static navigationOptions = {
     title: `Record`,
+    tabBarIcon: ({tintColor}) => (
+      <Icon name="assignment" size={30} color={tintColor} />
+    )
   };
 
   constructor(props){

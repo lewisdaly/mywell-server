@@ -8,6 +8,7 @@ import {
 import { StackNavigator, TabNavigator } from 'react-navigation';
 import { enhance } from 'react-navigation-addons';
 
+
 import RecordScreen from './components/RecordScreen';
 import SavedReadingsScreen from './components/SavedReadingsScreen';
 
@@ -18,21 +19,9 @@ const tabNavigatorOptions = {
   tabBarPosition: 'bottom',
   animationEnabled: false,
   tabBarOptions: {
-    activeTintColor: '#e91e63',
+    activeTintColor: 'blue',
   },
 };
-
-// const RecordStack = StackNavigator({
-//   Home: {
-//     screen: RecordScreen,
-//   },
-// });
-//
-// const SavedReadingStack = enhance(StackNavigator)({
-//   Home: {
-//     screen: SavedReadingsScreen,
-//   },
-// });
 
 const AppNavigator = enhance(TabNavigator)({
   Record: {
