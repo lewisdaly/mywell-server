@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
-  Button,
   Platform,
   StyleSheet,
   Text,
   TextInput,
   Keyboard,
+  TouchableHighlight,
   TouchableWithoutFeedback,
   View,
+  ScrollView,
 } from 'react-native';
-import { styles as s } from "react-native-style-tachyons";
+import Button from 'apsl-react-native-button'
+import NativeTachyons, { styles as s } from "react-native-style-tachyons";
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
+import NavigationBar from 'react-native-navbar';
 
 import ReadingStore from '../api/ReadingStore';
 import ServerApi from '../api/ServerApi';
@@ -129,22 +132,23 @@ class RecordScreen extends Component<{}> {
   }
 
   getValueField() {
-    if (!this.shouldEnableValueField()) {
-      return null;
-    }
+    //TODO: re enable
+    // if (!this.shouldEnableValueField()) {
+    //   return null;
+    // }
 
     return (
       <View>
+        <Text cls="f6 b mb2">Reading Value ({this.state.resourceUnits})</Text>
         <TextInput
+          cls="ba b--black-20 pa2 mb2"
           clearButtonMode="always"
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
           onChangeText={(value) => this.setState({value})}
           value={this.state.value}
           placeholder={this.getValuePlaceholderName()}
           returnKeyType="next"
           keyboardType="numeric"
         />
-        <Text>{this.state.resourceUnits}</Text>
       </View>
     );
   }
@@ -153,34 +157,40 @@ class RecordScreen extends Component<{}> {
     const maxDate = moment().format("DD-MM-YYYY")
 
     return (
-      <View style={[s.center, s.w_100]}>
-        <Text style={[s.center, s.w_100]}>Form</Text>
+      <View
+        style={{}}
+      >
+        <Text cls="f6 b mb2">Pincode</Text>
         <TextInput
+          cls="f6 ba b--black-20 pa2 mb2"
           clearButtonMode="always"
-          style={[s.h2, s.w_100, s.ph2, s.ba, s.jcfs]}
           onChangeText={(pincode) => {
             this.setState({pincode});
             return this.checkPincodeAndResourceId({pincode, resourceId:this.state.resourceId});
           }}
           value={this.state.pincode}
-          placeholder={'Enter your Pincode'}
+          placeholder={'Enter the pincode of the resource.'}
           returnKeyType="next"
           keyboardType="numeric"
         />
+
+        <Text cls="f6 b mb2">Resource Id</Text>
         <TextInput
           clearButtonMode="always"
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+          cls="ba b--black-20 pa2 mb2"
           onChangeText={(resourceId) => {
             this.setState({resourceId});
             return this.checkPincodeAndResourceId({resourceId, pincode:this.state.pincode});
           }}
           value={this.state.resourceId}
-          placeholder={'Enter your Resource Id'}
+          placeholder={'Enter the id of the resource.'}
           returnKeyType="next"
           keyboardType="numeric"
         />
+
+        <Text cls="f6 b mb2">Date</Text>
         <DatePicker
-          style={[s.h2, s.w_100, s.ph2, s.ba, s.jcfs]}
+          cls="pv2 mb2 asc w5"
           date={this.state.date}
           mode="date"
           placeholder="select date"
@@ -189,19 +199,9 @@ class RecordScreen extends Component<{}> {
           maxDate={maxDate}
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
-          customStyles={{
-            dateIcon: {
-              position: 'absolute',
-              left: 0,
-              top: 4,
-              marginLeft: 0
-            },
-            dateInput: {
-              marginLeft: 36
-            }
-          }}
           onDateChange={(date) => {this.setState({date: date})}}
         />
+
         {this.getValueField()}
       </View>
     );
@@ -209,10 +209,14 @@ class RecordScreen extends Component<{}> {
 
   getLoadingIndicator() {
     if (!this.state.loading) {
-      return null;
+      return <View cls="ma2 h2"></View>;
     }
 
-    return <ActivityIndicator/>
+    return (
+      <ActivityIndicator
+        cls="ma2 h2"
+      />
+    );
   }
 
   //TODO: get warning for when new reading is behind old date of reading
@@ -253,10 +257,11 @@ class RecordScreen extends Component<{}> {
     }
 
     if (warnings.length === 0) {
-      return null;
+      return <View></View>
     }
 
     const warningText = warnings.reduce((acc, curr) => acc + '\n' + curr);
+
     return (
       <View>
         <Text style={[s.white, s.tc]}>
@@ -404,15 +409,43 @@ class RecordScreen extends Component<{}> {
 
   getRecordButtons() {
     return (
-      <View>
+      <View style={{flexDirection:'row'}}>
         <Button
+          style={{flex:1}}
+          cls="f6 br2 ba ph3 pa2 mb2 black mr1"
+          textStyle={{fontSize: 18}}
+          isDisabled={this.shouldDisableSubmitButton()}
+        >
+          Submit
+        </Button>
+        <Button
+          style={{flex:1}}
+          cls="f6 br2 ba ph3 pa2 mb2 red ml1"
+          textStyle={{fontSize: 18}}
+          isDisabled={this.shouldDisableSaveButton()}
+        >
+          Save for Later
+        </Button>
+        {/* <TouchableHighlight
+          underlayColor="white"
+          style={{
+            alignItems: 'center',
+            padding: 10
+          }}
           disabled={this.shouldDisableSubmitButton()}
           onPress={() => this.submitReading()}
-          title="Submit"/>
-        <Button
+          title="Submit">
+          <View cls="f6 br2 ba ph3 pv2 mb2 black">
+            <Text> Submit</Text>
+          </View>
+
+        </TouchableHighlight> */}
+        {/* <Button
+          cls="f6 br2 ba ph3 pv2 mb2 black bg-blue"
+          style={{flex:1}}
           disabled={this.shouldDisableSaveButton()}
           onPress={() => this.saveReading()}
-          title="Save for Later"/>
+          title="Save for Later"/> */}
       </View>
     );
   }
@@ -423,12 +456,18 @@ class RecordScreen extends Component<{}> {
         onPress={Keyboard.dismiss}
         accessible={false}>
         <View style={{flex: 1}}>
-          <View style={{height:50, backgroundColor: 'skyblue', justifyContent:'center', alignItems: 'center'}}></View>
-          <View style={{flex: 1, justifyContent:'center', alignItems: 'center'}}>
-                {this.getLoadingIndicator()}
-                {this.getWarningBanner()}
-                {this.getRecordForm()}
-                {this.getRecordButtons()}
+          <NavigationBar
+            tintColor={'lightblue'}
+            title={{title:'Record'}}
+          />
+            {this.getLoadingIndicator()}
+          <View
+            style={{flex: 1}}
+            cls="ph2"
+            >
+            {this.getWarningBanner()}
+            {this.getRecordForm()}
+            {this.getRecordButtons()}
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -436,4 +475,4 @@ class RecordScreen extends Component<{}> {
   }
 }
 
-export default RecordScreen;
+export default NativeTachyons.wrap(RecordScreen);
