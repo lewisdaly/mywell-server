@@ -19,9 +19,6 @@ const appendUrlParameters = (url, qs) => {
 class ServerApi {
 
   static submitReading({pincode, resourceId, date, value}) {
-
-    console.log(pincode, resourceId, date, value);
-
     const baseUrl = `${SERVER_URL}/api/readings`;
     const url = appendUrlParameters(baseUrl, {access_token:DONT_USE_ACCESS_TOKEN});
 
@@ -31,8 +28,7 @@ class ServerApi {
       "value": 0,
       "postcode": 0,
       "resourceId": 0,
-    }
-    */
+    } */
 
     const data = JSON.stringify({
       date,

@@ -420,14 +420,18 @@ class RecordScreen extends Component<{}> {
   render() {
     return (
       <TouchableWithoutFeedback
-        onPress={Keyboard.dismiss} accessible={false}>
-        <View style={[s.jcfs, s.pa2]}>
-            {this.getLoadingIndicator()}
-            {this.getWarningBanner()}
-            {this.getRecordForm()}
-            {this.getRecordButtons()}
+        onPress={Keyboard.dismiss}
+        accessible={false}>
+        <View style={{flex: 1}}>
+          <View style={{height:50, backgroundColor: 'skyblue', justifyContent:'center', alignItems: 'center'}}></View>
+          <View style={{flex: 1, justifyContent:'center', alignItems: 'center'}}>
+                {this.getLoadingIndicator()}
+                {this.getWarningBanner()}
+                {this.getRecordForm()}
+                {this.getRecordButtons()}
+          </View>
         </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
     );
   }
 }

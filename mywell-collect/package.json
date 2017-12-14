@@ -14,6 +14,7 @@
     "react-native": "0.51.0",
     "react-native-config": "^0.11.2",
     "react-native-datepicker": "^1.6.0",
+    "react-native-navbar": "^2.1.0",
     "react-native-style-tachyons": "^3.5.1",
     "react-navigation": "^1.0.0-beta.21",
     "react-navigation-addons": "satya164/react-navigation-addons",
