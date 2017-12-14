@@ -132,10 +132,9 @@ class RecordScreen extends Component<{}> {
   }
 
   getValueField() {
-    //TODO: re enable
-    // if (!this.shouldEnableValueField()) {
-    //   return null;
-    // }
+    if (!this.shouldEnableValueField()) {
+      return null;
+    }
 
     return (
       <View>
@@ -158,6 +157,7 @@ class RecordScreen extends Component<{}> {
 
     return (
       <View
+        cls="pb2"
         style={{}}
       >
         <Text cls="f6 b mb2">Pincode</Text>
@@ -412,40 +412,22 @@ class RecordScreen extends Component<{}> {
       <View style={{flexDirection:'row'}}>
         <Button
           style={{flex:1}}
-          cls="f6 br2 ba ph3 pa2 mb2 black mr1"
+          cls="f6 br2 ba ph3 pa2 mb2 white mr1"
           textStyle={{fontSize: 18}}
+          onPress={() => this.submitReading()}
           isDisabled={this.shouldDisableSubmitButton()}
         >
           Submit
         </Button>
         <Button
           style={{flex:1}}
-          cls="f6 br2 ba ph3 pa2 mb2 red ml1"
+          cls="f6 br2 ba ph3 pa2 mb2 ml1"
           textStyle={{fontSize: 18}}
+          onPress={() => this.saveReading()}
           isDisabled={this.shouldDisableSaveButton()}
         >
           Save for Later
         </Button>
-        {/* <TouchableHighlight
-          underlayColor="white"
-          style={{
-            alignItems: 'center',
-            padding: 10
-          }}
-          disabled={this.shouldDisableSubmitButton()}
-          onPress={() => this.submitReading()}
-          title="Submit">
-          <View cls="f6 br2 ba ph3 pv2 mb2 black">
-            <Text> Submit</Text>
-          </View>
-
-        </TouchableHighlight> */}
-        {/* <Button
-          cls="f6 br2 ba ph3 pv2 mb2 black bg-blue"
-          style={{flex:1}}
-          disabled={this.shouldDisableSaveButton()}
-          onPress={() => this.saveReading()}
-          title="Save for Later"/> */}
       </View>
     );
   }
