@@ -5,7 +5,7 @@ import {
   Button,
   Text,
 } from 'react-native';
-import { styles as s } from "react-native-style-tachyons";
+import NativeTachyons, { styles as s } from "react-native-style-tachyons";
 import PropTypes from 'prop-types';
 
 import { getHashForReading } from '../util';
@@ -30,7 +30,7 @@ class SavedListItem extends Component {
     }
 
     return (
-      <View style={[s.flx_1, s.flx_row]}>
+      <View style={[s.flx_3, s.flx_row]}>
         <Button
           title="Save"
           onPress={() => {
@@ -49,13 +49,31 @@ class SavedListItem extends Component {
     );
   }
 
+  getTextContents() {
+    const { reading: {resourceId, value, date, pincode} } = this.props;
+
+    const row1 = `${pincode}/${resourceId}`;
+    const row2 = `${date}, ${value}`;
+
+
+    return (
+      <View
+        style={{flex:1}}
+      >
+        <Text cls="f5 fw6 bb tl pb3 pr3 bg-white">{row1}</Text>
+        <Text cls="fw6 bb tl pb3 pr3 bg-white">{row2}</Text>
+      </View>
+    )
+
+  }
+
   render() {
     const { reading: {resourceId, value, date, pincode} } = this.props;
 
     const cellContents = `${date}: ${pincode}/${resourceId} ${value}`;
     return (
-      <View style={[s.flx_1, s.flx_row, s.h3, s.bb, s.b__red]}>
-        <Text>{cellContents}</Text>
+      <View style={[s.flx_row, s.h3, s.pv3, s.bb]}>
+        {this.getTextContents()}
         {this.getButtons()}
       </View>
     );
@@ -73,4 +91,4 @@ SavedListItem.propTypes = {
   onSavePressed: PropTypes.func,
 }
 
-export default SavedListItem;
+export default NativeTachyons.wrap(SavedListItem);

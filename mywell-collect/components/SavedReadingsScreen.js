@@ -7,7 +7,9 @@ import {
   Button,
   ScrollView,
 } from 'react-native';
-import { styles as s } from "react-native-style-tachyons";
+import NativeTachyons, { styles as s } from "react-native-style-tachyons";
+import NavigationBar from 'react-native-navbar';
+
 
 import SavedListItem from './SavedListItem';
 import ReadingStore from '../api/ReadingStore';
@@ -88,7 +90,7 @@ class SavedReadingsScreen extends Component<{}> {
     if (!readings || Object.keys(readings).length < 1) {
       return (
         <Text style={[s.tc, s.f5, s.flx_1, s.pa4]}>
-          Nothing here. Go to "Readings" to save some new readings.
+          Nothing here. Go to "Record" to save some new readings.
         </Text>
       );
     }
@@ -105,8 +107,11 @@ class SavedReadingsScreen extends Component<{}> {
 
     return (
       <View style={{flex: 1}}>
-        <View style={{height:50, backgroundColor: 'skyblue', justifyContent:'center', alignItems: 'center'}}></View>
-        <View style={{flex: 1, justifyContent:'center', alignItems: 'center'}}>
+        <NavigationBar
+          tintColor={'lightblue'}
+          title={{title:'Saved Readings'}}
+        />
+        <View style={{flex: 1}}>
           {this.loadReadings()}
         </View>
       </View>
@@ -114,4 +119,4 @@ class SavedReadingsScreen extends Component<{}> {
   }
 }
 
-export default SavedReadingsScreen;
+export default NativeTachyons.wrap(SavedReadingsScreen);

@@ -138,9 +138,9 @@ class RecordScreen extends Component<{}> {
 
     return (
       <View>
-        <Text cls="f6 b mb2">Reading Value ({this.state.resourceUnits})</Text>
+        <Text cls="b mb2">Reading Value ({this.state.resourceUnits})</Text>
         <TextInput
-          cls="ba b--black-20 pa2 mb2"
+          cls="ba pa2 mb2"
           clearButtonMode="always"
           onChangeText={(value) => this.setState({value})}
           value={this.state.value}
@@ -160,9 +160,9 @@ class RecordScreen extends Component<{}> {
         cls="pb2"
         style={{}}
       >
-        <Text cls="f6 b mb2">Pincode</Text>
+        <Text cls="b mb2">Pincode</Text>
         <TextInput
-          cls="f6 ba b--black-20 pa2 mb2"
+          cls="ba pa2 mb2"
           clearButtonMode="always"
           onChangeText={(pincode) => {
             this.setState({pincode});
@@ -174,10 +174,10 @@ class RecordScreen extends Component<{}> {
           keyboardType="numeric"
         />
 
-        <Text cls="f6 b mb2">Resource Id</Text>
+        <Text cls="b mb2">Resource Id</Text>
         <TextInput
           clearButtonMode="always"
-          cls="ba b--black-20 pa2 mb2"
+          cls="ba pa2 mb2"
           onChangeText={(resourceId) => {
             this.setState({resourceId});
             return this.checkPincodeAndResourceId({resourceId, pincode:this.state.pincode});
@@ -188,7 +188,7 @@ class RecordScreen extends Component<{}> {
           keyboardType="numeric"
         />
 
-        <Text cls="f6 b mb2">Date</Text>
+        <Text cls="b mb2">Date</Text>
         <DatePicker
           cls="pv2 mb2 asc w5"
           date={this.state.date}
@@ -264,7 +264,7 @@ class RecordScreen extends Component<{}> {
 
     return (
       <View>
-        <Text style={[s.white, s.tc]}>
+        <Text style={[s.tc]}>
           {warningText}
         </Text>
       </View>
@@ -412,7 +412,7 @@ class RecordScreen extends Component<{}> {
       <View style={{flexDirection:'row'}}>
         <Button
           style={{flex:1}}
-          cls="f6 br2 ba ph3 pa2 mb2 white mr1"
+          cls="br2 ba ph3 pa2 mb2 mr1"
           textStyle={{fontSize: 18}}
           onPress={() => this.submitReading()}
           isDisabled={this.shouldDisableSubmitButton()}
@@ -421,7 +421,7 @@ class RecordScreen extends Component<{}> {
         </Button>
         <Button
           style={{flex:1}}
-          cls="f6 br2 ba ph3 pa2 mb2 ml1"
+          cls="br2 ba ph3 pa2 mb2 ml1"
           textStyle={{fontSize: 18}}
           onPress={() => this.saveReading()}
           isDisabled={this.shouldDisableSaveButton()}
