@@ -3449,6 +3449,10 @@ react-native-drawer-layout@1.3.2:
   dependencies:
     react-native-dismiss-keyboard "1.0.0"
 
+react-native-fetch-polyfill@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-fetch-polyfill/-/react-native-fetch-polyfill-1.1.2.tgz#256b5a0abd78cc4992f7a7cf82543da2f2124a73"
+
 react-native-fetch@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-fetch/-/react-native-fetch-1.0.0.tgz#6bc772df9e77d2ee63403fbae940d77c7e92f793"
@@ -4436,6 +4440,10 @@ whatwg-encoding@^1.0.1:
   resolved "https://registry.yarnpkg.com/whatwg-encoding/-/whatwg-encoding-1.0.3.tgz#57c235bc8657e914d24e1a397d3c82daee0a6ba3"
   dependencies:
     iconv-lite "0.4.19"
+
+whatwg-fetch-timeout@^2.0.2-timeout:
+  version "2.0.2-timeout"
+  resolved "https://registry.yarnpkg.com/whatwg-fetch-timeout/-/whatwg-fetch-timeout-2.0.2-timeout.tgz#87ca23b28fb7b131cd9690db752199ff4877cad5"
 
 whatwg-fetch@>=0.10.0:
   version "2.0.3"

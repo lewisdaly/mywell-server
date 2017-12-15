@@ -1,18 +1,24 @@
 import { rejectRequestWithError } from '../util';
-// import URLSearchParams from 'url-search-params';
 import QueryString from 'query-string';
 
-const SERVER_URL = process.env.SERVER_URL;
-const DONT_USE_ACCESS_TOKEN = process.env.DONT_USE_ACCESS_TOKEN;
+// import fetch from 'react-native-fetch-polyfill';
+
+fetch = null;
+if (global.fetch) {
+  global.fetch = null;
+}
+
+import fetch from 'whatwg-fetch';
+
+// const SERVER_URL = process.env.SERVER_URL;
+// const DONT_USE_ACCESS_TOKEN = process.env.DONT_USE_ACCESS_TOKEN;
+
+//Debugging issues with env variables not getting passed in properly
+const SERVER_URL = "https://mywell-server.vessels.tech";
+const DONT_USE_ACCESS_TOKEN = "xIYvJnc1R5DDVz1EqwR1BqYG5llm6MU8b1Yb3Pj0JvGsZywfTsbTplCK5sjyQ0Gm";
+const TIMEOUT_MS = 1000 * 5;
 
 const appendUrlParameters = (url, qs) => {
-  // let queryString = new URLSearchParams();
-  // for (let idx in Object.keys(qs)) {
-  //   const key = Object.keys(qs)[idx];
-  //
-  //   queryString.append(key, qs[key]);
-  // }
-
   return `${url}?${QueryString.stringify(qs)}`;
 }
 
@@ -22,14 +28,6 @@ class ServerApi {
     const baseUrl = `${SERVER_URL}/api/readings`;
     const url = appendUrlParameters(baseUrl, {access_token:DONT_USE_ACCESS_TOKEN});
 
-    /* eg:
-    {
-      "date": "2017-12-12",
-      "value": 0,
-      "postcode": 0,
-      "resourceId": 0,
-    } */
-
     const data = JSON.stringify({
       date,
       value,
@@ -38,12 +36,13 @@ class ServerApi {
     });
 
     return fetch(url, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: data
+      timeout: TIMEOUT_MS,
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: data
     })
     .then(response => {
       if (!response.ok) {
@@ -73,7 +72,7 @@ class ServerApi {
       }
     });
 
-    return fetch(appendUrlParameters(baseUrl, {filter}))
+    return fetch(appendUrlParameters(baseUrl, {filter}), { timeout: TIMEOUT_MS })
     .then(response => {
       console.error("response from endpoint")
       //Resource exists, format the response
@@ -125,10 +124,6 @@ class ServerApi {
       }
 
       return formattedResponse;
-    })
-    .catch(err => {
-      console.error("request failed: ", err);
-      return Promise.reject(err);
     });
   }
 

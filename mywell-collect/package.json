@@ -19,6 +19,7 @@
     "react-native-config": "^0.11.2",
     "react-native-datepicker": "^1.6.0",
     "react-native-fetch": "^1.0.0",
+    "react-native-fetch-polyfill": "^1.1.2",
     "react-native-navbar": "^2.1.0",
     "react-native-style-tachyons": "^3.5.1",
     "react-native-vector-icons": "^4.4.2",
@@ -27,7 +28,8 @@
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "request-promise-native": "^1.0.5",
-    "url-search-params": "^0.10.0"
+    "url-search-params": "^0.10.0",
+    "whatwg-fetch-timeout": "^2.0.2-timeout"
   },
   "devDependencies": {
     "babel-jest": "21.2.0",

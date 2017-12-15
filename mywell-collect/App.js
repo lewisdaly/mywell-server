@@ -8,12 +8,8 @@ import {
 import { StackNavigator, TabNavigator } from 'react-navigation';
 import { enhance } from 'react-navigation-addons';
 
-
 import RecordScreen from './components/RecordScreen';
 import SavedReadingsScreen from './components/SavedReadingsScreen';
-
-
-//TODO: read the saved readings from local storage or something.
 
 const tabNavigatorOptions = {
   tabBarPosition: 'bottom',
