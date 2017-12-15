@@ -59,7 +59,8 @@ class ServerApi {
   }
 
   static checkResourceExists({pincode, resourceId}) {
-    console.log('server_url ', SERVER_URL);
+    //TODO: somehow this is undefined....
+    console.error('server_url ', SERVER_URL);
     const baseUrl = `${SERVER_URL}/api/resources`;
 
     //{"where":{"and": [{"postcode":313603}, {"id":1111}]}}
@@ -74,6 +75,7 @@ class ServerApi {
 
     return fetch(appendUrlParameters(baseUrl, {filter}))
     .then(response => {
+      console.error("response from endpoint")
       //Resource exists, format the response
       if (!response.ok) {
         //TODO: should this be an error?
@@ -123,6 +125,10 @@ class ServerApi {
       }
 
       return formattedResponse;
+    })
+    .catch(err => {
+      console.error("request failed: ", err);
+      return Promise.reject(err);
     });
   }
 
