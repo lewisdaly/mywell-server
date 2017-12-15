@@ -53,7 +53,6 @@ class SavedReadingsScreen extends Component<{}> {
   }
 
   saveReadingAndRemove(reading, key) {
-    console.log("saving...");
 
     return ServerApi.submitReading(reading)
     .then(() => {
@@ -87,9 +86,6 @@ class SavedReadingsScreen extends Component<{}> {
 
   loadReadings() {
     const { readings } = this.state;
-
-    console.log(readings);
-    console.log(readings && readings.length);
 
     if (!readings || Object.keys(readings).length < 1) {
       return (

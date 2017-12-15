@@ -92,10 +92,6 @@ class RecordScreen extends Component<{}> {
       })
       .then(() => this.setLoading(false))
       .catch(err => {
-        err.text().then( errorMessage => console.error('WTF?', err));
-        console.error('WTF?', err);
-        console.log('error', err);
-
         let newState = {}
         switch (err.status) {
           case 400:

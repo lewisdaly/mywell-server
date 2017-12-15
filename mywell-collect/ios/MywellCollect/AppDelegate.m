@@ -16,12 +16,22 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+
+  
   NSURL *jsCodeLocation;
   #if DEBUG
-    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  NSLog(@"Setting code location to bundler server");
+  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  
   #else
-    jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  NSLog(@"Setting code location to local bundle file");
+  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
   #endif
+  
+  NSLog (@"absoluteString:%@", [jsCodeLocation absoluteString]);
+  NSLog (@"host:%@", [jsCodeLocation host]);
+  NSLog (@"port:%@", [jsCodeLocation port]);
+
   
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"MywellCollect"

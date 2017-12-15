@@ -28,6 +28,11 @@
   <dict>
     <key>NSExceptionDomains</key>
     <dict>
+      <key>localhost</key>
+      <dict>
+        <key>NSExceptionAllowsInsecureHTTPLoads</key>
+        <true/>
+      </dict>
       <key>vessels.tech</key>
       <dict>
         <!--Include to allow subdomains-->

@@ -1,22 +1,14 @@
 import { rejectRequestWithError } from '../util';
 import QueryString from 'query-string';
-
-// import fetch from 'react-native-fetch-polyfill';
-
-fetch = null;
-if (global.fetch) {
-  global.fetch = null;
-}
-
-import fetch from 'whatwg-fetch';
+import {default as ftch} from 'react-native-fetch-polyfill';
 
 // const SERVER_URL = process.env.SERVER_URL;
 // const DONT_USE_ACCESS_TOKEN = process.env.DONT_USE_ACCESS_TOKEN;
 
 //Debugging issues with env variables not getting passed in properly
 const SERVER_URL = "https://mywell-server.vessels.tech";
-const DONT_USE_ACCESS_TOKEN = "xIYvJnc1R5DDVz1EqwR1BqYG5llm6MU8b1Yb3Pj0JvGsZywfTsbTplCK5sjyQ0Gm";
-const TIMEOUT_MS = 1000 * 5;
+const DONT_USE_ACCESS_TOKEN = "CK1aoqQMPng0lQGMeBlGLx5QJ1nj9Q7rtivGuNAIdtM6dPsJlbFqOiwC7Ka7HK3V";
+const TIMEOUT_MS = 1000 * 10;
 
 const appendUrlParameters = (url, qs) => {
   return `${url}?${QueryString.stringify(qs)}`;
@@ -25,6 +17,7 @@ const appendUrlParameters = (url, qs) => {
 class ServerApi {
 
   static submitReading({pincode, resourceId, date, value}) {
+
     const baseUrl = `${SERVER_URL}/api/readings`;
     const url = appendUrlParameters(baseUrl, {access_token:DONT_USE_ACCESS_TOKEN});
 
@@ -35,7 +28,7 @@ class ServerApi {
       postcode: pincode
     });
 
-    return fetch(url, {
+    return ftch(url, {
       timeout: TIMEOUT_MS,
       method: 'POST',
       headers: {
@@ -58,8 +51,6 @@ class ServerApi {
   }
 
   static checkResourceExists({pincode, resourceId}) {
-    //TODO: somehow this is undefined....
-    console.error('server_url ', SERVER_URL);
     const baseUrl = `${SERVER_URL}/api/resources`;
 
     //{"where":{"and": [{"postcode":313603}, {"id":1111}]}}
@@ -72,9 +63,9 @@ class ServerApi {
       }
     });
 
-    return fetch(appendUrlParameters(baseUrl, {filter}), { timeout: TIMEOUT_MS })
+    return ftch(appendUrlParameters(baseUrl, {filter}), { timeout: TIMEOUT_MS })
     .then(response => {
-      console.error("response from endpoint")
+      console.log("response from endpoint", response);
       //Resource exists, format the response
       if (!response.ok) {
         //TODO: should this be an error?
