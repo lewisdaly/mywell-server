@@ -7,4 +7,4 @@
 brew install imagemagick
 npm install -g yo generator-rn-toolbox
 
-yo rn-toolbox:assets --icon ../../design/icon.png
+yo rn-toolbox:assets --icon icons.png
