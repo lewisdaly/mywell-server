@@ -203,3 +203,6 @@ update Client set createdAt = NOW() where createdAt is null;
 ```
 
 Please don't do this at home, kids
+
+
+## Export to csv:
