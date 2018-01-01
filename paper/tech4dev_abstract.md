@@ -13,6 +13,8 @@ Lewis Daly is the Founder and CTO of Vessels Tech in Australia. He has a backgro
 
 **Abstract:**
 
+MyWell is an application for data-driven insights of groundwater at the village level. MyWell crowdsources well level indicators from a group of connected farmers using SMS or a smartphone application.
+
 ### Old one:
 
 Citizen science is when everyday citizens are involved in scientific study. Citizen science allows professionals to harness a large of resources, and amateurs the opportunity to contribute to science. Crowdsourcing, or obtaining information from the general public can be a method of citizen science (Howe, 2006). The growth of mobile networks and the ubiquity of mobile phones in low income countries (Pew, 2014) has created an opportunity for innovation around crowdsourced citizen science to solve practical problems.
@@ -27,7 +29,7 @@ Data Collection, Crowdsourcing, Groundwater, ....
 
 ## Background
 
-India uses the largest amount of groundwater in the world, estimated at 230 cubic kilometers per year (World Bank, 2010). A relatively cheap and accessible resource, groundwater suffers from the tradgedy of the commons. Groundwater is often overexploited for food production, with rainfall insufficient to recharge the groundwater levels (Rathore, 2004).
+India uses the largest amount of groundwater in the world, estimated at 230 cubic kilometers per year, more than 25% of the global total (World Bank, 2010). A relatively cheap and accessible resource, groundwater suffers from the tradgedy of the commons. Groundwater is often overexploited for food production, with rainfall insufficient to recharge the groundwater levels (Rathore, 2004).
 
 Groundwater is fundamental to the livelihoods of many farmers across India. In rural India, over 60 percent of agriculture is dependent on groundwater irrigation (World Bank, 2010). Groundwater allows farmers to grow crops in the dry season, as well as manage deficiencies in monsoonal rainfall, contributing to improved livelihoods and poverty alleviation (Maheshwari et al, 2014).
 
@@ -38,11 +40,6 @@ To ensure the future livelyhoods of these farmers, intervention is required. Man
 
 MyWell is a smartphone and SMS application for crowdsourcing groundwater, rainfall, water quality and checkdam water levels in rural India. Farmers armed with a smartphone or feature phone can glean insights into the groundwater situation, and participate in a network of connected farmers who gather and access a shared pool of data.
 
-__TODO- which one?__
-
-MyWell is an application for data-driven insights of groundwater at the village level. MyWell crowdsources well level indicators from a group of connected farmers using SMS or a smartphone application.
-
-
 MyWell's primary purpose tool for giving ownership of the groundwater situation to farmers at the village level, and assist them in developing their own solutions...
 
 Before MyWell, farmers in these parts of India made decisions based on a whim. With MyWell, farmers are empowered with insights from groundwater data and stuff.
@@ -51,11 +48,13 @@ MyWell is a platform for building groundwater cooperatives - communities of vill
 
 MyWell was deployed within project MARVI, a transdisciplinary approach to groundwater management. __TODO - talk about limits of technology__
 
-__TODO - talk about limits of technology__
+__TODO - talk about other features?__
 __TODO - figures of stuff__
 __TODO - talk about different ways to access MyWell__
 
+
 ## Impact
+
 MyWell has the potential to impact the livelyhoods of farmers across ____ areas.
 
 We see the greatest potential in MyWell for empowering smallholder farmers to be actively invoved in science through data collection, and to be a part of the solution to groundwater scarcity.
@@ -65,20 +64,23 @@ MyWell also allows farmers to make data-driven decisions about using groundwater
 MyWell is a tool for helping build communities around the need to share groundwater. While not a solution in and of itself, we see MyWell as an instrument that can be used to facilitate conversations about groundwater,...
 
 
-
 ## Results
 
-This case study evaluates MyWell's implementation in 2 watersheds in rural west India. We demonstrate that MyWell can be used at multiple levels to enable data-driven farming at multiple levels of a "value chain", specifically for abetter groundwater understanding to smallholder farmers. We also demonstrate how MyWell empowers low level stakeholders to be a part of citizen science, and actively involved in a solution to the groundwater problem.
+This case study evaluates MyWell's implementation in 2 watersheds in rural west India.
+
+We demonstrate that MyWell can be used from feature and smartphones, and allow farmers to crowdsource well, rainfall and checkdam readings, and access the data-driven insights into the groundwater situation.
+
+We also show how the potential for MyWell to empower smallholder farmers and villages to contribute to science, and be actively involved seeking village-led solutions to groundwater scarcity.
+
+We see limitations in what MyWell - as a technological tool - can do alone, and show how technology facilitating groundwater intervention must exist within a larger program targeting social and economic aspects of groundwater management.
 
 
 ## Future
 
-Beyond groundwater, the MyWell approach also has potential to impact other aspects of ___ in resource-scarce environments.
+While this study evaluates MyWell's use in 2 watersheds in rural India, MyWell is not limited to these places, or even India. Future research and applications of MyWell will translate this approach to other countries, with differing groundwater situations.
 
-We see MyWell as a platform for sharing water knowledge, and allow for grassroots citizen science to take place. The typical narrative of groundwater conservation is a top down approach; well informed research leads to recommendations to farmers to use less groundwater; advice that often goes unheeded. The MyWell approach is the opposite. MyWell allows for farmers to engage in science, and see for themselves the groundwater scarcity problem. This allows them to make their own decisions to share groundwater, and combats the tradgedy of the commons.
+The value of data collected by MyWell also has considerable network effects, hence scaling up the number of watersheds monitored by MyWell will increase the value of information delivered by MyWell. The more insights to be gained from MyWell, the more valuable the information gathered is, and the more insights for data-driven action it can deliver across multiple stakeholder levels.
 
-While this study evaluates MyWell's use in 2 watersheds in rural India, MyWell is not limited to these places, or even India. Future research should apply MyWell to other countries and groundwater situations...
+MyWell is primarily targeted to smallholder farmers, but the insights it delivers can be used across many levels of groundwater management, from other researchers to policy makers. We would see MyWell expand its features and integrations with other platforms to allow for other groundwater stakeholders to glean insights from MyWell.
 
-MyWell also has considerable network effects; the more wells being monitored with this technology, the more valuable the information gathered is, and the more insights for data-driven action it can deliver across multiple stakeholder levels.
-
-We also would see MyWell integrate with existing tools to allow for more researchers. We are currently planning an integration with CGMN... This increases the utility of MyWell for other groundwater researchers...
+Beyond groundwater, we also see potential for the MyWell approach to be applied to other resource-scarce environments. eg.?
