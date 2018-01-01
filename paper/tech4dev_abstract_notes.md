@@ -9,6 +9,12 @@
 
 > Extended abstracts should emphasize the value of technological innovation while also acknowledging the limits of technology in generating inclusive social and economic development.
 
+Social development: building communities
+Economic development: empowering farmers with insights, tools and responsibility
+
+Phrases:
+- Visualize this invisble research
+
 ## Case study objectives and outcomes:
 
 **Objective:** To demonstrate that MyWell can be used at multiple levels to allow for a better groundwater understanding. To show how MyWell empowers low level stakeholders to be a part of citizen science, and actively involved in a solution to the groundwater problem.
@@ -65,3 +71,10 @@ We also would see MyWell integrate with existing tools to allow for more researc
 
 ## TODO:
 - look up other people's submissions for similar projects
+
+
+
+## Extra bits:
+
+Groundwater scarcity in Rural India is a growing problem, which disproprtionately threatens the livelyhoods of smallholder farmers. As a shared resource, groundwater management suffers the tradgedy of the commons. Pumping groundwater becomes a race to the bottom, at which point everybody loses...
+__TODO - talk about overcommiting water, other issues...__
