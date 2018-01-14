@@ -121,7 +121,7 @@ module.exports.convertResourceToMessage = (reading) => {
 
 module.exports.getSMSCodeMessage = (code) => {
   //TODO: account for languages somehow!
-  return `Welcome to MyWell. Your temporary login code is: ${code}`;
+  return `Welcome to MyWell. Your temporary login code is ${code}`;
 }
 
 /**
@@ -165,12 +165,13 @@ const twilio_sendSMSMessage = (message, number) => {
  * This should replace Twilio and way2mint for all Indian numbers
  */
 const india_sendSMSMessage = (message, number) => {
-  console.log("SMSHorizon Sending message: \"" + message + "\" to number:" +number);
+  const encoded = encodeURIComponent(message);
+  console.log("SMSHorizon Sending message: \"" + encoded + "\" to number:" +number);
 
   const user = process.env.SMS_HORIZON_USER;
   const key = process.env.SMS_HORIZON_KEY;
 
-  const url = `http://smshorizon.co.in/api/sendsms.php?user=${user}&apikey=${key}&mobile=${number}&message=${message}&senderid=MARVII&type=txt`
+  const url = `http://smshorizon.co.in/api/sendsms.php?user=${user}&apikey=${key}&mobile=${number}&message=${encoded}&senderid=MARVII&type=txt`
   if (ENABLE_NOTIFICATIONS === false ) {
     console.log("Skipping message, as ENABLE_NOTIFICATIONS is false");
     return Promise.resolve(true);
