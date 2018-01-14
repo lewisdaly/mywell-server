@@ -172,6 +172,8 @@ const india_sendSMSMessage = (message, number) => {
   const key = process.env.SMS_HORIZON_KEY;
 
   const url = `http://smshorizon.co.in/api/sendsms.php?user=${user}&apikey=${key}&mobile=${number}&message=${encoded}&senderid=MARVII&type=txt`
+  console.log("SMS send url is: ", url);
+
   if (ENABLE_NOTIFICATIONS === false ) {
     console.log("Skipping message, as ENABLE_NOTIFICATIONS is false");
     return Promise.resolve(true);
@@ -179,7 +181,7 @@ const india_sendSMSMessage = (message, number) => {
 
   return request({uri: url})
   .then(response => {
-    console.log('w2m reply', response);
+    console.log('smshorizon reply', response);
   })
   .catch(err => {
     console.log(err);
