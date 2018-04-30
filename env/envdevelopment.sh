@@ -24,6 +24,9 @@ export UI_BUCKET_NAME="dev2-mywell.vessels.tech"
 export WEBPACK_DEV=false
 export CONSOLE_DOMAIN_NAME="dev-mywell-console.vessels.tech"
 
+export FIREBASE_BASE_URL="https://us-central1-our-water.cloudfunctions.net"
+export OUR_WATER_ORG_ID="YccAYRrMjdwa0VFuwjVi"
+
 
 
 source $DIR/env.sh

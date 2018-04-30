@@ -31,4 +31,5 @@ then
   exit 0
 fi
 
-docker-compose up mywell-server db mywell-gql
+# docker-compose up mywell-server db mywell-gql
+docker-compose up mywell-server db

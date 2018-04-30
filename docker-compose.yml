@@ -66,6 +66,8 @@ services:
       - SMS_HORIZON_USER
       - SMS_HORIZON_KEY
       - AWS_PROFILE=vessels-lewis.daly
+      - FIREBASE_BASE_URL
+      - OUR_WATER_ORG_ID
     links:
       - db:db
 

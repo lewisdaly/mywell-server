@@ -17,6 +17,8 @@ services:
       - TWILIO_PHONE_NUMBER
       - SMS_HORIZON_USER
       - SMS_HORIZON_KEY
+      - FIREBASE_BASE_URL
+      - OUR_WATER_ORG_ID
     networks:
       - base-network
     deploy:

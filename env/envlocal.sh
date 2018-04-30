@@ -19,5 +19,9 @@ export REACT_APP_GRAPHQL_ENDPOINT=http://"$HOST":3001/graphql
 export UI_BUCKET_NAME="dev2-mywell.vessels.tech"
 export WEBPACK_DEV=true
 
+export FIREBASE_BASE_URL="https://us-central1-our-water.cloudfunctions.net"
+export OUR_WATER_ORG_ID="YccAYRrMjdwa0VFuwjVi"
+
+
 
 source $DIR/env.sh

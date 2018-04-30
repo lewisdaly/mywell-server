@@ -1,5 +1,6 @@
 var moment = require('moment');
 var isNullOrUndefined = require('util').isNullOrUndefined;
+const request = require('request-promise-native');
 const Enums = require('../Enums');
 const Utils = require('../Utils');
 const ExcelReader = require('../ExcelReader');
@@ -403,6 +404,40 @@ module.exports = function(Reading) {
 
     return next();
   });
+
+  /**
+   * After saving, save also to firebase using the legacy_save
+   */
+  Reading.observe('after save', (ctx, next) => {
+    if (ctx.options && ctx.options.skipUpdateModels) {
+      return next();
+    }
+
+    const reading = (typeof ctx.instance === "undefined") ? ctx.currentInstance : ctx.instance;
+
+    // localhost:5000/our-water/us-central1/reading/legacy_save/YccAYRrMjdwa0VFuwjVi/313603.1110
+    const orgId = process.env.OUR_WATER_ORG_ID;
+    const baseUrl = process.env.FIREBASE_BASE_URL;
+    const pincode = reading.postcode;
+    const resourceId = reading.resourceId;
+    const uri = `${baseUrl}/reading/legacy_save/${orgId}/${pincode}.${resourceId}`
+
+    const options = {
+      method: 'POST',
+      uri,
+      json: true,
+      body: {
+        data: {
+          datetime: "2018-04-28T09:40:38.460Z",
+          value: 123
+        }
+      }
+    }
+    return request(options)
+      .then(response => console.log('saved reading to firebase with response', response))
+      .catch(err => console.log(err));
+  });
+  
 
   /**
    * After saving, validate, and update the correct resource table

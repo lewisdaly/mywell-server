@@ -38,5 +38,7 @@ services:
       - UI_BUCKET_NAME
       - WEBPACK_DEV
       - CONSOLE_DOMAIN_NAME
+      - FIREBASE_BASE_URL
+      - OUR_WATER_ORG_ID
     privileged: true
     command: /usr/src/deploy/tools/entrypoint.sh
