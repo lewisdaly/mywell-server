@@ -1,7 +1,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-HOST="docker.local"
-# HOST="localhost"
+# HOST="docker.local"
+HOST="localhost"
 
 #The env variables needed to get the local environment running.
 export AWS_PROFILE=vessels-lewis.daly

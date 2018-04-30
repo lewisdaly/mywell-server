@@ -6,4 +6,4 @@ if [ "$1" == build ]; then
   cd mywell-ui && npm install && cd ..
 fi
 
-cd mywell-ui && npm run dev
+cd mywell-ui && npm run server
