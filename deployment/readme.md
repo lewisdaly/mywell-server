@@ -1,5 +1,9 @@
 ## Demoing Docker for AWS (CE)
 
+portainer: http://portainer-mywell.vessels.tech:9000/#/dashboard
+
+traefik:   http://portainer-mywell.vessels.tech:8080/dashboard/#/
+
 
 ###manager node:
 docker@ec2-52-221-199-231.ap-southeast-1.compute.amazonaws.com
