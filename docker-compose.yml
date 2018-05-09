@@ -68,6 +68,11 @@ services:
       - AWS_PROFILE=vessels-lewis.daly
       - FIREBASE_BASE_URL
       - OUR_WATER_ORG_ID
+      - REACT_APP_FB_API_KEY
+      - REACT_APP_FB_AUTH_DOMAIN
+      - REACT_APP_FB_DATABASE_URL
+      - REACT_APP_FB_PROJECT_ID
+      - REACT_APP_FB_STORAGE_BUCKET
     links:
       - db:db
 
@@ -95,6 +100,11 @@ services:
       - SERVER_URL
       - REACT_APP_GRAPHQL_ENDPOINT
       - UI_BUCKET_NAME
+      - REACT_APP_FB_API_KEY
+      - REACT_APP_FB_AUTH_DOMAIN
+      - REACT_APP_FB_DATABASE_URL
+      - REACT_APP_FB_PROJECT_ID
+      - REACT_APP_FB_STORAGE_BUCKET
 
   db:
     container_name: mywell-db

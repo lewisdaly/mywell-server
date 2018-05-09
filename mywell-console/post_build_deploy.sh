@@ -24,6 +24,12 @@ docker run --rm \
   -e SERVER_URL \
   -e VERSION_NUMBER \
   -e REACT_APP_GRAPHQL_ENDPOINT \
+  -e UI_BUCKET_NAME \
+  -e REACT_APP_FB_API_KEY \
+  -e REACT_APP_FB_AUTH_DOMAIN \
+  -e REACT_APP_FB_DATABASE_URL \
+  -e REACT_APP_FB_PROJECT_ID \
+  -e REACT_APP_FB_STORAGE_BUCKET \
   -v /tmp/console:/usr/src/app/build \
   --name "$BUILD_IMAGE_NAME" mywell-console:local
 
