@@ -21,6 +21,10 @@ export WEBPACK_DEV=true
 
 export FIREBASE_BASE_URL="https://us-central1-our-water.cloudfunctions.net"
 export OUR_WATER_ORG_ID="YccAYRrMjdwa0VFuwjVi"
+export REACT_APP_FB_AUTH_DOMAIN="our-water.firebaseapp.com"
+export REACT_APP_FB_DATABASE_URL="https://our-water.firebaseio.com"
+export REACT_APP_FB_PROJECT_ID="our-water"
+export REACT_APP_FB_STORAGE_BUCKET="our-water.appspot.com"
 
 
 

@@ -3,11 +3,12 @@
 const MODULE_NAME = 'controller.report';
 
 angular.module(MODULE_NAME, [])
-.controller('ReportController', function($scope, $ionicPopup, $http, $rootScope, LoginService, ApiService, CachingService, Upload) {
+.controller('ReportController', function($scope, $ionicPopup, $http, $rootScope, LoginService, ApiService, AuthenticationService, CachingService, Upload) {
 
   /**
    * Init
    */
+  $scope.isDisabled = true;
 
   //Set up the form
   resetForm();
@@ -136,12 +137,17 @@ angular.module(MODULE_NAME, [])
       return;
     }
 
-    ApiService.updateReading(getFormData(form))
+    return AuthenticationService.firebaseLogin()
+    .then(() => {
+      console.log("finished logging in");
+      return ApiService.updateReading(getFormData(form));
+    })
     .then(function(response) {
       displayMessage("Thanks!", "Submitted successfully.")
       resetForm();
     })
     .catch(function(err) {
+      console.log("error", err);
       //apparently this error code has changed?
       if (err.status === 0 || err.status === -1) {
         displayMessage("Connection Error", "Saving for later submission.");
@@ -156,7 +162,8 @@ angular.module(MODULE_NAME, [])
 
   $scope.submit = function(index) {
     let report = CachingService.getReportAtIndex(index);
-    ApiService.updateReading(report)
+    return AuthenticationService.firebaseLogin()
+    .then(() => ApiService.updateReading(report))
     .then(function(response) {
       console.log("Submitted successfully", response);
       displayMessage("Thanks!", "Submitted successfully.")

@@ -9,7 +9,8 @@
     "build:production": "source ../env/envproduction.sh  && ./node_modules/.bin/webpack --bail --progress",
     "postProcess": "./node_modules/.bin/gulp postProcess",
     "server": "./node_modules/nodemon/bin/nodemon.js server.js",
-    "webpack_dev_server": "webpack-dev-server --inline",
+    "webpack-server": "webpack-dev-server --inline",
+    "webpack-watch": "source ../env/envlocal.sh && ./node_modules/.bin/webpack  --watch",
     "test": "karma start",
     "test-watch": "karma start --auto-watch --no-single-run",
     "start": "npm run server"
@@ -21,6 +22,7 @@
     "babel-preset-react": "^6.24.1",
     "chart.js": "^2.6.0",
     "express": "^4.15.4",
+    "firebase": "^5.0.1",
     "gulp-replace": "^0.6.1",
     "ionic": "^1.7.16",
     "ionic-angular": "^3.9.2",

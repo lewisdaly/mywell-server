@@ -13,6 +13,11 @@ console.log('ENV:\n  SERVER_URL:\t', process.env.SERVER_URL);
 console.log('  VERSION_NUMBER:\t', process.env.VERSION_NUMBER);
 console.log('  REACT_APP_GRAPHQL_ENDPOINT:\t', process.env.REACT_APP_GRAPHQL_ENDPOINT);
 console.log('  WEBPACK_DEV:\t', process.env.WEBPACK_DEV);
+console.log('  REACT_APP_FB_API_KEY:\t', process.env.REACT_APP_FB_API_KEY);
+console.log('  REACT_APP_FB_AUTH_DOMAIN:\t', process.env.REACT_APP_FB_AUTH_DOMAIN);
+console.log('  REACT_APP_FB_DATABASE_URL:\t', process.env.REACT_APP_FB_DATABASE_URL);
+console.log('  REACT_APP_FB_PROJECT_ID:\t', process.env.REACT_APP_FB_PROJECT_ID);
+console.log('  REACT_APP_FB_STORAGE_BUCKET:\t', process.env.REACT_APP_FB_STORAGE_BUCKET);
 
 console.log("__dirname: ", __dirname);
 
@@ -123,7 +128,12 @@ module.exports = function makeWebpackConfig() {
     new webpack.DefinePlugin({
       "SERVER_URL": `'${process.env.SERVER_URL}'`,
       "VERSION_NUMBER": `'${process.env.VERSION_NUMBER}'`,
-      "REACT_APP_GRAPHQL_ENDPOINT": `'${process.env.REACT_APP_GRAPHQL_ENDPOINT}'`
+      "REACT_APP_GRAPHQL_ENDPOINT": `'${process.env.REACT_APP_GRAPHQL_ENDPOINT}'`,
+      "REACT_APP_FB_API_KEY": `'${process.env.REACT_APP_FB_API_KEY}'`,
+      "REACT_APP_FB_AUTH_DOMAIN": `'${process.env.REACT_APP_FB_AUTH_DOMAIN}'`,
+      "REACT_APP_FB_DATABASE_URL": `'${process.env.REACT_APP_FB_DATABASE_URL}'`,
+      "REACT_APP_FB_PROJECT_ID": `'${process.env.REACT_APP_FB_PROJECT_ID}'`,
+      "REACT_APP_FB_STORAGE_BUCKET": `'${process.env.REACT_APP_FB_STORAGE_BUCKET}'`,
     }),
 
     //Copy files from the public folder

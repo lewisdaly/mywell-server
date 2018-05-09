@@ -1,5 +1,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+unset SERVER_URL
+
 #the env variables to set up the development environment
 
 export ENABLE_NOTIFICATIONS=false
@@ -7,6 +9,7 @@ export ENABLE_LOGS=true
 export ENVIRONMENT=development
 export REFRESH_UI=false
 export SERVER_URL=https://dev2-mywell-server.vessels.tech
+export DONT_USE_ACCESS_TOKEN=xIYvJnc1R5DDVz1EqwR1BqYG5llm6MU8b1Yb3Pj0JvGsZywfTsbTplCK5sjyQ0Gm
 export STAGE_PREFIX="dev2-"
 export DB_HOST="mywelldb.cyftlfi9bxci.ap-southeast-2.rds.amazonaws.com"
 export DB_NAME="development_mywell"
@@ -23,10 +26,11 @@ export REACT_APP_GRAPHQL_ENDPOINT="https://dev2-mywell-gql.vessels.tech/graphql"
 export UI_BUCKET_NAME="dev2-mywell.vessels.tech"
 export WEBPACK_DEV=false
 export CONSOLE_DOMAIN_NAME="dev-mywell-console.vessels.tech"
-
 export FIREBASE_BASE_URL="https://us-central1-our-water.cloudfunctions.net"
 export OUR_WATER_ORG_ID="YccAYRrMjdwa0VFuwjVi"
-
-
+export REACT_APP_FB_AUTH_DOMAIN="our-water.firebaseapp.com"
+export REACT_APP_FB_DATABASE_URL="https://our-water.firebaseio.com"
+export REACT_APP_FB_PROJECT_ID="our-water"
+export REACT_APP_FB_STORAGE_BUCKET="our-water.appspot.com"
 
 source $DIR/env.sh

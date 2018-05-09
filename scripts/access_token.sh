@@ -1,7 +1,7 @@
 #! /bin/bash
 
 if [ "$1" == local ]; then
-  HOST="http://docker.local:3000"
+  HOST="http://localhost:3000"
 elif [ "$1" == dev ]; then
   HOST="https://dev2-mywell-server.marvi.org.in"
 else
