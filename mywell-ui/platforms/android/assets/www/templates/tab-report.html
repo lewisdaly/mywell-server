@@ -8,14 +8,7 @@
           html, body { height: 100%; }
 </style>
 
-<div class="center-text">
-  <p class="verify-text" ng-if="isUserNotLoggedIn">Log in to submit well levels</p>
-</div>
-<div class="center-text" ng-if="isUserNotVerified">
-  <p class="verify-text">Your account is not verified. Please wait for an admin to verifiy your account</p>
-</div>
-
-<div ng-if="isUserLoggedInAndVerified">
+<div>
   <div class="row">
     <h4 class="centerText">Select a reading type:</h4>
   </div>
@@ -58,7 +51,7 @@
             <td class="pv3 pr3 bb b--black-20">Id: {{report.resourceId}}</td>
             <td class="pv3 pr3 bb b--black-20">Value: {{report.value}}</td>
             <td>
-              <button class="f6 link dim br1 ba ph3 pv2 mb2 dib dark-blue" ng-click=submit($index)>Submit</button>
+              <button class="button f6 link dim br1 ba ph3 pv2 mb2 dib dark-blue" ng-click=submit($index)>Submit</button>
               <button class="f6 link dim br1 ba ph3 pv2 mb2 dib dark-red"  ng-click=delete($index)>Delete</button>
             </td>
           </tr>
