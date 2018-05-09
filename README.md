@@ -199,6 +199,7 @@ We are doing this because Loopback sucks, and right now, it's just easier to do 
 
 ```sql
 update resource set createdAt = NOW() where createdAt is null;
+update Client set createdAt = NOW() where createdAt is null;
 ```
 
 Please don't do this at home, kids

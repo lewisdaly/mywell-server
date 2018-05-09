@@ -7,6 +7,7 @@ export ENABLE_LOGS=false
 export ENVIRONMENT=production
 export REFRESH_UI=false
 export SERVER_URL=https://mywell-server.vessels.tech
+export DONT_USE_ACCESS_TOKEN=xIYvJnc1R5DDVz1EqwR1BqYG5llm6MU8b1Yb3Pj0JvGsZywfTsbTplCK5sjyQ0Gm
 export STAGE_PREFIX=""
 export DB_HOST="mywelldb.cyftlfi9bxci.ap-southeast-2.rds.amazonaws.com"
 export DB_NAME="production_mywell"
