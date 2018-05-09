@@ -147,7 +147,6 @@ let app2 = angular.module(MODULE_NAME, [
     url: '/tab',
     abstract: true,
     templateUrl: 'templates/tabs.html',
-
   })
 
   // Each tab has its own nav history stack:

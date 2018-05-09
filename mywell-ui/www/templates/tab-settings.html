@@ -17,8 +17,7 @@
     <p class="">Log in access settings</p>
   </div>
   <div ng-if="isUserLoggedInAndVerified">
-    <p><i>Sorry, this feature has been deactivated. Please use the admin tools to register a new resource, or contact support.</i></p>
-  	<a disabled="true" class="button button-outline button-block button-clear button-positive" ng-show="isVerified" href="#/tab/settings/register">Register a New Well Rain Gauge or Checkdam</a>
+  	<a class="button button-outline button-block button-clear button-positive" ng-show="isVerified" href="#/tab/settings/register">Register a New Well Rain Gauge or Checkdam</a>
     <!-- removing this for now. Can't get it working with the current version of cordova -->
 	  <!-- <a class="button button-outline button-block button-clear button-positive" ng-show="isVerified" ng-if="!isDesktop" ng-click="showGetImagePopup()">Change an image</a> -->
 	  <a class="button button-outline button-block button-clear button-assertive" ng-show="isVerified" ng-click="clearLogin()">Logout and Forget Me</a>

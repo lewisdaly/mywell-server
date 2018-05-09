@@ -1,4 +1,10 @@
 //Inspired by: http://jasonwatmore.com/post/2015/03/10/AngularJS-User-Registration-and-Login-Example.aspx
+
+
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
+
 (function () {
     'use strict';
     angular.module('service.authentication',[])
@@ -14,8 +20,42 @@
         service.Logout = Logout;
         service.tryLastTokenLogin = tryLastTokenLogin;
         service.clearLastUser = clearLastUser;
+        service.firebaseLogin = firebaseLogin;
+
+
+        //TODO: this should probably be in its own service, but I'm being lazy. 
+        const config = {
+            apiKey: REACT_APP_FB_API_KEY,
+            authDomain: REACT_APP_FB_AUTH_DOMAIN,
+            databaseURL: REACT_APP_FB_DATABASE_URL,
+            projectId: REACT_APP_FB_PROJECT_ID,
+            storageBucket: REACT_APP_FB_STORAGE_BUCKET,
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(config);
+        }
+
+        const auth = firebase.auth();
+        const fs = firebase.firestore();
 
         return service;
+
+        /**
+         * Log the user un anonymously and get the access token from remote config
+         */
+        function firebaseLogin() {
+            return auth.signInAnonymously()
+            .then(userCredential => {
+              console.log("signed into firebase:", userCredential);
+              return fs.doc('legacy/mywell').get();
+            })
+            .then(doc => {
+                const accessToken = doc.data().accessToken;  
+                setAccessToken(accessToken);
+                return true;
+            });
+        }
 
         function Login(user) {
             //This isn't ideal, just the way that this was structured.
@@ -32,7 +72,15 @@
         }
 
         function getAccessToken() {
-          return $rootScope.globals.currentUser.authToken;
+          //TODO: change to firebase token
+          return $rootScope.globals.accessToken;
+        }
+
+        function setAccessToken(accessToken) {
+            $rootScope.globals = {
+                accessToken
+            };
+            $localstorage.setObject('globals', $rootScope.globals);
         }
 
         function tryLastTokenLogin() {
