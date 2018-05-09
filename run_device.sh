@@ -104,8 +104,9 @@ echo "Value of --environment: $_arg_environment"
 
 function run_device() {
   cd "$DIR"/mywell-ui/
+	PATH=$(npm bin):$PATH
   npm run build:"$_arg_environment"
-  ionic cordova run $_arg_platform --"$_arg_device"
+  ionic run $_arg_platform --"$_arg_device"
 }
 
 function run_web() {
