@@ -57,18 +57,14 @@ angular.module('controller.settings', ['ionic'])
 		$scope.isUserLoggedInAndVerified = false;
 		$scope.isVerified = false;
 
-		var currentUser = $rootScope.globals.currentUser;
+    var accessToken = $rootScope.globals.accessToken;
 
-    	if (!currentUser) {
+    if (!accessToken) {
 			$scope.isUserNotLoggedIn = true;
-			}
-		else if (currentUser.verified == false) {
-		    $scope.isUserNotVerified = true;
-	    }
-	    else {
+		}
+	  else {
 	    	$scope.isUserLoggedInAndVerified = true;
-			$scope.isVerified = true;
-			// loadUnverifiedUsers();
+			  $scope.isVerified = true;
 		}
 	}
 

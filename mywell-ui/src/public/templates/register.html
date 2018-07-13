@@ -16,20 +16,27 @@
           <button class="col button button-small icon ion-refresh" ng-click=refreshCoords()></button>
         </div>
         <div class="col">
-          <input class="col" ng-model="form.lat" type="number" placeholder="Latitude">
+          <input class="col" ng-model="form.lat" type="number" placeholder="Latitude*">
         </div>
         <div class="col">
-          <input class="col" ng-model="form.lng" type="number" placeholder="Longitude">
+          <input class="col" ng-model="form.lng" type="number" placeholder="Longitude*">
         </div>
       </div>
       <label class="item item-input">
     		<input ng-model="form.village_name" type="text" placeholder="Village/Town Name">
     	</label>
     	<label class="item item-input">
-    		<input ng-model="form.postcode" type="tel" placeholder="Pincode">
-    	</label>
+    		<input ng-model="form.postcode" type="tel" placeholder="Pincode*">
+      </label>
+    	<label style="border-bottom-width: 0px" class="item item-input">
+          <intlpn style="width:100%; padding-left: 0px" name="tel" ng-model="form.telephone" default-country="in" placeholder="Your Number*" only-country="['in', 'au']"></intlpn>
+      </label>
+      <p>OR:</p>
+      <label style="border-top-width: 0px" class="item item-input">
+        <input ng-model="form.email" type="email" placeholder="Your email">
+      </label>
     	<label class="item item-input">
-    		<input ng-model="form.owner" type="text" placeholder="Owner">
+    		<input ng-model="form.owner" type="text" placeholder="Owner Name">
     	</label>
 
       <label class="item item-input">
