@@ -24,6 +24,7 @@ docker run --rm \
   -e SERVER_URL \
   -e VERSION_NUMBER \
   -e REACT_APP_GRAPHQL_ENDPOINT \
+  -e REACT_APP_FB_API_KEY \
   -v /tmp/www:/usr/src/app/www \
   --name "$BUILD_IMAGE_NAME" mywell-ui:local
 
