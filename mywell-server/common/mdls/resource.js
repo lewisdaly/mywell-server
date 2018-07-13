@@ -243,11 +243,6 @@ module.exports = function(Resource) {
       return next();
     }
 
-    //Get the clientId of the resource. Skip if we don't have
-    if (!resource.clientId) {
-      return next();
-    }
-
     let mobileNumber = null;
     let email = null;
 
@@ -261,12 +256,36 @@ module.exports = function(Resource) {
         .catch(err => console.log(`Err sending sms: ${err}`));
     }
 
-    return Resource.app.models.Client.findById(resource.clientId)
-      .then(_client => {
-        console.log("_client:", _client);
 
-        mobileNumber = _client && _client.mobile_number;
-        email = _client && _client.email;
+    //First try and find the email on the resource
+    if (resource.mobile || resource.email) {
+      if (resource.mobile) {
+        mobileNumber = resource.mobile;
+      }
+
+      if (resource.email) {
+        email = resource.email;
+      }
+    } else {
+      //Get the clientId of the resource. Skip if we don't have
+      if (!resource.clientId) {
+        return next();
+      }
+    }
+
+    return Promise.resolve(true)
+      .then(() => {
+        if (resource.clientId) {
+          return Resource.app.models.Client.findById(resource.clientId)
+            .then(_client => {
+              console.log("_client:", _client);
+
+              mobileNumber = _client && _client.mobile_number;
+              email = _client && _client.email;
+            });
+        }
+        
+        return true;
       })
       .then(() => {
         const message = `Thanks. The details of your ${resource.type} are.\nPostcode:${resource.postcode}\nId:${resource.id}`;

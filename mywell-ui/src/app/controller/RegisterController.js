@@ -202,13 +202,21 @@ angular.module('controller.register', [])
       },
       owner: form.owner,
       village_name: form.village_name.trim(),
-      email: form.email,
       well_depth: form.max_wt_depth,
       type:form.type,
       postcode: form.postcode,
       villageId: villageId,
       elevation: 0
     };
+
+    if (form.telephone) {
+      data.mobile = form.telephone;
+    }
+
+    if (form.email !== '') {
+      data.email = form.email;
+    }
+
 
     return AuthenticationService.firebaseLogin()
     .then(() => ApiService.registerWell(data))
