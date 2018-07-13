@@ -1,7 +1,7 @@
 import { assert } from "../../../node_modules/@firebase/util";
 
 angular.module('controller.register', [])
-.controller('RegisterController', ($scope, $location, $rootScope, $ionicModal, $ionicPopup, $ionicHistory, ApiService, CachingService)  => {
+  .controller('RegisterController', ($scope, $location, $rootScope, $ionicModal, $ionicPopup, $ionicHistory, ApiService, CachingService, AuthenticationService)  => {
 
   let leafletMap = null;
   $scope.resources = [
@@ -210,7 +210,8 @@ angular.module('controller.register', [])
       elevation: 0
     };
 
-    ApiService.registerWell(data)
+    return AuthenticationService.firebaseLogin()
+    .then(() => ApiService.registerWell(data))
     .then(function(response) {
       var alertPopup = $ionicPopup.alert({
         title: 'Thanks!',

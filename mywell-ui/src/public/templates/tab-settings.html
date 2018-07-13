@@ -13,11 +13,9 @@
 
   </br>
   <h4>Settings</h4>
-  <div ng-if="isUserNotLoggedIn">
-    <p class="">Log in access settings</p>
-  </div>
-  <div ng-if="isUserLoggedInAndVerified">
-  	<a class="button button-outline button-block button-clear button-positive" ng-show="isVerified" href="#/tab/settings/register">Register a New Well Rain Gauge or Checkdam</a>
+
+  <div>
+  	<a class="button button-outline button-block button-clear button-positive" href="#/tab/settings/register">Register a New Well Rain Gauge or Checkdam</a>
     <!-- removing this for now. Can't get it working with the current version of cordova -->
 	  <!-- <a class="button button-outline button-block button-clear button-positive" ng-show="isVerified" ng-if="!isDesktop" ng-click="showGetImagePopup()">Change an image</a> -->
   </div>
