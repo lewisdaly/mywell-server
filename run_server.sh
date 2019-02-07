@@ -1,16 +1,6 @@
 #!/bin/bash
 
-source ./env/envlocal.sh
-
-if [ "$1" == "build" ]
-then
-  echo "building server"
-  cd mywell-server
-  npm install
-  cd ..
-  docker-compose build
-  docker-compose pull
-fi
+source /tmp/mywell_env
 
 if [ "$1" == "clear" ]
 then
@@ -23,13 +13,13 @@ then
   docker-compose pull
 fi
 
-
-if [ "$1" == "production" ]
+if [ "$INTERACTIVE_DOCKER" == "true"]
 then
-  echo "running server in production mode"
+  echo "running servers in headless mode"
   docker-compose up -d
   exit 0
 fi
 
+
 # docker-compose up mywell-server db mywell-gql
-docker-compose up mywell-server db
+docker-compose up 
