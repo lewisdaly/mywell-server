@@ -8,10 +8,13 @@ export REFRESH_UI=false
 export SERVER_URL=https://mywell-server.vessels.tech
 export DONT_USE_ACCESS_TOKEN=xIYvJnc1R5DDVz1EqwR1BqYG5llm6MU8b1Yb3Pj0JvGsZywfTsbTplCK5sjyQ0Gm
 export STAGE_PREFIX=""
-export DB_HOST="mywelldb.cyftlfi9bxci.ap-southeast-2.rds.amazonaws.com"
-export DB_NAME="production_mywell"
-export DB_PASSWORD="marvi-mywell"
-export DB_USER="mywell"
+export DB_HOST="db"
+# export DB_NAME="production_mywell"
+# export DB_PASSWORD="marvi-mywell"
+#TODO: this may cause problems after restoring from backup
+export DB_NAME=mywell
+export DB_PASSWORD=password
+export DB_USER=mywell
 export IMAGE_SUFFIX="production"
 export VERSION_NUMBER="1.3.6"
 export SERVER_PORT=3000
