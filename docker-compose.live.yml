@@ -97,7 +97,8 @@ services:
     labels:
       - "traefik.port=80"
       - "traefik.docker.network=base-network"
-      - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell.vessels.tech,${STAGE_PREFIX}mywell.marvi.org.in"
+      # - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell.vessels.tech,${STAGE_PREFIX}mywell.marvi.org.in"
+      - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell.vessels.tech"
       - "traefik.protocol=http"
 
   db:
