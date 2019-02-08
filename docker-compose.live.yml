@@ -65,7 +65,8 @@ services:
     labels:
       - "traefik.port=3000"
       - "traefik.docker.network=base-network"
-      - "traefik.frontend.rule=${TEMP_SERVER_FRONTEND_RULE}"
+      # - "traefik.frontend.rule=${TEMP_SERVER_FRONTEND_RULE}"
+      - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell-server.vessels.tech"
       - "traefik.protocol=http"
 
   mywell-ui:
