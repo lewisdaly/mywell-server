@@ -132,9 +132,8 @@ services:
       --acme.storage=/etc/traefik/acme/acme.json \
       --acme.domains=vessels.tech \
       --acme.onHostRule=true \
-      --acme.logging=true \
       --docker \
       --docker.domain=vessels.tech \
       --docker.watch \
-      --logLevel=ERROR \
+      --logLevel=DEBUG \
       --web
