@@ -4,7 +4,7 @@ version: '2'
 services:
   mywell-gql:
     container_name: mywell-gql
-    image: mywell-gql:latest
+    image: ldaly/mywell-gql:latest
     ports:
       - 3001:3001
     # volumes:
@@ -21,12 +21,12 @@ services:
 
   mywell-utils:
     container_name: mywell-utils
-    image: mywell-utils:latest
+    image: ldaly/mywell-utils:latest
     command: tail -f /dev/null
 
   mywell-server:
     container_name: mywell-server
-    image: mywell-server
+    image: ldaly/mywell-server:latest
     ports:
      - "3000:3000"
     command: "nodemon -L ."
@@ -60,7 +60,7 @@ services:
 
   mywell-ui:
     container_name: mywell-ui
-    image: mywell-ui:latest
+    image: ldaly/mywell-ui:latest
     ports:
     command: "./build_and_run.sh"
     environment:

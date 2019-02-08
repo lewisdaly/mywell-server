@@ -73,4 +73,15 @@ run-server:
 # 	@make env
 # 	./_deploy_vars.sh
 
+##
+# Deployment
+##
+
+tag-and-push:
+	@make env
+	@./legacy_tag_and_push_docker.sh all
+
+login-droplet:
+	ssh root@157.230.46.139
+
 .PHONY: switch switch-dev swich-prod env
