@@ -96,9 +96,9 @@ mysqldump --host=mywelldb.cyftlfi9bxci.ap-southeast-2.rds.amazonaws.com  \
           -pmarvi-mywell \
           production_mywell > /tmp/backup.sql
 
-aws s3 cp /tmp/backup.sql s3://mywell-deployment/backup/2017-09-02-production-mywell.sql
+aws s3 cp /tmp/backup.sql s3://mywell-deployment/backup/2019-02-09-production-mywell.sql
 
-aws s3 cp s3://mywell-deployment/backup/2017-09-02-production-mywell.sql /tmp/
+aws s3 cp s3://mywell-deployment/backup/2019-02-09-production-mywell.sql /tmp/
 
 #on local
 docker cp /tmp/2017-09-02-production-mywell.sql mywell-db:/tmp/

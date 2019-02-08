@@ -20,5 +20,11 @@ then
   exit 0
 fi
 
+if [ "$LOCATION" == "live" ]
+then
+  echo "running servers in headless mode, from prebuild images"
+  docker-compose -f docker-compose.live.yml up -d
+  exit 0
+fi
 
 docker-compose up
