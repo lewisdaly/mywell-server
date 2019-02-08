@@ -121,18 +121,19 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/tmp:/etc/traefik/acme
-    command: >-
-      --entryPoints='Name:http Address::80' \
-      --entryPoints='Name:https Address::443 TLS' \
-      --defaultEntryPoints=http,https \
-      --acme.entryPoint=https \
-      --acme.email=lewis@vesselstech.com \
-      --acme.storage=/etc/traefik/acme/acme.json \
-      --acme.domains=marvi.org.in \
-      --acme.onHostRule=true \
-      --docker \
-      --docker.swarmmode \
-      --docker.domain=marvi.org.in \
-      --docker.watch \
-      --logLevel=ERROR \
-      --web
+    command: --api --docker
+    # command: >-
+    #   --entryPoints='Name:http Address::80' \
+    #   --entryPoints='Name:https Address::443 TLS' \
+    #   --defaultEntryPoints=http,https \
+    #   --acme.entryPoint=https \
+    #   --acme.email=lewis@vesselstech.com \
+    #   --acme.storage=/etc/traefik/acme/acme.json \
+    #   --acme.domains=marvi.org.in \
+    #   --acme.onHostRule=true \
+    #   --docker \
+    #   --docker.swarmmode \
+    #   --docker.domain=marvi.org.in \
+    #   --docker.watch \
+    #   --logLevel=ERROR \
+    #   --web
