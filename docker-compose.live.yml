@@ -57,6 +57,11 @@ services:
       - REACT_APP_FB_STORAGE_BUCKET
     links:
       - db:db
+    labels:
+      - "traefik.port=3000"
+      - "traefik.docker.network=base-network"
+      - "traefik.frontend.rule=${TEMP_SERVER_FRONTEND_RULE}"
+      - "traefik.protocol=http"
 
   mywell-ui:
     container_name: mywell-ui
@@ -96,3 +101,34 @@ services:
       - 3306
     volumes:
       - ./mywell-db/server/boot/db:/docker-entrypoint-initdb.d
+
+  traefik:
+    image: traefik:1.3.0
+    ports:
+      - 80:80
+      - 443:443
+      # - 8080:8080
+    networks:
+      - base-network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/tmp:/etc/traefik/acme
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    command: >-
+      --entryPoints='Name:http Address::80 Redirect.EntryPoint:https' \
+      --entryPoints='Name:https Address::443 TLS' \
+      --defaultEntryPoints=http,https \
+      --acme.entryPoint=https \
+      --acme.email=lewis@vesselstech.com \
+      --acme.storage=/etc/traefik/acme/acme.json \
+      --acme.domains=marvi.org.in \
+      --acme.onHostRule=true \
+      --docker \
+      --docker.swarmmode \
+      --docker.domain=marvi.org.in \
+      --docker.watch \
+      --logLevel=ERROR \
+      --web
