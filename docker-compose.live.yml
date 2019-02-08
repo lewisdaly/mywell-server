@@ -18,6 +18,11 @@ services:
     links:
       - db:db
     command: "npm run local"
+    labels:
+      - "traefik.port=3001"
+      - "traefik.docker.network=base-network"
+      - "traefik.frontend.rule=Host:${STAGE_PREFIX}mywell-gql.vessels.tech"
+      - "traefik.protocol=http"
 
   mywell-utils:
     container_name: mywell-utils
@@ -88,6 +93,11 @@ services:
       - REACT_APP_FB_DATABASE_URL
       - REACT_APP_FB_PROJECT_ID
       - REACT_APP_FB_STORAGE_BUCKET
+    labels:
+      - "traefik.port=80"
+      - "traefik.docker.network=base-network"
+      - "traefik.frontend.rule=Host:mywell-server.vessels.tech,${STAGE_PREFIX}mywell.marvi.org.in"
+      - "traefik.protocol=http"
 
   db:
     container_name: mywell-db
@@ -107,12 +117,13 @@ services:
     ports:
       - 80:80
       - 443:443
-      # - 8080:8080
+      - 8081:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/tmp:/etc/traefik/acme
     command: >-
-      --entryPoints='Name:http Address::80 Redirect.EntryPoint:https' \
+      # --entryPoints='Name:http Address::80 Redirect.EntryPoint:https' \
+      --entryPoints='Name:http Address::80 \
       --entryPoints='Name:https Address::443 TLS' \
       --defaultEntryPoints=http,https \
       --acme.entryPoint=https \
