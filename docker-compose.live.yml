@@ -122,7 +122,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/tmp:/etc/traefik/acme
     command: >-
-      # --entryPoints='Name:http Address::80 Redirect.EntryPoint:https' \
       --entryPoints='Name:http Address::80' \
       --entryPoints='Name:https Address::443 TLS' \
       --defaultEntryPoints=http,https \
