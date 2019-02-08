@@ -113,10 +113,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/tmp:/etc/traefik/acme
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
     command: >-
       --entryPoints='Name:http Address::80 Redirect.EntryPoint:https' \
       --entryPoints='Name:https Address::443 TLS' \
