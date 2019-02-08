@@ -3,13 +3,14 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 #set up envs
 source $DIR/../env/envdeployment.sh
+source /tmp/mywell_env
 
 if [ -z "$STAGE" ]; then
   echo "Defaulting stage to development."
   export STAGE=development
 fi
 
-source $DIR/../env/env"$STAGE".sh
+# source $DIR/../env/env"$STAGE".sh
 
 if [ "$1" == "build" ]
 then

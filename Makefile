@@ -21,8 +21,8 @@ env:
 	cat ${env_dir}/env.sh ${env_dir}/.env ${env_dir}/env.${stage}.${location}.sh > /tmp/mywell_env
 
 switch:
-	@echo switching to stage: ${stage}
-	@echo 'export stage=${stage}\nexport stage=${stage}\n' > .mywell_config
+	@echo switching to stage: ${stage} ${location}
+	@echo 'export stage=${stage}\nexport location=${location}\n' > .mywell_config
 	@make env
 
 switch-local-dev:
@@ -48,9 +48,9 @@ switch-live-prod:
 build-server:
 	@make env
 	echo "building server"
-  cd ${env_dir}/mywell-server && npm install
-  docker-compose build
-  docker-compose pull
+	cd ${dir}/mywell-server && npm install
+	docker-compose build
+	# docker-compose pull
 
 
 run-server:
